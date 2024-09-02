@@ -29,7 +29,7 @@ function SignIn() {
     });
 
     return (
-        <Box component="form" onSubmit={formik.handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '25%', margin: "0 auto"}}>
+        <Box component="form" onSubmit={formik.handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '25%', margin: "0 auto", alignItems: 'center'}}>
             <TextField
                 fullWidth
                 label="Email"
@@ -89,8 +89,7 @@ function SignIn() {
             <CustomButton type="submit" variant="contained" color="primary">
                 Sign In
             </CustomButton>
-
-            <p>OR</p>
+            <text>OR</text>
             <GoogleLoginButton></GoogleLoginButton>
         </Box>
     );

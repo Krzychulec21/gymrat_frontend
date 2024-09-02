@@ -3,9 +3,10 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import authService from '../service/authService';
 import Box from '@mui/material/Box';
-import EssaCustomButton from '../components/Button/CustomButton';
+import CustomButton from '../components/Button/CustomButton';
 import {useNavigate} from "react-router-dom"; // Import CustomButton
 import CustomTextField from '../components/Input/CustomTextField';
+import GoogleLogin from "../components/Button/GoogleLoginButton";
 
 
 function SignUp() {
@@ -37,7 +38,7 @@ function SignUp() {
     });
 
     return (
-        <Box component="form" onSubmit={formik.handleSubmit} autoComplete="off" id="custom-signup-form"  sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '25%', margin: "0 auto"}} >
+        <Box component="form" onSubmit={formik.handleSubmit} autoComplete="off" id="custom-signup-form"  sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '25%', margin: "0 auto", alignItems: "center"}} >
 
             <CustomTextField
                 fullWidth
@@ -103,10 +104,11 @@ function SignUp() {
                 autoComplete="new-password" // Unikalna wartość dla autouzupełniania
             />
 
-
-            <EssaCustomButton type="submit" variant="contained" color="primary">
+            <CustomButton type="submit" variant="contained" color="primary">
                 Sign Up
-            </EssaCustomButton>
+            </CustomButton>
+            <text>OR</text>
+            <GoogleLogin />
         </Box>
     );
 }

@@ -3,13 +3,16 @@ import SignIn from './SignIn';
 import SignUp from './SignUp';
 import { Box, Button } from '@mui/material';
 import logo from '../assets/logo.svg';
+import { Link } from 'react-router-dom';
 
 function AuthPage() {
     const [isSignUp, setIsSignUp] = useState(false);
 
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 2}}>
-            <img src={logo} alt="App Logo" style={{width: '8vw', marginBottom: '20px'}}/>
+            <Link to="/" style={{ textDecoration: 'none' }}>
+                <img src={logo} alt="App Logo" style={{width: '8vw', marginBottom: '20px'}}/>
+            </Link>
             <Box sx={{display: 'flex', gap: 5, mb: 2, marginBottom: '20px'}}>
                 <Button
                     onClick={() => setIsSignUp(false)}

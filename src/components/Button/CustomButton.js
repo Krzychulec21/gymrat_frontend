@@ -6,7 +6,7 @@ import {styled} from "@mui/material";
 const StyledButton = styled(Button)(({theme}) => ({
     backgroundColor: 'red',
     color: 'white',
-    margin: '20px',
+    margin: '0px',
     '&:hover': {
         backgroundColor: 'darkred',
     },
