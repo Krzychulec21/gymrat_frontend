@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import {styled} from "@mui/material";
+import {styled} from "@mui/system";
 
 const StyledButton = styled(Button)(({theme}) => ({
     backgroundColor: 'red',

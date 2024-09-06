@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import AuthPage from './pages/AuthPage';
 import OAuth2RedirectHandler from './components/OAuth2RedirectHandler';
+import FriendPage from "./pages/FriendPage";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/auth" element={<AuthPage />} />
                     <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
+                    <Route path="/friends" element={<FriendPage />} />
                 </Routes>
             </Router>
         </AuthProvider>
