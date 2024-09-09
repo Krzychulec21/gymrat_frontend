@@ -1,16 +1,14 @@
 import React from 'react';
-import { useFormik } from 'formik';
+import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import authService from '../service/authService';
 import Box from '@mui/material/Box';
-import CustomButton from '../components/Button/CustomButton';
-import {useNavigate} from "react-router-dom"; // Import CustomButton
-import CustomTextField from '../components/Input/CustomTextField';
-import GoogleLogin from "../components/Button/GoogleLoginButton";
+import CustomButton from '../components/button/CustomButton';
+import CustomTextField from '../components/input/CustomTextField';
+import GoogleLogin from "../components/button/GoogleLoginButton";
 
 
 function SignUp() {
-    const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
             firstName: '',

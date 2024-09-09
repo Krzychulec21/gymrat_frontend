@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import FriendsList from '../components/Friends/FriendsList';
-import PendingRequestsList from '../components/Friends/PendingRequestsList';
-import SendFriendRequestForm from '../components/Friends/SendFriendRequestForm';
+import FriendsList from '../components/friends/FriendsList';
+import PendingRequestsList from '../components/friends/PendingRequestsList';
+import SendFriendRequestForm from '../components/friends/SendFriendRequestForm';
 import { getFriends, getPendingRequests, sendFriendRequest, respondToFriendRequest, removeFriend } from '../service/friendService';
-import CustomButton from '../components/Button/CustomButton';
+import CustomButton from '../components/button/CustomButton';
 
 const FriendsPage = () => {
     const [selectedTab, setSelectedTab] = useState('friends');

@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.svg';
-import CustomButton from "./Button/CustomButton";
+import CustomButton from "./button/CustomButton";
 
 function Navbar() {
     const { isAuthenticated, logout } = useAuth();
