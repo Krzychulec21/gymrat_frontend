@@ -1,28 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import FriendsList from '../components/friends/FriendsList';
 import PendingRequestsList from '../components/friends/PendingRequestsList';
 import SendFriendRequestForm from '../components/friends/SendFriendRequestForm';
+import ChatRoom from '../components/chat/ChatRoom';  // Komponent czatu
 import { getFriends, getPendingRequests, sendFriendRequest, respondToFriendRequest, removeFriend } from '../service/friendService';
+import { getCurrentUserId } from '../service/userService';  // Funkcja pobierająca ID aktualnego użytkownika
 import CustomButton from '../components/button/CustomButton';
+import {getChatRoomId} from "../service/chatService";
 
 const FriendsPage = () => {
-    const [selectedTab, setSelectedTab] = useState('friends');
+    const [selectedTab, setSelectedTab] = useState('friends');  // Zakładki
     const [friends, setFriends] = useState([]);
     const [pendingRequests, setPendingRequests] = useState([]);
+    const [selectedFriendId, setSelectedFriendId] = useState(null);  // Wybrany znajomy do czatu
+    const [chatRoomId, setChatRoomId] = useState(null);  // ID pokoju czatu
+    const [currentUserId, setCurrentUserId] = useState(null);  // Aktualny zalogowany użytkownik
 
-    const renderContent = () => {
-        switch (selectedTab) {
-            case 'friends':
-                return <FriendsList friends={friends} onRemoveFriend={handleRemoveFriend} />;
-            case 'pending':
-                return <PendingRequestsList requests={pendingRequests} onAccept={handleAcceptRequest} onReject={handleRejectRequest} />;
-            case 'add':
-                return <SendFriendRequestForm onSendRequest={handleSendRequest} />;
-            default:
-                return null;
-        }
-    };
+    // Pobranie ID aktualnego użytkownika po załadowaniu komponentu
+    useEffect(() => {
+        const fetchCurrentUserId = async () => {
+            const userId = await getCurrentUserId();
+            setCurrentUserId(userId);
+        };
+
+        fetchCurrentUserId();
+    }, []);
+
+    // Funkcja do załadowania przyjaciół i oczekujących zaproszeń
+    useEffect(() => {
+        loadFriends();
+        loadPendingRequests();
+    }, [selectedTab]);
 
     const loadFriends = async () => {
         const friends = await getFriends();
@@ -34,6 +43,7 @@ const FriendsPage = () => {
         setPendingRequests(requests);
     };
 
+    // Funkcja obsługująca wysyłanie zaproszenia do znajomego
     const handleSendRequest = async (email) => {
         await sendFriendRequest(email);
         loadPendingRequests();  // Odświeżenie listy oczekujących zaproszeń
@@ -55,24 +65,37 @@ const FriendsPage = () => {
         loadFriends();
     };
 
+    // Funkcja uruchamiająca czat z wybranym znajomym
+    const startChatWithFriend = async (friendId) => {
+        console.log("obecnie id kolejno user i zanjomy: "+  currentUserId +"  "+ friendId);
+
+        const roomId = await getChatRoomId(currentUserId, friendId);  // Funkcja pobierająca ID pokoju czatu
+        console.log("id pokoju: "+ roomId);
+        setSelectedFriendId(friendId);
+        setChatRoomId(roomId);  // Przypisuje ID pokoju czatu
+        setSelectedTab('chat');  // Przełącza na zakładkę czatu
+    };
+
+    // Renderowanie zawartości w zależności od wybranej zakładki
+    const renderContent = () => {
+        switch (selectedTab) {
+            case 'friends':
+                return <FriendsList friends={friends} onRemoveFriend={handleRemoveFriend} onChatStart={startChatWithFriend} />;
+            case 'pending':
+                return <PendingRequestsList requests={pendingRequests} onAccept={handleAcceptRequest} onReject={handleRejectRequest} />;
+            case 'add':
+                return <SendFriendRequestForm onSendRequest={handleSendRequest} />;
+            case 'chat':
+                return <ChatRoom currentUserId={currentUserId} friendId={selectedFriendId} chatRoomId={chatRoomId} />;  // Przekazuje ID użytkowników i chatRoomId
+            default:
+                return null;
+        }
+    };
+
     return (
-        <Box sx={{
-            width: '60%',
-            height: '80vh',
-            border: '2px solid red',
-            display: 'flex',
-            margin: 'auto',
-            backgroundColor: 'transparent'
-        }}>
+        <Box sx={{ width: '60%', height: '80vh', border: '2px solid red', display: 'flex', margin: 'auto', backgroundColor: 'transparent' }}>
             {/* Lewa kolumna z zakładkami */}
-            <Box sx={{
-                width: '20%',
-                borderRight: '2px solid red',
-                padding: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 2
-            }}>
+            <Box sx={{ width: '20%', borderRight: '2px solid red', padding: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
                 <Typography variant="h6" gutterBottom>Znajomi</Typography>
 
                 <CustomButton
@@ -83,7 +106,7 @@ const FriendsPage = () => {
                         backgroundColor: selectedTab === 'friends' ? 'darkgray' : 'gray',
                         '&:hover': { backgroundColor: 'darkgray' }
                     }}>
-                    Znajomi
+                    Znajomi {friends.length}
                 </CustomButton>
 
                 <CustomButton
@@ -94,27 +117,20 @@ const FriendsPage = () => {
                         backgroundColor: selectedTab === 'pending' ? 'darkgray' : 'gray',
                         '&:hover': { backgroundColor: 'darkgray' }
                     }}>
-                    Oczekujące
+                    Oczekujące {pendingRequests.length}
                 </CustomButton>
 
                 <CustomButton
                     onClick={() => setSelectedTab('add')}
                     variant="contained"
-                    sx={{
-                        width: '100%',
-
-                        '&:hover': { backgroundColor: 'darkgray' }
-                    }}>
+                    sx={{ width: '100%', '&:hover': { backgroundColor: 'darkgray' } }}>
                     Dodaj znajomego
                 </CustomButton>
             </Box>
 
             {/* Prawa kolumna z zawartością */}
-            <Box sx={{
-                width: '80%',
-                padding: 3
-            }}>
-                {renderContent()}
+            <Box sx={{ width: '80%', padding: 3 }}>
+                {renderContent()}  {/* Renderowanie zależnie od zakładki */}
             </Box>
         </Box>
     );

@@ -21,6 +21,16 @@ export const getPendingRequests = async () => {
     }
 };
 
+// Get the list of users with their request status
+export const getUsersWithRequestStatus = async () => {
+    try {
+        const response = await axiosInstance.get("/friends/users-with-request-status");
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 // Send a friend request to another user
 export const sendFriendRequest = async (receiverEmail) => {
     try {
@@ -35,7 +45,7 @@ export const sendFriendRequest = async (receiverEmail) => {
 export const respondToFriendRequest = async (requestId, accepted) => {
     try {
         const data = { requestId, accepted };
-        await axiosInstance.post('/friends/respond-to-request', data);
+        await axiosInstance.post('/friends/respond-request', data);
     } catch (error) {
         console.error('Error responding to friend request', error);
         throw error;

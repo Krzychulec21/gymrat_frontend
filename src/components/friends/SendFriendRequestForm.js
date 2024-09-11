@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Box,  ListItemText, Alert, Snackbar } from '@mui/material';
-import { sendFriendRequest } from '../../service/friendService';
-import axiosInstance from "../../utils/axiosInstance";
-import CustomTextField from '../input/CustomTextField';
+import React, {useEffect, useState} from 'react';
+import {Alert, Box, ListItemText, Snackbar} from '@mui/material';
+import {getUsersWithRequestStatus, sendFriendRequest} from '../../service/friendService';
 import CustomListWithSearch from "../list/CustomListWithSearch";
 import CustomButton from "../button/CustomButton";
 
@@ -15,8 +13,8 @@ const SendFriendRequestForm = () => {
 
     const fetchUsersWithStatus = async () => {
         try {
-            const response = await axiosInstance.get('/friends/users-with-request-status');
-            setUsers(response.data);
+            const usersList  = await getUsersWithRequestStatus();
+            setUsers(usersList);
         } catch (error) {
             console.error('Błąd podczas pobierania użytkowników:', error);
         }

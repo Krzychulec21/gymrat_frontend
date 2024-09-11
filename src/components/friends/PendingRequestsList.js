@@ -1,22 +1,39 @@
 import React from 'react';
-import { Card, CardContent, Typography, Button, CardActions } from '@mui/material';
+import {Avatar, Box, IconButton, List, ListItem, ListItemAvatar, ListItemText} from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const PendingRequestsList = ({ requests, onAccept, onReject }) => {
     return (
-        <>
+        <List>
+            <h1>eloszka</h1>
             {requests.map((request) => (
-                <Card key={request.id} sx={{ marginBottom: 2 }}>
-                    <CardContent>
-                        <Typography variant="h6">Zaproszenie od {request.senderName}</Typography>
-                        <Typography color="textSecondary">{request.senderEmail}</Typography>
-                    </CardContent>
-                    <CardActions>
-                        <Button size="small" color="primary" onClick={() => onAccept(request.id)}>Akceptuj</Button>
-                        <Button size="small" color="secondary" onClick={() => onReject(request.id)}>Odrzuć</Button>
-                    </CardActions>
-                </Card>
+                <ListItem key={request.id}
+                          sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                    {/* Lewa część - avatar i dane użytkownika */}
+                    <Box sx={{display: 'flex', alignItems: 'center'}}>
+                        <ListItemAvatar>
+                            <Avatar alt={request.senderEmail} src={request.senderAvatar}/>
+                        </ListItemAvatar>
+                        <ListItemText
+                            primary={`${request.senderFirstName} (${request.senderLastName})`}
+                            secondary={request.senderEmail}
+                            sx={{marginLeft: 2}}
+                        />
+                    </Box>
+
+                    {/* Prawa część - przyciski akcji */}
+                    <Box>
+                        <IconButton color="success" onClick={() => onAccept(request.Id)}>
+                            <CheckCircleIcon/>
+                        </IconButton>
+                        <IconButton color="error" onClick={() => onReject(request.Id)}>
+                            <CancelIcon/>
+                        </IconButton>
+                    </Box>
+                </ListItem>
             ))}
-        </>
+        </List>
     );
 };
 

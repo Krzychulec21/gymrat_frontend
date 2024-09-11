@@ -11,14 +11,20 @@ const authService = {
         const email = decodedToken.sub;
         localStorage.setItem('token', token);
         localStorage.setItem('email', email)
+        localStorage.setItem("id", decodedToken.id);
+
+
     },
     register: async (data) => {
         const response = await axios.post(`${API_URL}/register`, data);
         const token = response.data.token;
         const decodedToken = jwtDecode(token);
+        console.log("dane tokena" + decodedToken);
+
         const email = decodedToken.sub;
         localStorage.setItem('token', token);
         localStorage.setItem('email', email)
+        localStorage.setItem("id", decodedToken.id);
     },
     logout: () => {
         localStorage.removeItem('token');
@@ -30,6 +36,7 @@ const authService = {
         const email = decodedToken.sub;
         localStorage.setItem('token', token);
         localStorage.setItem('email', email)
+        localStorage.setItem("id", decodedToken.id);
     }
 };
 
