@@ -1,8 +1,5 @@
-import axios from 'axios';
 import {jwtDecode} from "jwt-decode";
-import {pem as jwt} from "node-forge";
-
-const API_URL = 'http://localhost:8080/api/v1/auth';
+import axiosInstance from "../utils/axiosInstance";
 
 const authService = {
     handleToken: (token) => {
@@ -13,11 +10,11 @@ const authService = {
     },
 
     login: async (credentials) => {
-        const response = await axios.post(`${API_URL}/authenticate`, credentials);
+        const response = await axiosInstance.post("/auth/authenticate", credentials);
         authService.handleToken(response.data.token);
     },
     register: async (data) => {
-        const response = await axios.post(`${API_URL}/register`, data);
+        const response = await axiosInstance.post("/auth/register", data);
         authService.handleToken(response.data.token);
     },
     logout: () => {

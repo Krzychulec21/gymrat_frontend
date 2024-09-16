@@ -15,17 +15,20 @@ const FriendsPage = () => {
     const [pendingRequests, setPendingRequests] = useState([]);
     const [selectedFriendId, setSelectedFriendId] = useState(null);  // Wybrany znajomy do czatu
     const [chatRoomId, setChatRoomId] = useState(null);  // ID pokoju czatu
-    const [currentUserId, setCurrentUserId] = useState(null);  // Aktualny zalogowany użytkownik
+    // const [currentUserId, setCurrentUserId] = useState(null);  // Aktualny zalogowany użytkownik
+    //
+    //
+    // // Pobranie ID aktualnego użytkownika po załadowaniu komponentu
+    // useEffect(() => {
+    //     const fetchCurrentUserId = async () => {
+    //         const userId = await getCurrentUserId();
+    //         setCurrentUserId(userId);
+    //     };
+    //
+    //     fetchCurrentUserId();
+    // }, []);
 
-    // Pobranie ID aktualnego użytkownika po załadowaniu komponentu
-    useEffect(() => {
-        const fetchCurrentUserId = async () => {
-            const userId = await getCurrentUserId();
-            setCurrentUserId(userId);
-        };
-
-        fetchCurrentUserId();
-    }, []);
+    const currentUserId = localStorage.getItem("id");
 
     // Funkcja do załadowania przyjaciół i oczekujących zaproszeń
     useEffect(() => {
@@ -94,7 +97,7 @@ const FriendsPage = () => {
 
     return (
         <Box sx={{ width: '60%', height: '80vh', border: '2px solid red', display: 'flex', margin: 'auto', backgroundColor: 'transparent' }}>
-            {/* Lewa kolumna z zakładkami */}
+
             <Box sx={{ width: '20%', borderRight: '2px solid red', padding: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
                 <Typography variant="h6" gutterBottom>Znajomi</Typography>
 
@@ -128,9 +131,9 @@ const FriendsPage = () => {
                 </CustomButton>
             </Box>
 
-            {/* Prawa kolumna z zawartością */}
+
             <Box sx={{ width: '80%', padding: 3 }}>
-                {renderContent()}  {/* Renderowanie zależnie od zakładki */}
+                {renderContent()}
             </Box>
         </Box>
     );

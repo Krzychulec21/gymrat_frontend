@@ -10,7 +10,6 @@ const PendingRequestsList = ({ requests, onAccept, onReject }) => {
             {requests.map((request) => (
                 <ListItem key={request.id}
                           sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                    {/* Lewa część - avatar i dane użytkownika */}
                     <Box sx={{display: 'flex', alignItems: 'center'}}>
                         <ListItemAvatar>
                             <Avatar alt={request.senderEmail} src={request.senderAvatar}/>
@@ -22,7 +21,6 @@ const PendingRequestsList = ({ requests, onAccept, onReject }) => {
                         />
                     </Box>
 
-                    {/* Prawa część - przyciski akcji */}
                     <Box>
                         <IconButton color="success" onClick={() => onAccept(request.Id)}>
                             <CheckCircleIcon/>

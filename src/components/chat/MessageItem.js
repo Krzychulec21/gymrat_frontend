@@ -2,8 +2,7 @@ import React from 'react';
 import { ListItem, ListItemText, Box } from '@mui/material';
 
 const MessageItem = ({ message, currentUserId }) => {
-    const isCurrentUser = message.senderId === currentUserId; // Sprawdź, czy to wiadomość aktualnie zalogowanego użytkownika
-
+    const isCurrentUser = String(message.senderId) === String(currentUserId); // Sprawdź, czy to wiadomość aktualnie zalogowanego użytkownika
     return (
         <ListItem
             sx={{

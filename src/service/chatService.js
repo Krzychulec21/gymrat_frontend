@@ -12,7 +12,7 @@ export const getChatRoomId = async (currentUserId, friendId) => {
     }
 };
 
-// Pobieranie historii wiadomości
+
 export const getChatHistory = async (chatRoomId) => {
     try {
         const response = await axiosInstance.get(`/chat/history/${chatRoomId}`);

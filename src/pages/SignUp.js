@@ -27,7 +27,7 @@ function SignUp() {
         onSubmit: async (values, { setSubmitting, setErrors }) => {
             try {
                 await authService.register(values);
-                window.location.href = '/'; // todo zobaczyc bo uzywanie navigage nie dziala bo nie loguje automatycznie
+                window.location.href = '/';
             } catch (error) {
                 setErrors({ email: 'Email or nickname already exists' });
                 setSubmitting(false);
@@ -85,13 +85,13 @@ function SignUp() {
                 value={formik.values.email}
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
-                autoComplete="new-email" // Unikalna wartość dla autouzupełniania
+                autoComplete="new-email"
             />
 
             <CustomTextField
                 fullWidth
                 label="Password"
-                name="password" // Unikalna nazwa
+                name="password"
                 type="password"
                 variant="outlined"
                 onChange={formik.handleChange}
@@ -99,7 +99,7 @@ function SignUp() {
                 value={formik.values.password}
                 error={formik.touched.password && Boolean(formik.errors.password)}
                 helperText={formik.touched.password && formik.errors.password}
-                autoComplete="new-password" // Unikalna wartość dla autouzupełniania
+                autoComplete="new-password"
             />
 
             <CustomButton type="submit" variant="contained" color="primary">

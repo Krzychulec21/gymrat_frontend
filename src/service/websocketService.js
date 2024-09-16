@@ -3,10 +3,9 @@ import { Client } from '@stomp/stompjs';
 
 let stompClient = null;
 
-// Inicjalizacja połączenia WebSocket
+
 export const connectToWebSocket = (chatRoomId, onMessageReceived) => {
-    //const socket = new SockJS('http://localhost:8080/ws');  // URL backendu
-    const socket = new SockJS('http://192.168.0.104:8080/ws');  // Zamień localhost na adres IP komputera
+    const socket = new SockJS('http://localhost:8080/ws');
 
     stompClient = new Client({
         webSocketFactory: () => socket,
@@ -14,14 +13,13 @@ export const connectToWebSocket = (chatRoomId, onMessageReceived) => {
         onConnect: () => {
             console.log('WebSocket connected, subscribing to chat room:', chatRoomId);
 
-            // Dodanie opóźnienia, aby upewnić się, że połączenie jest stabilne
             setTimeout(() => {
                 stompClient.subscribe(`/topic/chat/${chatRoomId}`, (message) => {
                     console.log("Received message: ", message.body);
-                    onMessageReceived(message);  // Przekazuje wiadomość do funkcji obsługi
+                    onMessageReceived(message);
                 });
                 console.log('Subscription registered');
-            }, 500);  // Opóźnienie 500ms
+            }, 500);
         },
         onStompError: (frame) => {
             console.error('STOMP error:', frame.headers['message'], frame.body);
@@ -34,16 +32,15 @@ export const connectToWebSocket = (chatRoomId, onMessageReceived) => {
         }
     });
 
-    stompClient.activate();  // Uruchomienie połączenia WebSocket
+    stompClient.activate();
 };
 
 
-// Funkcja wysyłania wiadomości
 export const sendMessage = (chatRoomId, message) => {
     if (stompClient && stompClient.connected) {
         console.log("Sending message to chatRoomId: ", chatRoomId, message);
         stompClient.publish({
-            destination: `/app/chat.sendMessage`,  // Destination to match backend mapping
+            destination: `/app/chat.sendMessage`,  // destination to match backend mapping
             body: JSON.stringify(message)
         });
     } else {

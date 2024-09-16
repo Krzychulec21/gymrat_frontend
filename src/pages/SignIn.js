@@ -44,28 +44,28 @@ function SignIn() {
                 sx={{
                     '& .MuiOutlinedInput-root': {
                         '& fieldset': {
-                            borderColor: 'white', // Białe obramowanie
+                            borderColor: 'white',
                         },
                         '&:hover fieldset': {
-                            borderColor: 'white', // Białe obramowanie podczas najechania myszką
+                            borderColor: 'white',
                         },
                         '&.Mui-focused fieldset': {
-                            borderColor: 'white', // Białe obramowanie podczas fokusu
+                            borderColor: 'white',
                         },
                     },
                     '& .MuiInputBase-input': {
-                        color: 'white', // Biały tekst
+                        color: 'white',
                     },
                     '& .MuiFormLabel-root': {
-                        color: 'white', // Biała etykieta
+                        color: 'white',
                     },
                     '& .MuiFormLabel-root.Mui-focused': {
-                        color: 'white', // Biała etykieta podczas fokusu
+                        color: 'white',
                     },
                     '& input:-webkit-autofill': {
                         WebkitBoxShadow: '0 0 0 1000px black inset',
-                        WebkitTextFillColor: 'white', // Kolor tekstu podczas autouzupełniania
-                        caretColor: 'white', // Kolor kursora
+                        WebkitTextFillColor: 'white',
+                        caretColor: 'white',
                         borderColor: 'white',
                     },
                 }}

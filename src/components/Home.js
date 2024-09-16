@@ -3,7 +3,7 @@
 const Home = () => {
     return (
         <div>
-                <p>Loading...</p> // Wyświetlamy komunikat podczas ładowania danych
+                <p>Loading...</p>
         </div>
     );
 };
