@@ -1,4 +1,5 @@
 import axiosInstance from '../utils/axiosInstance';
+import websocketService from "./websocketService";
 
 
 export const getChatRoomId = async (currentUserId, friendId) => {
@@ -22,3 +23,20 @@ export const getChatHistory = async (chatRoomId) => {
         return [];
     }
 };
+
+//WebSocket methods
+
+export const connectToChatRoom = (chatRoomId, onMessageReceived) => {
+    const destination = `/user/queue/chat/${chatRoomId}`;
+    websocketService.subscribe(destination, (message) => {
+        const parsedMessage = JSON.parse(message.body);
+        console.log("Received message: ", message.body);
+        onMessageReceived(parsedMessage);
+    });
+};
+
+export const sendMessage = (chatRoomId, message) => {
+    const destination = '/app/chat.sendMessage';
+    websocketService.send(destination, message);
+};
+

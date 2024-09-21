@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Box, Button, List, Typography } from '@mui/material';
-import { connectToWebSocket, sendMessage } from '../../service/websocketService';
+import {connectToChatRoom, sendMessage} from '../../service/chatService';
 import { getChatHistory } from "../../service/chatService";
 import CustomTextField from '../input/CustomTextField';
 import MessageItem from "./MessageItem";
@@ -8,7 +8,6 @@ import MessageItem from "./MessageItem";
 const ChatRoom = ({ currentUserId, friendId, chatRoomId }) => {
     const [messages, setMessages] = useState([]);
     const [messageContent, setMessageContent] = useState("");
-    const isSubscribed = useRef(false);
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
@@ -18,14 +17,10 @@ const ChatRoom = ({ currentUserId, friendId, chatRoomId }) => {
         };
         fetchChatHistory();
 
-        if (!isSubscribed.current) {
-            connectToWebSocket(chatRoomId, (message) => {
-                console.log("Received message: ", message.body);
-                const newMessage = JSON.parse(message.body);
-                setMessages((prevMessages) => [...prevMessages, newMessage]);
-            });
-            isSubscribed.current = true;
-        }
+        connectToChatRoom(chatRoomId, (message) => {
+            setMessages((prevMessages) => [...prevMessages, message]);
+        });
+
     }, [chatRoomId]);
 
 

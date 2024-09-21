@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
@@ -7,8 +7,17 @@ import AuthPage from './pages/AuthPage';
 import OAuth2RedirectHandler from './components/OAuth2RedirectHandler';
 import FriendPage from "./pages/FriendPage";
 import { NotificationsProvider } from './context/NotificationContext';
+import webSocketService from "./service/websocketService";
 
 function App() {
+    useEffect(() => {
+        webSocketService.connect();
+
+        return () => {
+            webSocketService.disconnect();
+        }
+    }, []);
+
     return (
         <AuthProvider>
             <NotificationsProvider>

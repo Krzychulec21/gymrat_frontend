@@ -1,7 +1,7 @@
 // NotificationsContext.js
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import axiosInstance from '../utils/axiosInstance';
-import { connectToNotificationsWebSocket } from '../service/notificationsWebSocket';
+import {connectToNotifications} from "../service/notificationService";
 
 const NotificationsContext = createContext();
 
@@ -18,15 +18,9 @@ export const NotificationsProvider = ({ children }) => {
                 console.error('Error fetching notifications:', error);
             });
 
-        // Połącz z WebSocket
-        const disconnect = connectToNotificationsWebSocket((notification) => {
-            setNotifications(prev => [...prev, JSON.parse(notification.body)]);
-        });
-
-        // Odłącz przy unmount
-        return () => {
-            disconnect();
-        };
+       connectToNotifications((notification) => {
+           setNotifications((prevNotifications) => [...prevNotifications, notification]);
+       });
     }, []);
 
     const markNotificationsAsRead = () => {
