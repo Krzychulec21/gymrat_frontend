@@ -55,7 +55,9 @@ export const respondToFriendRequest = async (requestId, accepted) => {
 // Remove a friend by email
 export const removeFriend = async (friendEmail) => {
     try {
-        await axiosInstance.post('/friends/remove-friend', {email:friendEmail});
+        await axiosInstance.delete('/friends/remove-friend', {
+            params: { friendEmail: friendEmail}
+        });
     } catch (error) {
         console.error('Error removing friend', error);
         throw error;

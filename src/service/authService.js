@@ -25,6 +25,9 @@ const authService = {
     isAuthenticated: () => !!localStorage.getItem('token'),
     setToken: (token) => {
         authService.handleToken(token);
+    },
+    getToken: () => {
+        return localStorage.getItem('token');
     }
 };
 

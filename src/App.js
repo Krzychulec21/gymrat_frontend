@@ -6,10 +6,12 @@ import Home from './pages/Home';
 import AuthPage from './pages/AuthPage';
 import OAuth2RedirectHandler from './components/OAuth2RedirectHandler';
 import FriendPage from "./pages/FriendPage";
+import { NotificationsProvider } from './context/NotificationContext';
 
 function App() {
     return (
         <AuthProvider>
+            <NotificationsProvider>
             <Router>
                 <Navbar />
                 <Routes>
@@ -19,6 +21,7 @@ function App() {
                     <Route path="/friends" element={<FriendPage />} />
                 </Routes>
             </Router>
+            </NotificationsProvider>
         </AuthProvider>
     );
 }

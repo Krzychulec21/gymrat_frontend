@@ -28,6 +28,7 @@ const ChatRoom = ({ currentUserId, friendId, chatRoomId }) => {
         }
     }, [chatRoomId]);
 
+
     const handleSendMessage = () => {
         if (messageContent.trim()) {
             const message = {

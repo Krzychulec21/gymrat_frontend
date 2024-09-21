@@ -1,20 +1,21 @@
-import SockJS from 'sockjs-client';
-import { Client } from '@stomp/stompjs';
+import {Client} from '@stomp/stompjs';
+import authService from "./authService";
 
 let stompClient = null;
 
 
 export const connectToWebSocket = (chatRoomId, onMessageReceived) => {
-    const socket = new SockJS('http://localhost:8080/ws');
+    const token = encodeURIComponent(authService.getToken());
+    const wsUrl = `ws://localhost:8080/ws?token=${token}`;
 
     stompClient = new Client({
-        webSocketFactory: () => socket,
+        brokerURL: wsUrl,
         reconnectDelay: 5000,
         onConnect: () => {
             console.log('WebSocket connected, subscribing to chat room:', chatRoomId);
 
             setTimeout(() => {
-                stompClient.subscribe(`/topic/chat/${chatRoomId}`, (message) => {
+                stompClient.subscribe(`/user/queue/chat/${chatRoomId}`, (message) => {
                     console.log("Received message: ", message.body);
                     onMessageReceived(message);
                 });
