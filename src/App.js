@@ -10,14 +10,6 @@ import { NotificationsProvider } from './context/NotificationContext';
 import webSocketService from "./service/websocketService";
 
 function App() {
-    useEffect(() => {
-        webSocketService.connect();
-
-        return () => {
-            webSocketService.disconnect();
-        }
-    }, []);
-
     return (
         <AuthProvider>
             <NotificationsProvider>

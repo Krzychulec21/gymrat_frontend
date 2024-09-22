@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import React, {useEffect, useState} from 'react';
+import {Box, Typography} from '@mui/material';
 import FriendsList from '../components/friends/FriendsList';
 import PendingRequestsList from '../components/friends/PendingRequestsList';
 import SendFriendRequestForm from '../components/friends/SendFriendRequestForm';
-import ChatRoom from '../components/chat/ChatRoom';  // Komponent czatu
-import { getFriends, getPendingRequests, sendFriendRequest, respondToFriendRequest, removeFriend } from '../service/friendService';
-import { getCurrentUserId } from '../service/userService';  // Funkcja pobierająca ID aktualnego użytkownika
+import ChatRoom from '../components/chat/ChatRoom'; // Komponent czatu
+import {
+    getFriends,
+    getPendingRequests,
+    removeFriend,
+    respondToFriendRequest,
+    sendFriendRequest
+} from '../service/friendService';
 import CustomButton from '../components/button/CustomButton';
 import {getChatRoomId} from "../service/chatService";
 
@@ -30,7 +35,6 @@ const FriendsPage = () => {
 
     const currentUserId = localStorage.getItem("id");
 
-    // Funkcja do załadowania przyjaciół i oczekujących zaproszeń
     useEffect(() => {
         loadFriends();
         loadPendingRequests();
@@ -46,10 +50,9 @@ const FriendsPage = () => {
         setPendingRequests(requests);
     };
 
-    // Funkcja obsługująca wysyłanie zaproszenia do znajomego
     const handleSendRequest = async (email) => {
         await sendFriendRequest(email);
-        loadPendingRequests();  // Odświeżenie listy oczekujących zaproszeń
+        loadPendingRequests();
     };
 
     const handleAcceptRequest = async (requestId) => {
@@ -68,18 +71,16 @@ const FriendsPage = () => {
         loadFriends();
     };
 
-    // Funkcja uruchamiająca czat z wybranym znajomym
     const startChatWithFriend = async (friendId) => {
         console.log("obecnie id kolejno user i zanjomy: "+  currentUserId +"  "+ friendId);
 
-        const roomId = await getChatRoomId(currentUserId, friendId);  // Funkcja pobierająca ID pokoju czatu
+        const roomId = await getChatRoomId(currentUserId, friendId);
         console.log("id pokoju: "+ roomId);
         setSelectedFriendId(friendId);
-        setChatRoomId(roomId);  // Przypisuje ID pokoju czatu
-        setSelectedTab('chat');  // Przełącza na zakładkę czatu
+        setChatRoomId(roomId);
+        setSelectedTab('chat');
     };
 
-    // Renderowanie zawartości w zależności od wybranej zakładki
     const renderContent = () => {
         switch (selectedTab) {
             case 'friends':

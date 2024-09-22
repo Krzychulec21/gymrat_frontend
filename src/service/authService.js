@@ -3,10 +3,15 @@ import axiosInstance from "../utils/axiosInstance";
 
 const authService = {
     handleToken: (token) => {
-        const decodedToken = jwtDecode(token);
-        localStorage.setItem('token', token);
-        localStorage.setItem('email', decodedToken.sub);
-        localStorage.setItem('id', decodedToken.id);
+        try {
+            const decodedToken = jwtDecode(token);
+            localStorage.setItem('token', token);
+            localStorage.setItem('email', decodedToken.sub);
+            localStorage.setItem('id', decodedToken.id);
+        } catch (error) {
+            console.error("Invalid token: ", error);
+            authService.logout();
+        }
     },
 
     login: async (credentials) => {
