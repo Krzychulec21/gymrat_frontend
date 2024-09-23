@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Box, Button, List, Typography } from '@mui/material';
-import {connectToChatRoom, sendMessage} from '../../service/chatService';
-import { getChatHistory } from "../../service/chatService";
+import { connectToChatRoom, sendMessage, getChatHistory } from '../../service/chatService';
 import CustomTextField from '../input/CustomTextField';
 import MessageItem from "./MessageItem";
+import websocketService from '../../service/websocketService';
 
 const ChatRoom = ({ currentUserId, friendId, chatRoomId }) => {
     const [messages, setMessages] = useState([]);
@@ -15,12 +15,24 @@ const ChatRoom = ({ currentUserId, friendId, chatRoomId }) => {
             const history = await getChatHistory(chatRoomId);
             setMessages(history);
         };
+
+        const handleNewMessage = (message) => {
+            setMessages((prevMessages) => {
+                const updatedMessages = [...prevMessages, message];
+                return updatedMessages;
+            });
+        };
+
+        if (!websocketService.connected) {
+            websocketService.connect();
+        }
+
         fetchChatHistory();
+        connectToChatRoom(chatRoomId, handleNewMessage);
 
-        connectToChatRoom(chatRoomId, (message) => {
-            setMessages((prevMessages) => [...prevMessages, message]);
-        });
-
+        return () => {
+            websocketService.unsubscribe(`/user/queue/chat/${chatRoomId}`);
+        };
     }, [chatRoomId]);
 
 
@@ -32,14 +44,13 @@ const ChatRoom = ({ currentUserId, friendId, chatRoomId }) => {
                 receiverId: friendId,
                 content: messageContent
             };
-            console.log("Sending message: ", message);
             sendMessage(chatRoomId, message);
             setMessageContent('');
         }
     };
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({behavior:"smooth"});
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
     useEffect(() => {
@@ -69,12 +80,12 @@ const ChatRoom = ({ currentUserId, friendId, chatRoomId }) => {
                 </List>
             </Box>
 
-            <Box sx={{ display: 'flex', gap: 2, padding: 2, position: 'sticky', bottom: 0}}>
+            <Box sx={{ display: 'flex', gap: 2, padding: 2, position: 'sticky', bottom: 0 }}>
                 <CustomTextField
                     fullWidth
                     value={messageContent}
                     onChange={(e) => setMessageContent(e.target.value)}
-                    onKeyPress = {handleKeyPress}
+                    onKeyPress={handleKeyPress}
                     placeholder="Wpisz wiadomość..."
                 />
                 <Button variant="contained" onClick={handleSendMessage}>Wyślij</Button>
