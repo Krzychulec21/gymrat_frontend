@@ -1,13 +1,13 @@
-// Navbar.js
+// src/components/Navbar.js
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Menu, MenuItem, Avatar, Box, Badge, List, ListItem, ListItemText } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Menu, MenuItem, Avatar, Box, Badge, List, ListItem, ListItemText} from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useAuth } from '../context/AuthContext';
-import { useNotifications } from '../context/NotificationContext';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import CustomButton from "./button/CustomButton";
+import {useNotifications} from "../context/NotificationContext";
 
 function Navbar() {
     const { isAuthenticated, logout } = useAuth();
@@ -32,7 +32,6 @@ function Navbar() {
 
     const handleNotificationsOpen = (event) => {
         setNotificationsAnchorEl(event.currentTarget);
-
     };
 
     const handleNotificationsClose = () => {
@@ -68,15 +67,26 @@ function Navbar() {
                                 horizontal: 'right',
                             }}
                         >
-                            <List>
+                            <List sx={{ width: '350px' }}>
                                 {notifications.length === 0 ? (
                                     <ListItem>
-                                        <ListItemText primary="Brak nowych powiadomień" />
+                                        <ListItemText primary="No new notifications" />
                                     </ListItem>
                                 ) : (
-                                    notifications.map((notification) => (
-                                        <ListItem key={notification.id}>
-                                            <ListItemText primary={notification.content} secondary={new Date(notification.timestamp).toLocaleString()} />
+                                    notifications.map((notification, index) => (
+                                        <ListItem key={index} divider>
+                                            <ListItemText
+                                                primary={
+                                                    notification.notificationType === 'MESSAGE' && notification.count > 1
+                                                        ? `You have ${notification.count} new messages from ${notification.senderName}`
+                                                        : notification.notificationType === 'MESSAGE'
+                                                            ? `You have a new message from ${notification.senderName}`
+                                                            : notification.senderEmail === null
+                                                                ? `System Notification: ${notification.content}`
+                                                                : notification.content
+                                                }
+                                                secondary={new Date(notification.timestamp).toLocaleString()}
+                                            />
                                         </ListItem>
                                     ))
                                 )}

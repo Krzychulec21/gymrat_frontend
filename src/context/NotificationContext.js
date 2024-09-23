@@ -1,33 +1,128 @@
-// NotificationsContext.js
-import React, {createContext, useContext, useEffect, useState} from 'react';
+// src/context/NotificationsContext.js
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import axiosInstance from '../utils/axiosInstance';
-import {connectToNotifications} from "../service/notificationService";
+import { connectToNotifications } from "../service/notificationService";
 
 const NotificationsContext = createContext();
 
 export const NotificationsProvider = ({ children }) => {
-    const [notifications, setNotifications] = useState([]);
+    const [aggregatedNotifications, setAggregatedNotifications] = useState([]);
 
     useEffect(() => {
-        // Pobierz nieodczytane powiadomienia
         axiosInstance.get('/notifications/unread')
             .then(response => {
-                setNotifications(response.data);
+                const aggregated = aggregateNotifications(response.data);
+                setAggregatedNotifications(aggregated);
             })
             .catch(error => {
                 console.error('Error fetching notifications:', error);
             });
 
-       connectToNotifications((notification) => {
-           setNotifications((prevNotifications) => [...prevNotifications, notification]);
-       });
+        connectToNotifications((notification) => {
+            setAggregatedNotifications((prevNotifications) => aggregateAndAddNotification(prevNotifications, notification));
+        });
     }, []);
 
+
+    const aggregateNotifications = (notificationsList) => {
+        const aggregated = [];
+
+        notificationsList.forEach(notification => {
+            if (notification.notificationType === 'MESSAGE') {
+                const existing = aggregated.find(n => n.senderEmail === notification.senderEmail && n.notificationType === 'MESSAGE');
+                if (existing) {
+                    existing.count += 1;
+                    existing.ids.push(notification.id);
+                    // Optionally update lastMessage and timestamp
+                    if (new Date(notification.timestamp) > new Date(existing.lastTimestamp)) {
+                        existing.lastMessage = notification.content;
+                        existing.lastTimestamp = notification.timestamp;
+                    }
+                } else {
+                    aggregated.push({
+                        id: notification.id, // For key purposes; not unique if multiple notifications
+                        content: notification.content,
+                        timestamp: notification.timestamp,
+                        notificationType: notification.notificationType,
+                        isRead: notification.isRead,
+                        senderName: notification.senderName,
+                        senderEmail: notification.senderEmail,
+                        count: 1,
+                        ids: [notification.id],
+                    });
+                }
+            } else {
+                // Non-Message type notifications are added as-is
+                aggregated.push({
+                    id: notification.id,
+                    content: notification.content,
+                    timestamp: notification.timestamp,
+                    notificationType: notification.notificationType,
+                    isRead: notification.isRead,
+                    senderName: notification.senderName,
+                    senderEmail: notification.senderEmail,
+                    count: 1, // Single notification
+                    ids: [notification.id],
+                });
+            }
+        });
+
+        return aggregated;
+    };
+
+
+    const aggregateAndAddNotification = (currentNotifications, newNotification) => {
+        if (newNotification.notificationType === 'MESSAGE') {
+            const existing = currentNotifications.find(n => n.senderEmail === newNotification.senderEmail && n.notificationType === 'MESSAGE');
+            if (existing) {
+                return currentNotifications.map(n => {
+                    if (n.senderEmail === newNotification.senderEmail && n.notificationType === 'MESSAGE') {
+                        return {
+                            ...n,
+                            count: n.count + 1,
+                            lastMessage: newNotification.content,
+                            lastTimestamp: newNotification.timestamp,
+                            ids: [...n.ids, newNotification.id],
+                        };
+                    }
+                    return n;
+                });
+            } else {
+                return [...currentNotifications, {
+                    id: newNotification.id,
+                    content: newNotification.content,
+                    timestamp: newNotification.timestamp,
+                    notificationType: newNotification.notificationType,
+                    isRead: newNotification.isRead,
+                    senderName: newNotification.senderName,
+                    senderEmail: newNotification.senderEmail,
+                    count: 1,
+                    ids: [newNotification.id],
+                }];
+            }
+        } else {
+            // Non-Message type notifications are added as-is
+            return [...currentNotifications, {
+                id: newNotification.id,
+                content: newNotification.content,
+                timestamp: newNotification.timestamp,
+                notificationType: newNotification.notificationType,
+                isRead: newNotification.isRead,
+                senderName: newNotification.senderName,
+                senderEmail: newNotification.senderEmail,
+                count: 1,
+                ids: [newNotification.id],
+            }];
+        }
+    };
+
+
     const markNotificationsAsRead = () => {
-        const ids = notifications.map(n => n.id);
+        // Collect all IDs from aggregated notifications
+        const ids = aggregatedNotifications.flatMap(n => n.ids);
         axiosInstance.post('/notifications/read', ids)
             .then(() => {
-                setNotifications([]);
+                setAggregatedNotifications([]);
             })
             .catch(error => {
                 console.error('Error marking notifications as read:', error);
@@ -35,7 +130,7 @@ export const NotificationsProvider = ({ children }) => {
     };
 
     return (
-        <NotificationsContext.Provider value={{ notifications, markNotificationsAsRead }}>
+        <NotificationsContext.Provider value={{ notifications: aggregatedNotifications, markNotificationsAsRead }}>
             {children}
         </NotificationsContext.Provider>
     );
