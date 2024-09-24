@@ -4,13 +4,16 @@ import { connectToChatRoom, sendMessage, getChatHistory } from '../../service/ch
 import CustomTextField from '../input/CustomTextField';
 import MessageItem from "./MessageItem";
 import websocketService from '../../service/websocketService';
+import {useAuth} from "../../context/AuthContext";
 
 const ChatRoom = ({ currentUserId, friendId, chatRoomId }) => {
     const [messages, setMessages] = useState([]);
     const [messageContent, setMessageContent] = useState("");
     const messagesEndRef = useRef(null);
+    const { isAuthenticated } = useAuth();
 
     useEffect(() => {
+        if (!isAuthenticated) return;
         const fetchChatHistory = async () => {
             const history = await getChatHistory(chatRoomId);
             setMessages(history);
@@ -33,7 +36,7 @@ const ChatRoom = ({ currentUserId, friendId, chatRoomId }) => {
         return () => {
             websocketService.unsubscribe(`/user/queue/chat/${chatRoomId}`);
         };
-    }, [chatRoomId]);
+    }, [isAuthenticated, chatRoomId]);
 
 
     const handleSendMessage = () => {

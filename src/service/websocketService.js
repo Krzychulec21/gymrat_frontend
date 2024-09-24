@@ -11,12 +11,17 @@ class WebsocketService {
     }
 
     connect() {
+        const token = encodeURIComponent(authService.getToken());
+        if(!token || token === "null") {
+            console.warn("No token found");
+            return;
+        }
+
         if (this.stompClient && this.stompClient.connected) {
             console.log("WebSocket is already connected");
             return;
         }
 
-        const token = encodeURIComponent(authService.getToken());
         const wsUrl = `ws://localhost:8080/ws?token=${token}`;
 
         this.stompClient = new Client({

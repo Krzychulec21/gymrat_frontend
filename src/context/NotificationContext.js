@@ -2,13 +2,18 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import axiosInstance from '../utils/axiosInstance';
 import { connectToNotifications } from "../service/notificationService";
+import {useAuth} from "./AuthContext";
+import websocketService from "../service/websocketService";
 
 const NotificationsContext = createContext();
 
 export const NotificationsProvider = ({ children }) => {
     const [aggregatedNotifications, setAggregatedNotifications] = useState([]);
+    const { isAuthenticated } = useAuth();
 
     useEffect(() => {
+        if (!isAuthenticated) return; // Only proceed if authenticated
+
         axiosInstance.get('/notifications/unread')
             .then(response => {
                 const aggregated = aggregateNotifications(response.data);
@@ -21,7 +26,12 @@ export const NotificationsProvider = ({ children }) => {
         connectToNotifications((notification) => {
             setAggregatedNotifications((prevNotifications) => aggregateAndAddNotification(prevNotifications, notification));
         });
-    }, []);
+
+        return () => {
+            websocketService.unsubscribe('/user/queue/notifications');
+        };
+    }, [isAuthenticated]);
+
 
 
     const aggregateNotifications = (notificationsList) => {

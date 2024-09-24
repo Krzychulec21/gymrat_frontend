@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const token = authService.getToken();
-        if (token) {
+        if (token !== null) {
             try {
                 const decodedToken = jwtDecode(token);
                 const expirationTime = decodedToken.exp * 1000;
@@ -19,11 +19,11 @@ export const AuthProvider = ({ children }) => {
 
                 if (expirationTime < currentTime) {
                     authService.logout();
-                    setIsAuthenticated(false);
-                    window.location.href = '/auth';
                 }
                 else {
                     setIsAuthenticated(true);
+                    webSocketService.connect(token);
+
                     if (logoutTimeRef.current) {
                         clearTimeout(logoutTimeRef.current);
                     }
@@ -33,13 +33,10 @@ export const AuthProvider = ({ children }) => {
                             logout();
                         }, timeout);
                     }
-                    webSocketService.connect(token);
                 }
             } catch (error) {
                 console.error(error);
-                authService.logout();
-                setIsAuthenticated(false);
-                window.location.href = '/auth';
+                logout();
             }
         }
     }, []);

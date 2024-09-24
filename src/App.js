@@ -1,13 +1,12 @@
-import React, {useEffect} from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import React from 'react';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import {AuthProvider} from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import AuthPage from './pages/AuthPage';
 import OAuth2RedirectHandler from './components/OAuth2RedirectHandler';
 import FriendPage from "./pages/FriendPage";
-import { NotificationsProvider } from './context/NotificationContext';
-import webSocketService from "./service/websocketService";
+import {NotificationsProvider} from './context/NotificationContext';
 
 function App() {
     return (
