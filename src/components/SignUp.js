@@ -3,9 +3,9 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import authService from '../service/authService';
 import Box from '@mui/material/Box';
-import CustomButton from '../components/button/CustomButton';
-import CustomTextField from '../components/input/CustomTextField';
-import GoogleLogin from "../components/button/GoogleLoginButton";
+import CustomButton from './button/CustomButton';
+import CustomTextField from './input/CustomTextField';
+import GoogleLogin from "./button/GoogleLoginButton";
 
 
 function SignUp() {

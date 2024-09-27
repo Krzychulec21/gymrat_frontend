@@ -1,20 +1,24 @@
 import React, {useState} from 'react';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
+import SignIn from '../components/SignIn';
+import SignUp from '../components/SignUp';
 import {Box, Button} from '@mui/material';
 import logo from '../assets/logo.svg';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import CustomButton from "../components/button/CustomButton";
 
 function AuthPage() {
     const [isSignUp, setIsSignUp] = useState(false);
-
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate('/');
+    }
     return (
         <Box sx={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             mt:3,
-            mb:2
+            mb:12
         }}>
             <Link to="/" style={{textDecoration: 'none'}}>
                 <img src={logo} alt="App Logo" style={{width: '8vw', marginBottom: '20px'}}/>
@@ -52,6 +56,13 @@ function AuthPage() {
                 </Button>
             </Box>
             {isSignUp ? <SignUp/> : <SignIn/>}
+            <CustomButton variant="contained" onClick={handleClick} sx={{
+                backgroundColor: 'inherit',
+                border: '2px solid red',
+                mt:2,
+                ml:3,
+                alignSelf: 'flex-start'
+            }}>Wróc do strony głównej</CustomButton>
         </Box>
     );
 }
