@@ -16,7 +16,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
     },
 
     [theme.breakpoints.up('md')]: {
-        fontSize: theme.typography.pxToRem(18),
+        fontSize: theme.typography.pxToRem(14),
         padding: theme.spacing(1, 2),
     },
 
