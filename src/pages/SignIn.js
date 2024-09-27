@@ -29,7 +29,14 @@ function SignIn() {
     });
 
     return (
-        <Box component="form" onSubmit={formik.handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '25%', margin: "0 auto", alignItems: 'center'}}>
+        <Box component="form" onSubmit={formik.handleSubmit} sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2, width: '25%',
+            margin: "0 auto",
+            alignItems: 'center',
+
+        }}>
             <TextField
                 fullWidth
                 label="Email"

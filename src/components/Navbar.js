@@ -1,13 +1,14 @@
-// src/components/Navbar.js
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Menu, MenuItem, Avatar, Box, Badge, List, ListItem, ListItemText} from '@mui/material';
+import { AppBar, Toolbar, IconButton, Menu, MenuItem, Avatar, Box, Badge, List, ListItem, ListItemText, Button } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { Link as ScrollLink } from 'react-scroll';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import CustomButton from "./button/CustomButton";
-import {useNotifications} from "../context/NotificationContext";
+import { useNotifications } from "../context/NotificationContext";
 
 function Navbar() {
     const { isAuthenticated, logout } = useAuth();
@@ -15,6 +16,10 @@ function Navbar() {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
+    const [mobileMenuAnchorEl, setMobileMenuAnchorEl] = useState(null);
+
+    // eslint-disable-next-line no-restricted-globals
+    const isHomePage = location.pathname === '/';
 
     const handleMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -22,12 +27,6 @@ function Navbar() {
 
     const handleMenuClose = () => {
         setAnchorEl(null);
-    };
-
-    const handleLogout = () => {
-        logout();
-        navigate('/'); // Redirect to home page
-        handleMenuClose();
     };
 
     const handleNotificationsOpen = (event) => {
@@ -39,15 +38,159 @@ function Navbar() {
         markNotificationsAsRead();
     };
 
+    const handleMobileMenuOpen = (event) => {
+        setMobileMenuAnchorEl(event.currentTarget);
+    };
+
+    const handleMobileMenuClose = () => {
+        setMobileMenuAnchorEl(null);
+    };
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+        handleMenuClose();
+    };
+
     return (
-        <AppBar position="static" sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
-            <Toolbar sx={{ alignItems: 'center' }}>
-                <Box sx={{ flexGrow: 1, marginTop: '10px' }}>
+        <AppBar position="absolute" sx={{ backgroundColor: 'inherit', boxShadow: 'none' }}>
+            <Toolbar
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingLeft: { xs: 1, md: 2 },
+                    paddingRight: { xs: 1, md: 2 },
+                }}
+            >
+                {/* Ikona Menu dla urządzeń mobilnych */}
+                {(!isAuthenticated && isHomePage) && (
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        onClick={handleMobileMenuOpen}
+                        sx={{
+                            display: { xs: 'flex', md: 'none' }
+                        }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                )}
+
+                {/* Logo */}
+                <Box
+                    sx={{
+                        flexGrow: 1,
+                        display: 'flex',
+                        justifyContent: {
+                            md:'left',xs:'center'
+                        },
+                    }}
+                >
                     <Link to="/">
-                        <img src={logo} alt="App Logo" style={{ width: '5vw' }} />
+                        <Box
+                            component="img"
+                            src={logo}
+                            alt="App Logo"
+                            sx={{
+                                width: { xs: '20vw', md: '8vw' },
+                                cursor: 'pointer',
+                                marginTop: '1vh',
+                            }}
+                        />
                     </Link>
                 </Box>
-                {isAuthenticated ? (
+
+                {/* Przycisk "Join Us" */}
+                {!isAuthenticated && (
+                    <CustomButton
+                        variant="contained"
+                        color="primary"
+                        onClick={() => navigate('/auth')}
+                        sx={{
+                            display: { xs: 'flex', md: 'flex' },
+                            fontSize: { xs: '0.75rem', md: '1rem' },
+                        }}
+                    >
+                        Join Us
+                    </CustomButton>
+                )}
+
+                {/* Ikony dla zalogowanych użytkowników */}
+                {isAuthenticated && (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <IconButton color="inherit" onClick={handleNotificationsOpen}>
+                            <Badge badgeContent={notifications.length} color="error">
+                                <NotificationsIcon />
+                            </Badge>
+                        </IconButton>
+                        <IconButton
+                            edge="end"
+                            color="inherit"
+                            onClick={handleMenuOpen}
+                        >
+                            <Avatar alt="Profile Picture" />
+                        </IconButton>
+                    </Box>
+                )}
+
+                {/* Menu z linkami dla większych ekranów */}
+                {(!isAuthenticated && isHomePage) && (
+                    <Box
+                        sx={{
+                            display: { xs: 'none', md: 'flex' },
+                            gap:4,
+                            position: 'absolute',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+
+                        }}
+                    >
+                        <ScrollLink to="home" smooth duration={500}>
+                            <Button color="inherit" sx={{ fontSize: '1.2rem' }}>Home</Button>
+                        </ScrollLink>
+                        <ScrollLink to="plans" smooth duration={500}>
+                            <Button color="inherit" sx={{ fontSize: '1.2rem' }}>Plans</Button>
+                        </ScrollLink>
+                        <ScrollLink to="community" smooth duration={500}>
+                            <Button color="inherit" sx={{ fontSize: '1.2rem' }}>Community</Button>
+                        </ScrollLink>
+                        <ScrollLink to="stats" smooth duration={500}>
+                            <Button color="inherit" sx={{ fontSize: '1.2rem' }}>Stats</Button>
+                        </ScrollLink>
+                        <ScrollLink to="challenges" smooth duration={500}>
+                            <Button color="inherit" sx={{ fontSize: '1.2rem' }}>Challenges</Button>
+                        </ScrollLink>
+                    </Box>
+                )}
+
+                {/* Mobile Menu */}
+                <Menu
+                    anchorEl={mobileMenuAnchorEl}
+                    open={Boolean(mobileMenuAnchorEl)}
+                    onClose={handleMobileMenuClose}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+                >
+                    <MenuItem onClick={handleMobileMenuClose}>
+                        <ScrollLink to="home" smooth duration={500}>Home</ScrollLink>
+                    </MenuItem>
+                    <MenuItem onClick={handleMobileMenuClose}>
+                        <ScrollLink to="plans" smooth duration={500}>Plans</ScrollLink>
+                    </MenuItem>
+                    <MenuItem onClick={handleMobileMenuClose}>
+                        <ScrollLink to="community" smooth duration={500}>Community</ScrollLink>
+                    </MenuItem>
+                    <MenuItem onClick={handleMobileMenuClose}>
+                        <ScrollLink to="stats" smooth duration={500}>Stats</ScrollLink>
+                    </MenuItem>
+                    <MenuItem onClick={handleMobileMenuClose}>
+                        <ScrollLink to="challenges" smooth duration={500}>Challenges</ScrollLink>
+                    </MenuItem>
+                </Menu>
+                {/* User Actions */}
+                {isAuthenticated && (
                     <>
                         <IconButton color="inherit" onClick={handleNotificationsOpen}>
                             <Badge badgeContent={notifications.length} color="error">
@@ -116,15 +259,6 @@ function Navbar() {
                             <MenuItem onClick={handleLogout}>Logout</MenuItem>
                         </Menu>
                     </>
-                ) : (
-                    <CustomButton
-                        variant="contained"
-                        color="primary"
-                        onClick={() => navigate('/auth')}
-                        sx={{ marginLeft: 'auto' }}
-                    >
-                        Join Us
-                    </CustomButton>
                 )}
             </Toolbar>
         </AppBar>
