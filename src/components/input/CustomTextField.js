@@ -28,6 +28,7 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
             caretColor: 'white',
             borderColor: 'white',
     },
+    minWidth: '200px'
 }));
 
 export default function StyledTextField(props) {

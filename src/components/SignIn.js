@@ -37,7 +37,7 @@ function SignIn() {
             alignItems: 'center',
 
         }}>
-            <TextField
+            <CustomTextField
                 fullWidth
                 label="Email"
                 name="email"
@@ -48,34 +48,6 @@ function SignIn() {
                 value={formik.values.email}
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
-                sx={{
-                    '& .MuiOutlinedInput-root': {
-                        '& fieldset': {
-                            borderColor: 'white',
-                        },
-                        '&:hover fieldset': {
-                            borderColor: 'white',
-                        },
-                        '&.Mui-focused fieldset': {
-                            borderColor: 'white',
-                        },
-                    },
-                    '& .MuiInputBase-input': {
-                        color: 'white',
-                    },
-                    '& .MuiFormLabel-root': {
-                        color: 'white',
-                    },
-                    '& .MuiFormLabel-root.Mui-focused': {
-                        color: 'white',
-                    },
-                    '& input:-webkit-autofill': {
-                        WebkitBoxShadow: '0 0 0 1000px black inset',
-                        WebkitTextFillColor: 'white',
-                        caretColor: 'white',
-                        borderColor: 'white',
-                    },
-                }}
             />
 
             <CustomTextField
