@@ -1,26 +1,25 @@
 import React, {useState} from 'react';
 import {
     AppBar,
-    Toolbar,
+    Avatar,
+    Badge,
+    Box,
     IconButton,
+    List,
+    ListItem,
+    ListItemText,
     Menu,
     MenuItem,
-    Avatar,
-    Box,
-    Badge,
-    Button,
-    ListItemText,
-    ListItem, List
+    Toolbar
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import {useAuth} from '../context/AuthContext';
-import {useNavigate} from 'react-router-dom';
-import {Link as ScrollLink} from 'react-scroll';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import CustomButton from "./button/CustomButton";
 import {useNotifications} from "../context/NotificationContext";
+import MenuItemComponent from "./MenuItemComponent";
 
 function Navbar() {
     const {isAuthenticated, logout} = useAuth();
@@ -60,6 +59,20 @@ function Navbar() {
         navigate('/');
         handleMenuClose();
     };
+
+    const nonAuthMenuItems = [
+        {label: 'Home', to: 'home', type: 'scroll'},
+        {label: 'Plans', to: 'plans', type: 'scroll'},
+        {label: 'Community', to: 'community', type: 'scroll'},
+        {label: 'Stats', to: 'stats', type: 'scroll'},
+        {label: 'Challenges', to: 'challenges', type: 'scroll'},
+    ];
+
+    const authMenuItems = [
+        {label: 'Friends', to: '/friends', type: 'navigate'},
+        {label: 'Plans', to: '/plans', type: 'navigate'},
+        {label: 'Challenges', to: '/challenges', type: 'navigate'},
+    ];
 
     return (
         <AppBar position='absolute' sx={{backgroundColor: 'inherit', boxShadow: 'none'}}>
@@ -130,47 +143,28 @@ function Navbar() {
                                 transform: 'translateX(-50%)',
                             }}
                         >
-                            <ScrollLink to="home" smooth duration={500}>
-                                <Button color="inherit" sx={{fontSize: '1.2rem'}}>Home</Button>
-                            </ScrollLink>
-                            <ScrollLink to="plans" smooth duration={500}>
-                                <Button color="inherit" sx={{fontSize: '1.2rem'}}>Plans</Button>
-                            </ScrollLink>
-                            <ScrollLink to="community" smooth duration={500}>
-                                <Button color="inherit" sx={{fontSize: '1.2rem'}}>Community</Button>
-                            </ScrollLink>
-                            <ScrollLink to="stats" smooth duration={500}>
-                                <Button color="inherit" sx={{fontSize: '1.2rem'}}>Stats</Button>
-                            </ScrollLink>
-                            <ScrollLink to="challenges" smooth duration={500}>
-                                <Button color="inherit" sx={{fontSize: '1.2rem'}}>Challenges</Button>
-                            </ScrollLink>
+                            {nonAuthMenuItems.map((item) => (
+                                <MenuItemComponent item={item} isMobile={false} key={item.label}/>
+                            ))}
                         </Box>
                     </>
                 )}
 
                 {isAuthenticated && (
-                    <Box sx={{
-                        display: {xs: 'none', md: 'flex'},
-                        gap: 4,
-                        alignItems: 'center',
-                        position: 'absolute',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                    }}>
-                        <Button color='inherit' sx={{fontSize: '1.2rem'}} onClick={() => navigate('/friends')}>
-                            Friends
-                        </Button><Button color='inherit' sx={{fontSize: '1.2rem'}} onClick={() => navigate('/friends')}>
-                        Plans
-                    </Button><Button color='inherit' sx={{fontSize: '1.2rem'}} onClick={() => navigate('/friends')}>
-                        Challenges
-                    </Button>
-                    </Box>
-                )}
-
-                {/* Authenticated Menu Items */}
-                {isAuthenticated && (
                     <>
+                        <Box sx={{
+                            display: {xs: 'none', md: 'flex'},
+                            gap: 4,
+                            alignItems: 'center',
+                            position: 'absolute',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                        }}
+                        >
+                            {authMenuItems.map((item) => (
+                                <MenuItemComponent item={item} isMobile={false} key={item.label} />
+                            ))}
+                        </Box>
                         <IconButton color="inherit" onClick={handleNotificationsOpen}>
                             <Badge badgeContent={notifications.length} color="error">
                                 <NotificationsIcon/>
@@ -243,51 +237,22 @@ function Navbar() {
                     </>
                 )}
 
-                {/* Mobile Menu */}
+                {/*Mobile menu*/}
                 <Menu
                     anchorEl={mobileMenuAnchorEl}
                     open={Boolean(mobileMenuAnchorEl)}
                     onClose={handleMobileMenuClose}
-                    anchorOrigin={{vertical: 'top', horizontal: 'left'}}
-                    transformOrigin={{vertical: 'top', horizontal: 'left'}}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'left' }}
                 >
-                    {!isAuthenticated ? (
-                        <>
-                            <MenuItem onClick={handleMobileMenuClose}>
-                                <ScrollLink to="home" smooth duration={500}>Home</ScrollLink>
-                            </MenuItem>
-                            <MenuItem onClick={handleMobileMenuClose}>
-                                <ScrollLink to="plans" smooth duration={500}>Plans</ScrollLink>
-                            </MenuItem>
-                            <MenuItem onClick={handleMobileMenuClose}>
-                                <ScrollLink to="community" smooth duration={500}>Community</ScrollLink>
-                            </MenuItem>
-                            <MenuItem onClick={handleMobileMenuClose}>
-                                <ScrollLink to="stats" smooth duration={500}>Stats</ScrollLink>
-                            </MenuItem>
-                            <MenuItem onClick={handleMobileMenuClose}>
-                                <ScrollLink to="challenges" smooth duration={500}>Challenges</ScrollLink>
-                            </MenuItem>
-                        </>
-                    ) : (
-                        <>
-                        <MenuItem
-                            onClick={() => {
-                                navigate('/friends');
-                                handleMenuClose();
-                            }}>Friends</MenuItem>
-
-                        <MenuItem onClick={() => {
-                            navigate('/friends');
-                            handleMenuClose();
-                        }}>Plans</MenuItem>
-
-                        <MenuItem onClick={() => {
-                            navigate('/friends');
-                            handleMenuClose();
-                        }}>Challenges</MenuItem>
-                        </>
-                    )}
+                    {(isAuthenticated ? authMenuItems : nonAuthMenuItems).map((item) => (
+                        <MenuItemComponent
+                            item={item}
+                            isMobile={true}
+                            handleClose={handleMobileMenuClose}
+                            key={item.label}
+                        />
+                    ))}
                 </Menu>
             </Toolbar>
         </AppBar>

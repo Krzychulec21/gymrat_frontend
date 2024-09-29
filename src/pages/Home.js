@@ -14,6 +14,21 @@ function Home() {
     const {isAuthenticated} = useAuth();
     const navigate = useNavigate();
 
+    const homeContent = [
+        {id: 'plans', title: 'Plans', content: 'Discover tailor-made workout plans designed to fit your individual' +
+                ' fitness goals. Whether you aim to build muscle, lose weight, or improve endurance, our comprehensive plans will guide you every step of the way.', image: images.plans, reverse: false},
+        {id: 'community', title: 'Community', content: 'Discover tailor-made workout plans designed to fit your' +
+                ' individual fitness goals. Whether you aim to build muscle, lose weight, or improve endurance, our' +
+                ' comprehensive plans will guide you every step of the way.', image: images.social, reverse: true},
+        {id: 'stats', title: 'Stats', content: 'Discover tailor-made workout plans designed to fit your individual' +
+                ' fitness goals. Whether you aim to build muscle, lose weight, or improve endurance, our' +
+                ' comprehensive plans will guide you every step of the way.', image: images.stats, reverse: false},
+        {id: 'challenges', title: 'Challenges', content: 'Discover tailor-made workout plans designed to fit your' +
+                ' individual fitness goals. Whether you aim to build muscle, lose weight, or improve endurance, our' +
+                ' comprehensive plans will guide you every step of the way.', image: images.challenges, reverse: true},
+    ];
+
+
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -99,50 +114,21 @@ function Home() {
                 </Container>
             </Box>
 
-
-            <Box id="plans">
-                <FeatureSection
-                id="plans"
-                title="Plans"
-                description="Discover tailor-made workout plans designed to fit your individual fitness goals.
-                Whether you aim to build muscle, lose weight, or improve endurance, our comprehensive plans will guide you every step of the way."
-                image={images.plans}
-                reverse={false}
-            />
-            </Box>
-
-            <Box id="community">
-                <FeatureSection
-                    id="community"
-                    title="Community"
-                    description="Connect with like-minded fitness enthusiasts, share your progress, get advice, and find motivation from our supportive community. Engage in discussions, join groups, and stay inspired on your fitness journey."
-                    image={images.social}
-                    reverse={true}
-                />
-            </Box>
-
-            <Box id="stats">
-                <FeatureSection
-                    id="stats"
-                    title="Stats"
-                    description="Monitor your workout progress with detailed statistics and visual graphs. Analyze your performance, track your gains, and stay motivated by seeing how far you've come."
-                    image={images.stats}
-                    reverse={false}
-                />
-            </Box>
-
-            <Box id="challenges">
-                <FeatureSection
-                id="challenges"
-                title="Challenges"
-                description="Push your limits and join exciting fitness challenges. Compete with others, earn badges, and rise up the leaderboard. Whether you are a beginner or a seasoned athlete, there's a challenge for everyone."
-                image={images.challenges}
-                reverse={true}
-            />
-            </Box>
-
+            {!isAuthenticated && (
+                <>
+                    {homeContent.map((item) => (
+                        <Box id={item.id}>
+                            <FeatureSection
+                                title={item.title}
+                                description={item.content}
+                                image={item.image}
+                                reverse={item.reverse}
+                            />
+                        </Box>
+                    ))}
+            </>
+            )}
         </>
-
     );
 }
 
