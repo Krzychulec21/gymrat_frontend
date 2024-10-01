@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { List, ListItem, ListItemText, Avatar } from '@mui/material';
-import CustomButton from "../button/CustomButton";
+import React, {useEffect, useState} from 'react';
+import {List, ListItem} from '@mui/material';
 import CustomTextField from "../input/CustomTextField";
-// Główna funkcja komponentu
+
 const CustomListWithSearch = ({
     data,
     label,

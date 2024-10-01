@@ -1,48 +1,45 @@
-import React, {useEffect, useState} from 'react';
-import {Box, Typography} from '@mui/material';
+// FriendsPage.js
+
+import React, { useEffect, useState } from 'react';
+import { Box } from '@mui/material';
+import Sidebar from '../components/Sidebar';
 import FriendsList from '../components/friends/FriendsList';
 import PendingRequestsList from '../components/friends/PendingRequestsList';
 import SendFriendRequestForm from '../components/friends/SendFriendRequestForm';
-import ChatRoom from '../components/chat/ChatRoom'; // Komponent czatu
+import ChatRoom from '../components/chat/ChatRoom';
 import {
     getFriends,
     getPendingRequests,
     removeFriend,
     respondToFriendRequest,
-    sendFriendRequest
+    sendFriendRequest,
 } from '../service/friendService';
-import CustomButton from '../components/button/CustomButton';
-import {getChatRoomId} from "../service/chatService";
+import { getChatRoomId } from '../service/chatService';
+import {useMediaQuery, useTheme} from "@mui/system";
+import Button from "@mui/material/Button";
 
 const FriendsPage = () => {
-    const [selectedTab, setSelectedTab] = useState('friends');  // Zakładki
+    const [selectedTab, setSelectedTab] = useState('friends');
     const [friends, setFriends] = useState([]);
     const [pendingRequests, setPendingRequests] = useState([]);
-    const [selectedFriendId, setSelectedFriendId] = useState(null);  // Wybrany znajomy do czatu
-    const [chatRoomId, setChatRoomId] = useState(null);  // ID pokoju czatu
-    // const [currentUserId, setCurrentUserId] = useState(null);  // Aktualny zalogowany użytkownik
-    //
-    //
-    // // Pobranie ID aktualnego użytkownika po załadowaniu komponentu
-    // useEffect(() => {
-    //     const fetchCurrentUserId = async () => {
-    //         const userId = await getCurrentUserId();
-    //         setCurrentUserId(userId);
-    //     };
-    //
-    //     fetchCurrentUserId();
-    // }, []);
+    const [selectedFriendId, setSelectedFriendId] = useState(null);
+    const [selectedFriendName, setSelectedFriendName] = useState('');
+    const [chatRoomId, setChatRoomId] = useState(null);
+    const currentUserId = localStorage.getItem('id');
 
-    const currentUserId = localStorage.getItem("id");
+    const theme = useTheme();
+    const isMdUp = useMediaQuery(theme.breakpoints.up('md'));
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
 
     useEffect(() => {
         loadFriends();
         loadPendingRequests();
-    }, [selectedTab]);
+    }, []);
 
     const loadFriends = async () => {
-        const friends = await getFriends();
-        setFriends(friends);
+        const friendsData = await getFriends();
+        setFriends(friendsData);
     };
 
     const loadPendingRequests = async () => {
@@ -71,73 +68,92 @@ const FriendsPage = () => {
         loadFriends();
     };
 
-    const startChatWithFriend = async (friendId) => {
-        console.log("obecnie id kolejno user i zanjomy: "+  currentUserId +"  "+ friendId);
-
+    const startChatWithFriend = async (friendId, firstName, lastName) => {
         const roomId = await getChatRoomId(currentUserId, friendId);
-        console.log("id pokoju: "+ roomId);
         setSelectedFriendId(friendId);
         setChatRoomId(roomId);
+        setSelectedFriendName(firstName + ' '+ lastName);
+        console.log("wybrane friendName", friendId);
         setSelectedTab('chat');
     };
+
 
     const renderContent = () => {
         switch (selectedTab) {
             case 'friends':
-                return <FriendsList friends={friends} onRemoveFriend={handleRemoveFriend} onChatStart={startChatWithFriend} />;
+                return (
+                    <FriendsList
+                        friends={friends}
+                        onRemoveFriend={handleRemoveFriend}
+                        onChatStart={startChatWithFriend}
+                    />
+                );
             case 'pending':
-                return <PendingRequestsList requests={pendingRequests} onAccept={handleAcceptRequest} onReject={handleRejectRequest} />;
+                return (
+                    <PendingRequestsList
+                        requests={pendingRequests}
+                        onAccept={handleAcceptRequest}
+                        onReject={handleRejectRequest}
+                    />
+                );
             case 'add':
                 return <SendFriendRequestForm onSendRequest={handleSendRequest} />;
             case 'chat':
-                return <ChatRoom currentUserId={currentUserId} friendId={selectedFriendId} chatRoomId={chatRoomId} />;  // Przekazuje ID użytkowników i chatRoomId
+                return (
+                    <ChatRoom
+                        currentUserId={currentUserId}
+                        friendId={selectedFriendId}
+                        chatRoomId={chatRoomId}
+                        friendName={selectedFriendName}
+                    />
+                );
             default:
                 return null;
         }
     };
 
     return (
-        <Box sx={{ width: '60%', height: '80vh', border: '2px solid red', display: 'flex', margin: 'auto', backgroundColor: 'transparent' }}>
+        <Box
+            sx={{
+                width: '90%',
+                height: '90%',
+                margin: 'auto',
+                display: 'flex',
+                flexDirection: { xs: 'column', md: 'row' },
+                border: '1px solid #ccc',
+                mb: '10px',
 
-            <Box sx={{ width: '20%', borderRight: '2px solid red', padding: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <Typography variant="h6" gutterBottom>Znajomi</Typography>
+            }}
+        >
+            {!isMdUp && (
+                <Button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                    {isSidebarOpen ? 'Hide Menu' : 'Show Menu'}
+                </Button>
+            )}
 
-                <CustomButton
-                    onClick={() => setSelectedTab('friends')}
-                    variant="contained"
-                    sx={{
-                        width: '100%',
-                        backgroundColor: selectedTab === 'friends' ? 'darkgray' : 'gray',
-                        '&:hover': { backgroundColor: 'darkgray' }
-                    }}>
-                    Znajomi {friends.length}
-                </CustomButton>
+            {/* Sidebar */}
+            {(isSidebarOpen || isMdUp) && (
+                <Sidebar
+                    selectedTab={selectedTab}
+                    setSelectedTab={setSelectedTab}
+                    friendsCount={friends.length}
+                    pendingCount={pendingRequests.length}
+                />
+            )}
 
-                <CustomButton
-                    onClick={() => setSelectedTab('pending')}
-                    variant="contained"
-                    sx={{
-                        width: '100%',
-                        backgroundColor: selectedTab === 'pending' ? 'darkgray' : 'gray',
-                        '&:hover': { backgroundColor: 'darkgray' }
-                    }}>
-                    Oczekujące {pendingRequests.length}
-                </CustomButton>
-
-                <CustomButton
-                    onClick={() => setSelectedTab('add')}
-                    variant="contained"
-                    sx={{ width: '100%', '&:hover': { backgroundColor: 'darkgray' } }}>
-                    Dodaj znajomego
-                </CustomButton>
-            </Box>
-
-
-            <Box sx={{ width: '80%', padding: 3 }}>
+            {/* Main xontent */}
+            <Box
+                sx={{
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+            >
                 {renderContent()}
             </Box>
         </Box>
     );
+
 };
 
 export default FriendsPage;

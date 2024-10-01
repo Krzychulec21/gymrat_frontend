@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
         if (logoutTimeRef.current) {
             clearTimeout(logoutTimeRef.current);
         }
-        window.location.href = '/auth';
+        window.location.href = '/';
     };
 
     return (

@@ -1,27 +1,28 @@
+// MessageItem.js
+
 import React from 'react';
 import { ListItem, ListItemText, Box } from '@mui/material';
 
 const MessageItem = ({ message, currentUserId }) => {
-    const isCurrentUser = String(message.senderId) === String(currentUserId); // Sprawdź, czy to wiadomość aktualnie zalogowanego użytkownika
+    const isCurrentUser = String(message.senderId) === String(currentUserId);
     return (
         <ListItem
             sx={{
-                justifyContent: isCurrentUser ? 'flex-end' : 'flex-start', // Wyrównanie wiadomości
-                display: 'flex'
+                justifyContent: isCurrentUser ? 'flex-end' : 'flex-start',
+                display: 'flex',
             }}
         >
             <Box
                 sx={{
-                    backgroundColor: isCurrentUser ? '#333232' : '#483434', // Kolor tła dla wiadomości
+                    backgroundColor: isCurrentUser ? '#100f0f' : 'rgba(70,40,20,0.94)',
                     padding: '10px',
                     borderRadius: '10px',
                     maxWidth: '60%',
-                    textAlign: isCurrentUser ? 'right' : 'left' // Tekst wiadomości wyrównany odpowiednio
+                    textAlign: isCurrentUser ? 'right' : 'left',
+                    wordBreak: 'break-word',
                 }}
             >
-                <ListItemText
-                    primary={message.content}
-                />
+                <ListItemText primary={message.content} />
             </Box>
         </ListItem>
     );

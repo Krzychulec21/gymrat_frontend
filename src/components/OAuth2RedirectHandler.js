@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useEffect, useRef} from 'react';
+import {useNavigate} from 'react-router-dom';
 import authService from '../service/authService';
 
 const OAuth2RedirectHandler = () => {

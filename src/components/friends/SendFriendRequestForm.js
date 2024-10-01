@@ -13,7 +13,7 @@ const SendFriendRequestForm = () => {
 
     const fetchUsersWithStatus = async () => {
         try {
-            const usersList  = await getUsersWithRequestStatus();
+            const usersList = await getUsersWithRequestStatus();
             setUsers(usersList);
         } catch (error) {
             console.error('Błąd podczas pobierania użytkowników:', error);
@@ -34,8 +34,7 @@ const SendFriendRequestForm = () => {
         } catch (error) {
             if (error.response.status === 409) {
                 setErrorMessage("Zaproszenie zostało już wysłane lub zaakceptowane");
-            }
-            else {
+            } else {
                 setErrorMessage("Wystąpił błąd podczas wysyłania zaproszania");
             }
             setOpenSnackbar(true);
@@ -51,13 +50,16 @@ const SendFriendRequestForm = () => {
     }
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: '50%', margin: "auto" }}>
-            <CustomListWithSearch data={users} label="wybierz uzytkownika" onItemSelect={handleUserSelect} filterKey="email" renderItem={(user) => <ListItemText primary={user.email} /> } />
+        <Box sx={{display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center', mt: '20px', mb: '20px'}}>
+            <CustomListWithSearch data={users} label="wybierz uzytkownika" onItemSelect={handleUserSelect}
+                                  filterKey="email" renderItem={(user) => <ListItemText primary={user.email}/>}/>
             {selectedUser && (
                 <CustomButton onClick={() => handleSendRequest(selectedUser.email)}>Dodaj znajomego</CustomButton>
             )}
-            <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{vertical: 'top',
-                horizontal: 'center'}}>
+            <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center'
+            }}>
                 <Alert onClose={handleCloseSnackbar} severity={errorMessage ? "error" : "success"}>
                     {errorMessage || "Zaproszenie zostało pomyślnie wysłane!"}
                 </Alert>

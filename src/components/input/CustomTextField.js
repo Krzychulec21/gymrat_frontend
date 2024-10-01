@@ -1,7 +1,7 @@
 import {styled} from "@mui/material";
 import TextField from '@mui/material/TextField';
 
-const CustomTextField = styled(TextField)(({ theme }) => ({
+const CustomTextField = styled(TextField)(({theme}) => ({
     '& .MuiOutlinedInput-root': {
         '& fieldset': {
             borderColor: 'white',
@@ -24,9 +24,9 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
     },
     '& input:-webkit-autofill': {
         WebkitBoxShadow: '0 0 0 1000px black inset',
-            WebkitTextFillColor: 'white',
-            caretColor: 'white',
-            borderColor: 'white',
+        WebkitTextFillColor: 'white',
+        caretColor: 'white',
+        borderColor: 'white',
     },
     minWidth: '200px'
 }));

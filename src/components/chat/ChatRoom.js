@@ -1,16 +1,19 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Box, Button, List, Typography } from '@mui/material';
-import { connectToChatRoom, sendMessage, getChatHistory } from '../../service/chatService';
-import CustomTextField from '../input/CustomTextField';
-import MessageItem from "./MessageItem";
-import websocketService from '../../service/websocketService';
-import {useAuth} from "../../context/AuthContext";
+// ChatRoom.js
 
-const ChatRoom = ({ currentUserId, friendId, chatRoomId }) => {
+import React, {useEffect, useRef, useState} from 'react';
+import {Box, List, Typography} from '@mui/material';
+import {connectToChatRoom, getChatHistory, sendMessage} from '../../service/chatService';
+import CustomTextField from '../input/CustomTextField';
+import MessageItem from './MessageItem';
+import websocketService from '../../service/websocketService';
+import {useAuth} from '../../context/AuthContext';
+import CustomButton from "../button/CustomButton";
+
+const ChatRoom = ({currentUserId, friendId, chatRoomId, friendName}) => {
     const [messages, setMessages] = useState([]);
-    const [messageContent, setMessageContent] = useState("");
+    const [messageContent, setMessageContent] = useState('');
     const messagesEndRef = useRef(null);
-    const { isAuthenticated } = useAuth();
+    const {isAuthenticated} = useAuth();
 
     useEffect(() => {
         if (!isAuthenticated) return;
@@ -20,10 +23,7 @@ const ChatRoom = ({ currentUserId, friendId, chatRoomId }) => {
         };
 
         const handleNewMessage = (message) => {
-            setMessages((prevMessages) => {
-                const updatedMessages = [...prevMessages, message];
-                return updatedMessages;
-            });
+            setMessages((prevMessages) => [...prevMessages, message]);
         };
 
         if (!websocketService.connected) {
@@ -38,14 +38,13 @@ const ChatRoom = ({ currentUserId, friendId, chatRoomId }) => {
         };
     }, [isAuthenticated, chatRoomId]);
 
-
     const handleSendMessage = () => {
         if (messageContent.trim()) {
             const message = {
                 chatRoomId: chatRoomId,
                 senderId: currentUserId,
                 receiverId: friendId,
-                content: messageContent
+                content: messageContent,
             };
             sendMessage(chatRoomId, message);
             setMessageContent('');
@@ -53,7 +52,7 @@ const ChatRoom = ({ currentUserId, friendId, chatRoomId }) => {
     };
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        messagesEndRef.current?.scrollIntoView({behavior: 'smooth'});
     };
 
     useEffect(() => {
@@ -61,37 +60,62 @@ const ChatRoom = ({ currentUserId, friendId, chatRoomId }) => {
     }, [messages]);
 
     const handleKeyPress = (e) => {
-        if (e.key === "Enter") {
+        if (e.key === 'Enter') {
             e.preventDefault();
             handleSendMessage();
         }
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', maxHeight: '100%' }}>
-            <Box sx={{ flexGrow: 1, maxHeight: '80%', overflowY: 'auto' }}>
+        <Box sx={{display: 'flex', flexDirection: 'column', height: '90vh'}}>
+            <Box
+                sx={{
+                    padding: 2,
+                    backgroundColor: '#3f3f3f',
+                    borderBottom: '1px solid #ccc',
+                }}
+            >
+                <Typography variant="h6" sx={{textAlign: 'center'}}>{friendName}</Typography>
+            </Box>
+
+            <Box
+                sx={{
+                    flexGrow: 1,
+                    overflowY: 'auto',
+                    padding: 2,
+                }}
+            >
                 <List>
-                    {Array.isArray(messages) && messages.map((msg, index) => (
-                        <MessageItem
-                            key={index}
-                            message={msg}
-                            currentUserId={currentUserId}
-                        />
-                    ))}
-                    <div ref={messagesEndRef} />
-                    {!Array.isArray(messages) && <Typography>Brak wiadomości</Typography>}
+                    {Array.isArray(messages) && messages.length > 0 ? (
+                        messages.map((msg, index) => (
+                            <MessageItem key={index} message={msg} currentUserId={currentUserId}/>
+                        ))
+                    ) : (
+                        <Typography sx={{textAlign: 'center'}}>No messages yet</Typography>
+                    )}
+                    <div ref={messagesEndRef}/>
                 </List>
             </Box>
 
-            <Box sx={{ display: 'flex', gap: 2, padding: 2, position: 'sticky', bottom: 0 }}>
-                <CustomTextField
-                    fullWidth
-                    value={messageContent}
-                    onChange={(e) => setMessageContent(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Wpisz wiadomość..."
-                />
-                <Button variant="contained" onClick={handleSendMessage}>Wyślij</Button>
+            {/* Message Input */}
+            <Box
+                sx={{
+                    padding: 2,
+                    borderTop: '1px solid #ccc',
+                }}
+            >
+                <Box sx={{display: 'flex', gap: 2}}>
+                    <CustomTextField
+                        fullWidth
+                        value={messageContent}
+                        onChange={(e) => setMessageContent(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        placeholder="Type a message..."
+                    />
+                    <CustomButton variant="contained" onClick={handleSendMessage}>
+                        Send
+                    </CustomButton>
+                </Box>
             </Box>
         </Box>
     );

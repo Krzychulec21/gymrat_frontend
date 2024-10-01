@@ -75,7 +75,10 @@ function Navbar() {
     ];
 
     return (
-        <AppBar position='absolute' sx={{backgroundColor: 'inherit', boxShadow: 'none'}}>
+        <AppBar
+            position={isAuthenticated ? 'static' : 'absolute'}
+            sx={{backgroundColor: 'inherit', boxShadow: 'none'}}
+        >
             <Toolbar
                 sx={{
                     display: 'flex',
@@ -112,7 +115,7 @@ function Navbar() {
                             src={logo}
                             alt="App Logo"
                             sx={{
-                                width: {sm: '8vw', md: '4vw', xs: '10vw'},
+                                width: {sm: '6vw', md: '2vw', xs: '10vw'},
                                 cursor: 'pointer',
                                 marginTop: '1vh',
                             }}
@@ -162,7 +165,7 @@ function Navbar() {
                         }}
                         >
                             {authMenuItems.map((item) => (
-                                <MenuItemComponent item={item} isMobile={false} key={item.label} />
+                                <MenuItemComponent item={item} isMobile={false} key={item.label}/>
                             ))}
                         </Box>
                         <IconButton color="inherit" onClick={handleNotificationsOpen}>
@@ -242,8 +245,8 @@ function Navbar() {
                     anchorEl={mobileMenuAnchorEl}
                     open={Boolean(mobileMenuAnchorEl)}
                     onClose={handleMobileMenuClose}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                    transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+                    anchorOrigin={{vertical: 'top', horizontal: 'left'}}
+                    transformOrigin={{vertical: 'top', horizontal: 'left'}}
                 >
                     {(isAuthenticated ? authMenuItems : nonAuthMenuItems).map((item) => (
                         <MenuItemComponent

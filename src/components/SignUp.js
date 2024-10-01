@@ -24,19 +24,26 @@ function SignUp() {
             email: Yup.string().email('Invalid email address').required('Required'),
             password: Yup.string().min(8, 'Password must be at least 8 characters').required('Required')
         }),
-        onSubmit: async (values, { setSubmitting, setErrors }) => {
+        onSubmit: async (values, {setSubmitting, setErrors}) => {
             try {
                 await authService.register(values);
                 window.location.href = '/';
             } catch (error) {
-                setErrors({ email: 'Email or nickname already exists' });
+                setErrors({email: 'Email or nickname already exists'});
                 setSubmitting(false);
             }
         }
     });
 
     return (
-        <Box component="form" onSubmit={formik.handleSubmit} autoComplete="off" id="custom-signup-form"  sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '25%', margin: "0 auto", alignItems: "center"}} >
+        <Box component="form" onSubmit={formik.handleSubmit} autoComplete="off" id="custom-signup-form" sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+            width: '25%',
+            margin: "0 auto",
+            alignItems: "center"
+        }}>
 
             <CustomTextField
                 fullWidth
@@ -106,7 +113,7 @@ function SignUp() {
                 Sign Up
             </CustomButton>
             <text>OR</text>
-            <GoogleLogin />
+            <GoogleLogin/>
         </Box>
     );
 }
