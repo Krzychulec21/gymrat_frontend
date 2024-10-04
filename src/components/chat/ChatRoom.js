@@ -1,5 +1,3 @@
-// ChatRoom.js
-
 import React, {useEffect, useRef, useState} from 'react';
 import {Box, List, Typography} from '@mui/material';
 import {connectToChatRoom, getChatHistory, sendMessage} from '../../service/chatService';
@@ -8,6 +6,8 @@ import MessageItem from './MessageItem';
 import websocketService from '../../service/websocketService';
 import {useAuth} from '../../context/AuthContext';
 import CustomButton from "../button/CustomButton";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 const ChatRoom = ({currentUserId, friendId, chatRoomId, friendName}) => {
     const [messages, setMessages] = useState([]);
@@ -105,16 +105,16 @@ const ChatRoom = ({currentUserId, friendId, chatRoomId, friendName}) => {
                 }}
             >
                 <Box sx={{display: 'flex', gap: 2}}>
-                    <CustomTextField
+                    <TextField
                         fullWidth
                         value={messageContent}
                         onChange={(e) => setMessageContent(e.target.value)}
                         onKeyPress={handleKeyPress}
                         placeholder="Type a message..."
                     />
-                    <CustomButton variant="contained" onClick={handleSendMessage}>
+                    <Button variant="contained" onClick={handleSendMessage}>
                         Send
-                    </CustomButton>
+                    </Button>
                 </Box>
             </Box>
         </Box>

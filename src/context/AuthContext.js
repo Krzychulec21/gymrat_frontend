@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
                 const currentTime = Date.now();
 
                 if (expirationTime < currentTime) {
-                    authService.logout();
+                    logout();
                 }
                 else {
                     setIsAuthenticated(true);

@@ -26,9 +26,9 @@ const Sidebar = ({selectedTab, setSelectedTab, friendsCount, pendingCount}) => {
                 <CustomButton
                     key={tab.value}
                     onClick={() => setSelectedTab(tab.value)}
-                    variant={selectedTab === tab.value ? 'contained' : 'outlined'}
                     sx={{
                         width: {xs: '50%', md: '100%'},
+                        backgroundColor: selectedTab === tab.value ? 'red' : 'darkgrey',
                     }}
                 >
                     {tab.label}

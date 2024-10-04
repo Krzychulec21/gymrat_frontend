@@ -7,7 +7,21 @@ import Box from '@mui/material/Box';
 import CustomButton from './button/CustomButton';
 import CustomTextField from './input/CustomTextField';
 import GoogleLoginButton from "./button/GoogleLoginButton";
+import Button from "@mui/material/Button";
+import {FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput} from "@mui/material";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 function SignIn() {
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+
+    const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -32,12 +46,12 @@ function SignIn() {
         <Box component="form" onSubmit={formik.handleSubmit} sx={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 2, width: '25%',
+            gap: 2,
             margin: "0 auto",
             alignItems: 'center',
 
         }}>
-            <CustomTextField
+            <TextField
                 fullWidth
                 label="Email"
                 name="email"
@@ -50,7 +64,7 @@ function SignIn() {
                 helperText={formik.touched.email && formik.errors.email}
             />
 
-            <CustomTextField
+            <TextField
                 fullWidth
                 label="Password"
                 name="password"
@@ -61,13 +75,34 @@ function SignIn() {
                 value={formik.values.password}
                 error={formik.touched.password && Boolean(formik.errors.password)}
                 helperText={formik.touched.password && formik.errors.password}
-
-
             />
+            {/*<FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">*/}
+            {/*    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>*/}
+            {/*    <OutlinedInput*/}
+            {/*        id="outlined-adornment-password"*/}
+            {/*        type={showPassword ? 'text' : 'password'}*/}
+            {/*        endAdornment={*/}
+            {/*            <InputAdornment position="end">*/}
+            {/*                <IconButton*/}
+            {/*                    aria-label="toggle password visibility"*/}
+            {/*                    onClick={handleClickShowPassword}*/}
+            {/*                    onMouseDown={handleMouseDownPassword}*/}
+            {/*                    onMouseUp={handleMouseUpPassword}*/}
+            {/*                    edge="end"*/}
+            {/*                >*/}
+            {/*                    {showPassword ? <VisibilityOff /> : <Visibility />}*/}
+            {/*                </IconButton>*/}
+            {/*            </InputAdornment>*/}
+            {/*        }*/}
+            {/*        label="Password"*/}
+            {/*    />*/}
+            {/*</FormControl>*/}
+            {/*todo: zrobic password input*/}
 
-            <CustomButton type="submit" variant="contained" color="primary">
+
+            <Button type="submit" variant="contained" color="primary">
                 Sign In
-            </CustomButton>
+            </Button>
             <text>OR</text>
             <GoogleLoginButton></GoogleLoginButton>
         </Box>

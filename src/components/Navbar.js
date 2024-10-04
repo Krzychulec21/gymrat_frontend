@@ -20,6 +20,7 @@ import logo from '../assets/logo.svg';
 import CustomButton from "./button/CustomButton";
 import {useNotifications} from "../context/NotificationContext";
 import MenuItemComponent from "./MenuItemComponent";
+import Button from "@mui/material/Button";
 
 function Navbar() {
     const {isAuthenticated, logout} = useAuth();
@@ -117,7 +118,6 @@ function Navbar() {
                             sx={{
                                 width: {sm: '6vw', md: '2vw', xs: '10vw'},
                                 cursor: 'pointer',
-                                marginTop: '1vh',
                             }}
                         />
                     </Link>
@@ -126,7 +126,7 @@ function Navbar() {
                 {/* Non-Authenticated Menu Items */}
                 {!isAuthenticated && (
                     <>
-                        <CustomButton
+                        <Button
                             variant="contained"
                             color="primary"
                             onClick={() => navigate('/auth')}
@@ -136,7 +136,7 @@ function Navbar() {
                             }}
                         >
                             Join Us
-                        </CustomButton>
+                        </Button>
                         <Box
                             sx={{
                                 display: {xs: 'none', md: 'flex'},
@@ -230,12 +230,17 @@ function Navbar() {
                                 vertical: 'top',
                                 horizontal: 'right',
                             }}
+
                         >
-                            <MenuItem onClick={() => {
-                                navigate('/friends');
+                            <MenuItem
+                                sx={{color: 'secondary.main'}}
+                                onClick={() => {
+                                navigate('/profile');
                                 handleMenuClose();
                             }}>Profile</MenuItem>
-                            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                            <MenuItem
+                                sx={{color: 'secondary.main'}}
+                                onClick={handleLogout}>Logout</MenuItem>
                         </Menu>
                     </>
                 )}
@@ -254,6 +259,9 @@ function Navbar() {
                             isMobile={true}
                             handleClose={handleMobileMenuClose}
                             key={item.label}
+                            sx={{
+                                color:'secondary.main'
+                            }}
                         />
                     ))}
                 </Menu>

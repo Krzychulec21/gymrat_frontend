@@ -6,6 +6,9 @@ import Box from '@mui/material/Box';
 import CustomButton from './button/CustomButton';
 import CustomTextField from './input/CustomTextField';
 import GoogleLogin from "./button/GoogleLoginButton";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import {Grid} from "@mui/system";
 
 
 function SignUp() {
@@ -15,14 +18,20 @@ function SignUp() {
             lastName: '',
             nickname: '',
             email: '',
-            password: ''
+            password: '',
+            confirmPassword: ''
         },
         validationSchema: Yup.object({
             firstName: Yup.string().required('Required'),
             lastName: Yup.string().required('Required'),
             nickname: Yup.string().required('Required'),
             email: Yup.string().email('Invalid email address').required('Required'),
-            password: Yup.string().min(8, 'Password must be at least 8 characters').required('Required')
+            password: Yup.string()
+                .min(8, 'Password must be at least 8 characters')
+                .required('Required'),
+            confirmPassword: Yup.string()
+                .oneOf([Yup.ref('password'), null], 'Password must match')
+                .required('Required'),
         }),
         onSubmit: async (values, {setSubmitting, setErrors}) => {
             try {
@@ -36,86 +45,127 @@ function SignUp() {
     });
 
     return (
-        <Box component="form" onSubmit={formik.handleSubmit} autoComplete="off" id="custom-signup-form" sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-            width: '25%',
-            margin: "0 auto",
-            alignItems: "center"
-        }}>
+        <Box
+            component="form"
+            onSubmit={formik.handleSubmit}
+            autoComplete="off"
+            id="custom-signup-form"
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+                alignItems: 'center',
+            }}
+        >
+            <Grid container spacing={2} justifyContent="center">
+                <Grid item xs={12} sm={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <TextField
+                        label="First Name"
+                        name="firstName"
+                        variant="outlined"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.firstName}
+                        error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+                        helperText={formik.touched.firstName && formik.errors.firstName}
+                        fullWidth
+                        sx={{ maxWidth: '300px' }}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <TextField
+                        label="Last Name"
+                        name="lastName"
+                        variant="outlined"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.lastName}
+                        error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+                        helperText={formik.touched.lastName && formik.errors.lastName}
+                        fullWidth
+                        sx={{ maxWidth: '300px' }}
+                    />
+                </Grid>
+            </Grid>
 
-            <CustomTextField
-                fullWidth
-                label="First Name"
-                name="firstName"
-                variant="outlined"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.firstName}
-                error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-                helperText={formik.touched.firstName && formik.errors.firstName}
-            />
+            <Grid container spacing={2} justifyContent="center">
+                <Grid item xs={12} sm={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <TextField
+                        label="Nickname"
+                        name="nickname"
+                        variant="outlined"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.nickname}
+                        error={formik.touched.nickname && Boolean(formik.errors.nickname)}
+                        helperText={formik.touched.nickname && formik.errors.nickname}
+                        fullWidth
+                        sx={{ maxWidth: '300px' }}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <TextField
+                        label="Email"
+                        name="email"
+                        type="email"
+                        variant="outlined"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.email}
+                        error={formik.touched.email && Boolean(formik.errors.email)}
+                        helperText={formik.touched.email && formik.errors.email}
+                        autoComplete="new-email"
+                        fullWidth
+                        sx={{ maxWidth: '300px' }}
+                    />
+                </Grid>
+            </Grid>
 
-            <CustomTextField
-                fullWidth
-                label="Last Name"
-                name="lastName"
-                variant="outlined"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.lastName}
-                error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-                helperText={formik.touched.lastName && formik.errors.lastName}
-            />
+            <Grid container spacing={2} justifyContent="center">
+                <Grid item xs={12} sm={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <TextField
+                        label="Password"
+                        name="password"
+                        type="password"
+                        variant="outlined"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.password}
+                        error={formik.touched.password && Boolean(formik.errors.password)}
+                        helperText={formik.touched.password && formik.errors.password}
+                        autoComplete="new-password"
+                        fullWidth
+                        sx={{ maxWidth: '300px' }}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <TextField
+                        label="Confirm Password"
+                        name="confirmPassword"
+                        type="password"
+                        variant="outlined"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.confirmPassword}
+                        error={
+                            formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)
+                        }
+                        helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                        autoComplete="new-password"
+                        fullWidth
+                        sx={{ maxWidth: '300px' }}
+                    />
+                </Grid>
+            </Grid>
 
-            <CustomTextField
-                fullWidth
-                label="Nickname"
-                name="nickname"
-                variant="outlined"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.nickname}
-                error={formik.touched.nickname && Boolean(formik.errors.nickname)}
-                helperText={formik.touched.nickname && formik.errors.nickname}
-            />
-
-            <CustomTextField
-                fullWidth
-                label="Email"
-                name="email" // Unikalna nazwa
-                type="email"
-                variant="outlined"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.email}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
-                autoComplete="new-email"
-            />
-
-            <CustomTextField
-                fullWidth
-                label="Password"
-                name="password"
-                type="password"
-                variant="outlined"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.password}
-                error={formik.touched.password && Boolean(formik.errors.password)}
-                helperText={formik.touched.password && formik.errors.password}
-                autoComplete="new-password"
-            />
-
-            <CustomButton type="submit" variant="contained" color="primary">
+            <Button type="submit" variant="contained" color="primary">
                 Sign Up
-            </CustomButton>
-            <text>OR</text>
-            <GoogleLogin/>
+            </Button>
+            <div>OR</div>
+            <GoogleLogin />
         </Box>
     );
 }
 
-export default SignUp;
+
+    export default SignUp;

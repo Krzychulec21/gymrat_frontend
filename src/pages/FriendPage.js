@@ -1,5 +1,3 @@
-// FriendsPage.js
-
 import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import Sidebar from '../components/Sidebar';
@@ -116,12 +114,14 @@ const FriendsPage = () => {
         <Box
             sx={{
                 width: '90%',
-                height: '90%',
+                minHeight: '85vh',
                 margin: 'auto',
                 display: 'flex',
                 flexDirection: { xs: 'column', md: 'row' },
-                border: '1px solid #ccc',
+                justifyContent: 'center',
+                border: '1px solid red',
                 mb: '10px',
+
 
             }}
         >
@@ -140,7 +140,7 @@ const FriendsPage = () => {
                     pendingCount={pendingRequests.length}
                 />
             )}
-
+   
             {/* Main xontent */}
             <Box
                 sx={{

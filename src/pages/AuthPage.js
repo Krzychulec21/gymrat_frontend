@@ -4,7 +4,6 @@ import SignUp from '../components/SignUp';
 import {Box, Button} from '@mui/material';
 import logo from '../assets/logo.svg';
 import {Link, useNavigate} from 'react-router-dom';
-import CustomButton from "../components/button/CustomButton";
 
 function AuthPage() {
     const [isSignUp, setIsSignUp] = useState(false);
@@ -26,11 +25,10 @@ function AuthPage() {
             <Box sx={{display: 'flex', gap: 5, mb: 2, marginBottom: '20px'}}>
                 <Button
                     onClick={() => setIsSignUp(false)}
+                    variant="text"
                     sx={{
                         color: 'white',
-                        '&:hover': {
-                            backgroundColor: !isSignUp ? 'darkred' : 'darkgray'
-                        },
+                        backgroundColor:'inherit',
                         borderBottom: !isSignUp ? '2px solid red' : 'none',
                         fontWeight: !isSignUp ? 'bold' : 'normal',
                         borderRadius: 0,
@@ -41,11 +39,10 @@ function AuthPage() {
                 </Button>
                 <Button
                     onClick={() => setIsSignUp(true)}
+                    variant="text"
                     sx={{
                         color: 'white',
-                        '&:hover': {
-                            backgroundColor: isSignUp ? 'darkred' : 'darkgray'
-                        },
+                        backgroundColor:'inherit',
                         borderBottom: isSignUp ? '2px solid red' : 'none',
                         fontWeight: isSignUp ? 'bold' : 'normal',
                         borderRadius: 0,
@@ -56,13 +53,13 @@ function AuthPage() {
                 </Button>
             </Box>
             {isSignUp ? <SignUp/> : <SignIn/>}
-            <CustomButton variant="contained" onClick={handleClick} sx={{
+            <Button variant="contained" onClick={handleClick} sx={{
                 backgroundColor: 'inherit',
                 border: '2px solid red',
                 mt:2,
                 ml:3,
                 alignSelf: 'flex-start'
-            }}>Wróc do strony głównej</CustomButton>
+            }}>Wróc do strony głównej</Button>
         </Box>
     );
 }
