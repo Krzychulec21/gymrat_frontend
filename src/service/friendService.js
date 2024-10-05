@@ -15,7 +15,6 @@ export const getFriends = async (page = 0, size = 10) => {
     }
 };
 
-// Get the list of pending friend requests
 export const getPendingRequests = async () => {
     try{
         const response = await axiosInstance.get('/friends/pending-requests');
@@ -27,7 +26,6 @@ export const getPendingRequests = async () => {
     }
 };
 
-// Get the list of users with their request status
 export const getUsersWithRequestStatus = async () => {
     try {
         const response = await axiosInstance.get("/friends/users-with-request-status");
@@ -37,7 +35,6 @@ export const getUsersWithRequestStatus = async () => {
     }
 }
 
-// Send a friend request to another user
 export const sendFriendRequest = async (receiverEmail) => {
     try {
         await axiosInstance.post('/friends/send-request', {email: receiverEmail});
@@ -47,7 +44,6 @@ export const sendFriendRequest = async (receiverEmail) => {
     }
 };
 
-// Respond to a friend request (accept or reject)
 export const respondToFriendRequest = async (requestId, accepted) => {
     try {
         const data = { requestId, accepted };
@@ -58,7 +54,7 @@ export const respondToFriendRequest = async (requestId, accepted) => {
     }
 };
 
-// Remove a friend by email
+
 export const removeFriend = async (friendEmail) => {
     try {
         await axiosInstance.delete('/friends/remove-friend', {
@@ -69,6 +65,22 @@ export const removeFriend = async (friendEmail) => {
         throw error;
     }
 }
+
+export const searchUsersWithRequestStatus = async (query, page = 0, size = 10) => {
+    try {
+        const response = await axiosInstance.get('/friends/search', {
+            params: {
+                query: query,
+                page: page,
+                size: size
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error searching friends', error);
+        throw error;
+    }
+};
 
 
 

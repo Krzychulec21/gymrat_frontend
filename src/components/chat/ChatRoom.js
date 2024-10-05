@@ -67,7 +67,7 @@ const ChatRoom = ({currentUserId, friendId, chatRoomId, friendName}) => {
     };
 
     return (
-        <Box sx={{display: 'flex', flexDirection: 'column', height: '90vh'}}>
+        <Box sx={{display: 'flex', flexDirection: 'column', height: '85vh'}}>
             <Box
                 sx={{
                     padding: 2,
