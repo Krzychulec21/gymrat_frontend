@@ -24,6 +24,10 @@ const FriendsPage = () => {
     const [selectedFriendName, setSelectedFriendName] = useState('');
     const [chatRoomId, setChatRoomId] = useState(null);
     const currentUserId = localStorage.getItem('id');
+    const [currentPage, setCurrentPage] = useState(0);
+    const [pageSize, setPageSize] = useState(10);
+    const [totalPages, setTotalPages] = useState(0);
+
 
     const theme = useTheme();
     const isMdUp = useMediaQuery(theme.breakpoints.up('md'));
@@ -33,11 +37,12 @@ const FriendsPage = () => {
     useEffect(() => {
         loadFriends();
         loadPendingRequests();
-    }, []);
+    }, [currentPage]);
 
     const loadFriends = async () => {
-        const friendsData = await getFriends();
-        setFriends(friendsData);
+        const friendsData = await getFriends(currentPage, pageSize);
+        setFriends(friendsData.content);
+        setTotalPages(friendsData.totalPages);
     };
 
     const loadPendingRequests = async () => {
@@ -84,6 +89,9 @@ const FriendsPage = () => {
                         friends={friends}
                         onRemoveFriend={handleRemoveFriend}
                         onChatStart={startChatWithFriend}
+                        setCurrentPage={setCurrentPage}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
                     />
                 );
             case 'pending':
@@ -114,19 +122,18 @@ const FriendsPage = () => {
         <Box
             sx={{
                 width: '90%',
-                minHeight: '85vh',
                 margin: 'auto',
                 display: 'flex',
                 flexDirection: { xs: 'column', md: 'row' },
                 justifyContent: 'center',
-                border: '1px solid red',
-                mb: '10px',
-
-
+                my:'auto',
+                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+                border: '5px solid rgba(0, 0, 0, 0.1)',
+                borderRadius: '8px'
             }}
         >
             {!isMdUp && (
-                <Button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                <Button size="small" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
                     {isSidebarOpen ? 'Hide Menu' : 'Show Menu'}
                 </Button>
             )}

@@ -5,7 +5,7 @@ const Footer = () => {
     return (
         <Box
             sx={{
-                backgroundColor: '#000',
+                backgroundColor: '#121212',
                 color: '#fff',
                 position: 'static',
                 left: 0,
@@ -13,10 +13,10 @@ const Footer = () => {
                 textAlign: 'center',
                 py: 2,
                 mt: 'auto',
-                borderTop: '3px solid white'
+                borderTop: '1px solid white'
             }}
         >
-            <Typography variant="h7">
+            <Typography variant="body2">
                 GYMRAT©  2024
             </Typography>
         </Box>

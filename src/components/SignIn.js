@@ -1,15 +1,12 @@
 import React from 'react';
-import { useFormik } from 'formik';
+import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import authService from '../service/authService';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import CustomButton from './button/CustomButton';
-import CustomTextField from './input/CustomTextField';
 import GoogleLoginButton from "./button/GoogleLoginButton";
 import Button from "@mui/material/Button";
-import {FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput} from "@mui/material";
-import {Visibility, VisibilityOff} from "@mui/icons-material";
+
 function SignIn() {
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -53,6 +50,7 @@ function SignIn() {
         }}>
             <TextField
                 fullWidth
+                size="small"
                 label="Email"
                 name="email"
                 type="email"
@@ -66,6 +64,7 @@ function SignIn() {
 
             <TextField
                 fullWidth
+                size="small"
                 label="Password"
                 name="password"
                 type="password"

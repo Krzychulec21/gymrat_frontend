@@ -16,8 +16,14 @@ function AuthPage() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            mt:3,
-            mb:12
+            mt: 3,
+            mb: 12,
+            maxWidth: '600px',
+            mx: 'auto',
+            padding: 4,
+            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+            border: '5px solid rgba(0, 0, 0, 0.1)',
+            borderRadius: '8px'
         }}>
             <Link to="/" style={{textDecoration: 'none'}}>
                 <img src={logo} alt="App Logo" style={{width: '8vw', marginBottom: '20px'}}/>
@@ -32,7 +38,7 @@ function AuthPage() {
                         borderBottom: !isSignUp ? '2px solid red' : 'none',
                         fontWeight: !isSignUp ? 'bold' : 'normal',
                         borderRadius: 0,
-                        width: '10vw'
+                        width:'150px'
                     }}
                 >
                     Sign In
@@ -46,7 +52,7 @@ function AuthPage() {
                         borderBottom: isSignUp ? '2px solid red' : 'none',
                         fontWeight: isSignUp ? 'bold' : 'normal',
                         borderRadius: 0,
-                        width: '10vw'
+                        width:'150px'
                     }}
                 >
                     Sign Up

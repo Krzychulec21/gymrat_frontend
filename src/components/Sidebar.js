@@ -1,6 +1,7 @@
 import React from 'react';
 import {Box} from '@mui/material';
 import CustomButton from "./button/CustomButton";
+import Button from "@mui/material/Button";
 
 
 const Sidebar = ({selectedTab, setSelectedTab, friendsCount, pendingCount}) => {
@@ -23,7 +24,8 @@ const Sidebar = ({selectedTab, setSelectedTab, friendsCount, pendingCount}) => {
             }}
         >
             {tabs.map((tab) => (
-                <CustomButton
+                <Button
+                    size="small"
                     key={tab.value}
                     onClick={() => setSelectedTab(tab.value)}
                     sx={{
@@ -32,7 +34,7 @@ const Sidebar = ({selectedTab, setSelectedTab, friendsCount, pendingCount}) => {
                     }}
                 >
                     {tab.label}
-                </CustomButton>
+                </Button>
             ))}
         </Box>
     );

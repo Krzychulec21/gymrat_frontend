@@ -1,27 +1,23 @@
 import React, {useState} from 'react';
 import {
-    List,
+    Box,
     Dialog,
-    DialogTitle,
+    DialogActions,
     DialogContent,
     DialogContentText,
-    DialogActions, Box, Pagination,
+    DialogTitle,
+    List,
+    Pagination,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import UserListItem from "./UserListItem";
-import CustomButton from "../button/CustomButton";
-import {useMediaQuery, useTheme} from "@mui/system";
 
 
-const FriendsList = ({friends, onRemoveFriend, onChatStart}) => {
+const FriendsList = ({friends, onRemoveFriend, onChatStart, currentPage, setCurrentPage, totalPages}) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedFriend, setSelectedFriend] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const theme = useTheme();
 
-    const isMdUp = useMediaQuery(theme.breakpoints.up('md'));
-    const itemsPerPage = isMdUp ? 15 : 6;
 
     const handleDeleteClick = (friend) => {
         setSelectedFriend(friend);
@@ -41,33 +37,46 @@ const FriendsList = ({friends, onRemoveFriend, onChatStart}) => {
     };
 
     const handlePageChange = (event, value) => {
-        setCurrentPage(value);
+        setCurrentPage(value - 1);
     };
 
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const currentFriends = friends.slice(startIndex, startIndex + itemsPerPage);
 
     return (
         <>
-            <Box sx={{display:'flex', flexDirection:'column', justifyContent:'space-between', height:'80vh' }}>
-                <Box sx={{overflowY: 'auto'}}>
-                <List>
-                    {currentFriends.map((friend) => (
-                        <UserListItem
-                            key={friend.id}
-                            user={friend}
-                            primaryActionIcon={<CustomButton>Chat</CustomButton>}
-                            secondaryActionIcon={<DeleteIcon sx={{color: 'red'}}/>}
-                            onPrimaryAction={() => onChatStart(friend.id, friend.firstName, friend.lastName)}
-                            onSecondaryAction={() => handleDeleteClick(friend)}
-                        />
-                    ))}
-                </List>
-            </Box>
+
+            <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '80vh'}}>
+                <Box
+                    sx={{
+                        overflowY: "auto",
+                        height: "100%",
+                        '&::-webkit-scrollbar': {
+                            width: '8px'
+                        },
+
+                        '&::-webkit-scrollbar-thumb': {
+                            backgroundColor: 'rgba(0,0,0,.1)',
+                            outline: '1px solid white',
+                            borderRadius: '10px'
+                        }
+                    }}
+                >
+                    <List>
+                        {friends.map((friend) => (
+                            <UserListItem
+                                key={friend.id}
+                                user={friend}
+                                primaryActionIcon={<Button size="small">Chat</Button>}
+                                secondaryActionIcon={<DeleteIcon sx={{color: 'red'}}/>}
+                                onPrimaryAction={() => onChatStart(friend.id, friend.firstName, friend.lastName)}
+                                onSecondaryAction={() => handleDeleteClick(friend)}
+                            />
+                        ))}
+                    </List>
+                </Box>
 
                 <Pagination
-                    count={Math.ceil(friends.length / itemsPerPage)}
-                    page={currentPage}
+                    count={totalPages}
+                    page={currentPage + 1}
                     onChange={handlePageChange}
                     sx={{
                         mt: 2,

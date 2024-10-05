@@ -1,7 +1,13 @@
 import axiosInstance from "../utils/axiosInstance";
-export const getFriends = async () => {
+
+export const getFriends = async (page = 0, size = 10) => {
     try {
-        const response = await axiosInstance.get('/friends');
+        const response = await axiosInstance.get('/friends', {
+            params: {
+                page: page,
+                size: size
+            }
+        });
         return response.data;
     } catch (error) {
         console.error('Error fetching friends', error);

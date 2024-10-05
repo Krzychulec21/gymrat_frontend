@@ -60,6 +60,7 @@ function SignUp() {
             <Grid container spacing={2} justifyContent="center">
                 <Grid item xs={12} sm={6} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
+                        size="small"
                         label="First Name"
                         name="firstName"
                         variant="outlined"
@@ -74,6 +75,7 @@ function SignUp() {
                 </Grid>
                 <Grid item xs={12} sm={6} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
+                        size="small"
                         label="Last Name"
                         name="lastName"
                         variant="outlined"
@@ -91,6 +93,7 @@ function SignUp() {
             <Grid container spacing={2} justifyContent="center">
                 <Grid item xs={12} sm={6} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
+                        size="small"
                         label="Nickname"
                         name="nickname"
                         variant="outlined"
@@ -105,6 +108,7 @@ function SignUp() {
                 </Grid>
                 <Grid item xs={12} sm={6} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
+                        size="small"
                         label="Email"
                         name="email"
                         type="email"
@@ -124,6 +128,7 @@ function SignUp() {
             <Grid container spacing={2} justifyContent="center">
                 <Grid item xs={12} sm={6} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
+                        size="small"
                         label="Password"
                         name="password"
                         type="password"
@@ -140,6 +145,7 @@ function SignUp() {
                 </Grid>
                 <Grid item xs={12} sm={6} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
+                        size="small"
                         label="Confirm Password"
                         name="confirmPassword"
                         type="password"

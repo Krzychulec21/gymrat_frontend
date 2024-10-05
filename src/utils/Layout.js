@@ -1,5 +1,5 @@
-import { Route, Routes, useLocation } from "react-router-dom";
-import { Box } from "@mui/material";
+import {Route, Routes, useLocation} from "react-router-dom";
+import {Box} from "@mui/material";
 import React from "react";
 import Navbar from "../components/Navbar";
 import Home from "../pages/Home";
@@ -9,16 +9,10 @@ import FriendPage from "../pages/FriendPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import ProfilePage from "../pages/ProfilePage";
 import Footer from "../components/Footer";
-import { useAuth } from "../context/AuthContext";
-import DashboardLayout from "../pages/DashboardLayout";
 
 function Layout() {
     const location = useLocation();
-    const { isAuthenticated } = useAuth();
-
-
-    const showNavbar = location.pathname !== '/auth';
-
+   const showNavbar = location.pathname !== '/auth';
     return (
         <Box
             sx={{
@@ -27,16 +21,6 @@ function Layout() {
                 minHeight: '100vh',
             }}
         >
-            {isAuthenticated ? (
-                <DashboardLayout>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/friends" element={<FriendPage />} />
-                        <Route path="/profile" element={<ProfilePage />} />
-                        <Route path="*" element={<NotFoundPage />} />
-                    </Routes>
-                </DashboardLayout>
-            ) : (
                 <>
                     {showNavbar && <Navbar />}
                     <Box
@@ -48,12 +32,14 @@ function Layout() {
                             <Route path="/" element={<Home />} />
                             <Route path="/auth" element={<AuthPage />} />
                             <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
+                            <Route path="/friends" element={<FriendPage />} />
+                            <Route path="/profile" element={<ProfilePage />} />
                             <Route path="*" element={<NotFoundPage />} />
                         </Routes>
                     </Box>
                     <Footer />
                 </>
-            )}
+
         </Box>
     );
 }
