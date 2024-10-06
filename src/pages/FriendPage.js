@@ -27,6 +27,9 @@ const FriendsPage = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [totalPages, setTotalPages] = useState(0);
+    const [sortBy, setSortBy] = useState('firstName');
+    const [sortDir, setSortDir] = useState('asc');
+    const [totalFriends, setTotalFriends] = useState(0);
 
 
     const theme = useTheme();
@@ -37,12 +40,13 @@ const FriendsPage = () => {
     useEffect(() => {
         loadFriends();
         loadPendingRequests();
-    }, [currentPage]);
+    }, [currentPage, sortBy, sortDir]);
 
     const loadFriends = async () => {
-        const friendsData = await getFriends(currentPage, pageSize);
+        const friendsData = await getFriends(currentPage, pageSize, sortBy, sortDir);
         setFriends(friendsData.content);
         setTotalPages(friendsData.totalPages);
+        setTotalFriends(friendsData.totalElements)
     };
 
     const loadPendingRequests = async () => {
@@ -92,6 +96,10 @@ const FriendsPage = () => {
                         setCurrentPage={setCurrentPage}
                         currentPage={currentPage}
                         totalPages={totalPages}
+                        setSortBy={setSortBy}
+                        setSortDir={setSortDir}
+                        sortBy={sortBy}
+                        sortDir={sortDir}
                     />
                 );
             case 'pending':
@@ -143,7 +151,7 @@ const FriendsPage = () => {
                 <Sidebar
                     selectedTab={selectedTab}
                     setSelectedTab={setSelectedTab}
-                    friendsCount={friends.length}
+                    friendsCount={totalFriends}
                     pendingCount={pendingRequests.length}
                 />
             )}

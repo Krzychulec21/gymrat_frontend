@@ -6,18 +6,39 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
+    FormControl,
     List,
+    MenuItem,
     Pagination,
+    Select,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import UserListItem from "./UserListItem";
 
-
-const FriendsList = ({friends, onRemoveFriend, onChatStart, currentPage, setCurrentPage, totalPages}) => {
+const FriendsList = ({
+                         friends,
+                         onRemoveFriend,
+                         onChatStart,
+                         currentPage,
+                         setCurrentPage,
+                         totalPages,
+                         setSortBy,
+                         setSortDir,
+                         sortBy,
+                         sortDir
+                     }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedFriend, setSelectedFriend] = useState(null);
 
+    const menuProps = {
+        PaperProps: {
+            style: {
+                backgroundColor: 'grey',
+                color: 'black',
+            },
+        },
+    };
 
     const handleDeleteClick = (friend) => {
         setSelectedFriend(friend);
@@ -40,10 +61,62 @@ const FriendsList = ({friends, onRemoveFriend, onChatStart, currentPage, setCurr
         setCurrentPage(value - 1);
     };
 
-
     return (
         <>
-
+            <Box sx={{display: 'flex', justifyContent: 'flex-end', mb: 2, gap: 2}}>
+                <FormControl size="small">
+                    <Select
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value)}
+                        MenuProps={menuProps}
+                        sx={{
+                            backgroundColor: 'grey',
+                            color: 'black',
+                            '.MuiSelect-icon': {
+                                color: 'black',
+                            },
+                            '.MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'grey',
+                            },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'grey',
+                            },
+                            '.MuiSelect-select': {
+                                color: 'black',
+                            }
+                        }}
+                    >
+                        <MenuItem value="firstName">Imię</MenuItem>
+                        <MenuItem value="lastName">Nazwisko</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl size="small">
+                    <Select
+                        value={sortDir}
+                        onChange={(e) => setSortDir(e.target.value)}
+                        sx={{
+                            backgroundColor: 'grey',
+                            color: 'black',
+                            '.MuiSelect-icon': {
+                                color: 'black',
+                            },
+                            '.MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'grey',
+                            },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'grey',
+                            },
+                            '.MuiSelect-select': {
+                                color: 'black',
+                            }
+                        }}
+                        MenuProps={menuProps}
+                    >
+                        <MenuItem value="asc">Rosnąco</MenuItem>
+                        <MenuItem value="desc">Malejąco</MenuItem>
+                    </Select>
+                </FormControl>
+            </Box>
             <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '80vh'}}>
                 <Box
                     sx={{
@@ -52,7 +125,6 @@ const FriendsList = ({friends, onRemoveFriend, onChatStart, currentPage, setCurr
                         '&::-webkit-scrollbar': {
                             width: '8px'
                         },
-
                         '&::-webkit-scrollbar-thumb': {
                             backgroundColor: 'rgba(0,0,0,.1)',
                             outline: '1px solid white',
@@ -83,19 +155,18 @@ const FriendsList = ({friends, onRemoveFriend, onChatStart, currentPage, setCurr
                         display: 'flex',
                         justifyContent: 'center',
                         "& .MuiPaginationItem-root": {
-                            color: 'white', // Text color
+                            color: 'white',
                         },
                         "& .Mui-selected": {
-                            backgroundColor: 'rgba(255, 255, 255, 0.8)', // Active background color with some transparency
-                            color: 'black' // Text color for selected item
+                            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                            color: 'black'
                         },
                         "& .MuiPaginationItem-root:hover": {
-                            backgroundColor: 'rgba(255, 255, 255, 0.4)', // Hover background color
+                            backgroundColor: 'rgba(255, 255, 255, 0.4)',
                         }
                     }}
                 />
             </Box>
-
 
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 <DialogTitle>Potwierdzenie usunięcia</DialogTitle>

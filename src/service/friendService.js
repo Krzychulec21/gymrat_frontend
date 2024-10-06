@@ -1,11 +1,13 @@
 import axiosInstance from "../utils/axiosInstance";
 
-export const getFriends = async (page = 0, size = 10) => {
+export const getFriends = async (page = 0, size = 10, sortBy = 'firstName', sortDir = 'asc') => {
     try {
         const response = await axiosInstance.get('/friends', {
             params: {
                 page: page,
-                size: size
+                size: size,
+                sortBy: sortBy,
+                sortDir: sortDir
             }
         });
         return response.data;
