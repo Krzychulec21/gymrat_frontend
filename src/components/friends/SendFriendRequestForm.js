@@ -50,6 +50,14 @@ const SendFriendRequestForm = () => {
         setOpenSnackbar(false);
     }
 
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSearch();
+        }
+    };
+
     return (<Box sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -64,6 +72,7 @@ const SendFriendRequestForm = () => {
                     size="small"
                     label="Wpisz frazę"
                     value={query}
+                    onKeyPress={handleKeyPress}
                     onChange={(e) => setQuery(e.target.value)}
                 />
                 <Button size="small" variant="contained" onClick={() => handleSearch(0)}>

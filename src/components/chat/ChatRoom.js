@@ -91,7 +91,7 @@ const ChatRoom = ({currentUserId, friendId, chatRoomId, friendName}) => {
                             <MessageItem key={index} message={msg} currentUserId={currentUserId}/>
                         ))
                     ) : (
-                        <Typography sx={{textAlign: 'center'}}>No messages yet</Typography>
+                        <Typography sx={{textAlign: 'center'}}>Brak wiadomości</Typography>
                     )}
                     <div ref={messagesEndRef}/>
                 </List>

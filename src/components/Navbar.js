@@ -70,9 +70,9 @@ function Navbar() {
     ];
 
     const authMenuItems = [
-        {label: 'Friends', to: '/friends', type: 'navigate'},
-        {label: 'Plans', to: '/plans', type: 'navigate'},
-        {label: 'Challenges', to: '/challenges', type: 'navigate'},
+        {label: 'Znajomi', to: '/friends', type: 'navigate'},
+        {label: 'Plany', to: '/plans', type: 'navigate'},
+        {label: 'Wyzwania', to: '/challenges', type: 'navigate'},
     ];
 
     return (
@@ -237,10 +237,10 @@ function Navbar() {
                                 onClick={() => {
                                 navigate('/profile');
                                 handleMenuClose();
-                            }}>Profile</MenuItem>
+                            }}>Profil</MenuItem>
                             <MenuItem
                                 sx={{color: 'secondary.main'}}
-                                onClick={handleLogout}>Logout</MenuItem>
+                                onClick={handleLogout}>Wyloguj</MenuItem>
                         </Menu>
                     </>
                 )}
