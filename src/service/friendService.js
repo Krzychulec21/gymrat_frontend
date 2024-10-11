@@ -1,13 +1,21 @@
 import axiosInstance from "../utils/axiosInstance";
 
-export const getFriends = async (page = 0, size = 10, sortBy = 'firstName', sortDir = 'asc') => {
+export const getFriends = async (
+    page = 0,
+    size = 10,
+    sortBy = 'latestMessage',
+    sortDir = 'asc',
+    minAge = 18,
+    maxAge = 50) => {
     try {
         const response = await axiosInstance.get('/friends', {
             params: {
                 page: page,
                 size: size,
                 sortBy: sortBy,
-                sortDir: sortDir
+                sortDir: sortDir,
+                minAge: minAge,
+                maxAge: maxAge
             }
         });
         return response.data;
@@ -18,11 +26,10 @@ export const getFriends = async (page = 0, size = 10, sortBy = 'firstName', sort
 };
 
 export const getPendingRequests = async () => {
-    try{
+    try {
         const response = await axiosInstance.get('/friends/pending-requests');
         return response.data;
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error fetching pending requests', error);
         throw error;
     }
@@ -48,7 +55,7 @@ export const sendFriendRequest = async (receiverEmail) => {
 
 export const respondToFriendRequest = async (requestId, accepted) => {
     try {
-        const data = { requestId, accepted };
+        const data = {requestId, accepted};
         await axiosInstance.post('/friends/respond-request', data);
     } catch (error) {
         console.error('Error responding to friend request', error);
@@ -60,7 +67,7 @@ export const respondToFriendRequest = async (requestId, accepted) => {
 export const removeFriend = async (friendEmail) => {
     try {
         await axiosInstance.delete('/friends/remove-friend', {
-            params: { friendEmail: friendEmail}
+            params: {friendEmail: friendEmail}
         });
     } catch (error) {
         console.error('Error removing friend', error);

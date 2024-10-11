@@ -8,7 +8,6 @@ const Footer = () => {
                 backgroundColor: '#121212',
                 color: '#fff',
                 position: 'static',
-                left: 0,
                 width: '100%',
                 textAlign: 'center',
                 py: 2,

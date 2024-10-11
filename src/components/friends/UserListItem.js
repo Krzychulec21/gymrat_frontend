@@ -16,8 +16,10 @@ const UserListItem = ({
                 </ListItemAvatar>
                 <ListItemText
                     primary={`${user.firstName} ${user.lastName} (${user.email})`}
-                    sx={{ml: 2}}
+                    secondary={`${user.latestMessageTimestamp ? new Date(user.latestMessageTimestamp).toLocaleString() : ''}`}
+                    sx={{ ml: 2 }}
                 />
+
             </Box>
             <Box sx={{display: 'flex', alignItems: 'center'}}>
                 {primaryActionIcon && (

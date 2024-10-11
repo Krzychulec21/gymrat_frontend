@@ -27,9 +27,12 @@ const FriendsPage = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [totalPages, setTotalPages] = useState(0);
-    const [sortBy, setSortBy] = useState('firstName');
-    const [sortDir, setSortDir] = useState('asc');
+    const [sortBy, setSortBy] = useState('latestMessage');
+    const [sortDir, setSortDir] = useState('desc');
     const [totalFriends, setTotalFriends] = useState(0);
+    const [minAge, setMinAge] = useState(18);
+    const [maxAge, setMaxAge] = useState(50);
+
 
 
     const theme = useTheme();
@@ -40,10 +43,10 @@ const FriendsPage = () => {
     useEffect(() => {
         loadFriends();
         loadPendingRequests();
-    }, [currentPage, sortBy, sortDir]);
+    }, [currentPage, sortBy, sortDir,minAge,maxAge]);
 
     const loadFriends = async () => {
-        const friendsData = await getFriends(currentPage, pageSize, sortBy, sortDir);
+        const friendsData = await getFriends(currentPage, pageSize, sortBy, sortDir, minAge, maxAge);
         setFriends(friendsData.content);
         setTotalPages(friendsData.totalPages);
         setTotalFriends(friendsData.totalElements)
@@ -84,6 +87,11 @@ const FriendsPage = () => {
         setSelectedTab('chat');
     };
 
+    const handleAgeChange = (event, newValue) => {
+        setMinAge(newValue[0]);
+        setMaxAge(newValue[1]);
+    };
+
 
     const renderContent = () => {
         switch (selectedTab) {
@@ -100,6 +108,9 @@ const FriendsPage = () => {
                         setSortDir={setSortDir}
                         sortBy={sortBy}
                         sortDir={sortDir}
+                        minAge={minAge}
+                        maxAge={maxAge}
+                        onAgeChange={handleAgeChange}
                     />
                 );
             case 'pending':

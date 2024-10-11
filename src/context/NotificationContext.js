@@ -1,4 +1,3 @@
-// src/context/NotificationsContext.js
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import axiosInstance from '../utils/axiosInstance';
 import { connectToNotifications } from "../service/notificationService";
@@ -12,7 +11,7 @@ export const NotificationsProvider = ({ children }) => {
     const { isAuthenticated } = useAuth();
 
     useEffect(() => {
-        if (!isAuthenticated) return; // Only proceed if authenticated
+        if (!isAuthenticated) return;
 
         axiosInstance.get('/notifications/unread')
             .then(response => {
@@ -50,7 +49,7 @@ export const NotificationsProvider = ({ children }) => {
                     }
                 } else {
                     aggregated.push({
-                        id: notification.id, // For key purposes; not unique if multiple notifications
+                        id: notification.id,
                         content: notification.content,
                         timestamp: notification.timestamp,
                         notificationType: notification.notificationType,
@@ -111,7 +110,6 @@ export const NotificationsProvider = ({ children }) => {
                 }];
             }
         } else {
-            // Non-Message type notifications are added as-is
             return [...currentNotifications, {
                 id: newNotification.id,
                 content: newNotification.content,
@@ -128,12 +126,26 @@ export const NotificationsProvider = ({ children }) => {
 
 
     const markNotificationsAsRead = () => {
-        // Collect all IDs from aggregated notifications
-        const ids = aggregatedNotifications.flatMap(n => n.ids);
+        const updatedNotifications = aggregatedNotifications.map(notification => ({
+            ...notification,
+            isRead: true,
+        }));
+        setAggregatedNotifications(updatedNotifications);
+
+        updatedNotifications.forEach((notification) => {
+            if (!notification.deletionScheduled && notification.isRead) {
+                notification.deletionScheduled = true;
+                setTimeout(() => {
+                    setAggregatedNotifications((prevNotifications) =>
+                        prevNotifications.filter(n => n.id !== notification.id)
+                    );
+                }, 10000); //
+            }
+        });
+
+
+        const ids = updatedNotifications.flatMap(n => n.ids);
         axiosInstance.post('/notifications/read', ids)
-            .then(() => {
-                setAggregatedNotifications([]);
-            })
             .catch(error => {
                 console.error('Error marking notifications as read:', error);
             });

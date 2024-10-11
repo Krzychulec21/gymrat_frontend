@@ -73,6 +73,7 @@ const ChatRoom = ({currentUserId, friendId, chatRoomId, friendName}) => {
                     padding: 2,
                     backgroundColor: '#3f3f3f',
                     borderBottom: '1px solid #ccc',
+                    borderRadius: '8px'
                 }}
             >
                 <Typography variant="h6" sx={{textAlign: 'center'}}>{friendName}</Typography>
@@ -83,6 +84,13 @@ const ChatRoom = ({currentUserId, friendId, chatRoomId, friendName}) => {
                     flexGrow: 1,
                     overflowY: 'auto',
                     padding: 2,
+                    height: "100%", '&::-webkit-scrollbar': {
+                        width: '8px'
+                    },
+
+                    '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: 'rgba(0,0,0,.1)', outline: '1px solid white', borderRadius: '10px'
+                    }
                 }}
             >
                 <List>

@@ -17,7 +17,6 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import {useAuth} from '../context/AuthContext';
 import {Link, useNavigate} from 'react-router-dom';
 import logo from '../assets/logo.svg';
-import CustomButton from "./button/CustomButton";
 import {useNotifications} from "../context/NotificationContext";
 import MenuItemComponent from "./MenuItemComponent";
 import Button from "@mui/material/Button";
@@ -74,6 +73,9 @@ function Navbar() {
         {label: 'Plany', to: '/plans', type: 'navigate'},
         {label: 'Wyzwania', to: '/challenges', type: 'navigate'},
     ];
+
+    const unreadNotificationsCount = notifications.filter(n => !n.isRead).length;
+
 
     return (
         <AppBar
@@ -169,7 +171,7 @@ function Navbar() {
                             ))}
                         </Box>
                         <IconButton color="inherit" onClick={handleNotificationsOpen}>
-                            <Badge badgeContent={notifications.length} color="error">
+                            <Badge badgeContent={unreadNotificationsCount} color="error">
                                 <NotificationsIcon/>
                             </Badge>
                         </IconButton>
@@ -186,7 +188,9 @@ function Navbar() {
                                 horizontal: 'right',
                             }}
                         >
-                            <List sx={{width: '350px'}}>
+                            <List sx={{width: '350px','& .MuiTypography-root': {
+                                    color: 'black',
+                                }}}>
                                 {notifications.length === 0 ? (
                                     <ListItem>
                                         <ListItemText primary="No new notifications"/>
@@ -235,9 +239,9 @@ function Navbar() {
                             <MenuItem
                                 sx={{color: 'secondary.main'}}
                                 onClick={() => {
-                                navigate('/profile');
-                                handleMenuClose();
-                            }}>Profil</MenuItem>
+                                    navigate('/profile');
+                                    handleMenuClose();
+                                }}>Profil</MenuItem>
                             <MenuItem
                                 sx={{color: 'secondary.main'}}
                                 onClick={handleLogout}>Wyloguj</MenuItem>
@@ -260,7 +264,7 @@ function Navbar() {
                             handleClose={handleMobileMenuClose}
                             key={item.label}
                             sx={{
-                                color:'secondary.main'
+                                color: 'secondary.main'
                             }}
                         />
                     ))}
