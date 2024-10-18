@@ -26,7 +26,6 @@ export const updatePersonalInfo = async (data) => {
 export const getUserPersonalInfo = async () => {
     try {
         const response = await axiosInstance.get('/personal-info');
-        console.log("Personal Info response:", response.data); // Dodaj logowanie
         return response.data;
     } catch (error) {
         console.error("Failed to fetch personal info:", error);
@@ -37,7 +36,6 @@ export const getUserPersonalInfo = async () => {
 export const getUser = async () => {
     try {
         const response = await axiosInstance.get('/user');
-        console.log("User response:", response.data); // Dodaj logowanie
         return response.data;
     } catch (error) {
         console.error("Failed to fetch user:", error);

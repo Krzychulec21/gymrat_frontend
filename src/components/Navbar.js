@@ -72,6 +72,7 @@ function Navbar() {
         {label: 'Znajomi', to: '/friends', type: 'navigate'},
         {label: 'Plany', to: '/plans', type: 'navigate'},
         {label: 'Wyzwania', to: '/challenges', type: 'navigate'},
+        {label: 'Treningi', to: '/stats', type: 'navigate'}
     ];
 
     const unreadNotificationsCount = notifications.filter(n => !n.isRead).length;

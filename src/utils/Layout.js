@@ -9,10 +9,11 @@ import FriendPage from "../pages/FriendPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import ProfilePage from "../pages/ProfilePage";
 import Footer from "../components/Footer";
+import StatsPage from "../pages/StatsPage";
 
 function Layout() {
     const location = useLocation();
-   const showNavbar = location.pathname !== '/auth';
+    const showNavbar = location.pathname !== '/auth';
     return (
         <Box
             sx={{
@@ -21,24 +22,25 @@ function Layout() {
                 minHeight: '100vh',
             }}
         >
-                <>
-                    {showNavbar && <Navbar />}
-                    <Box
-                        sx={{
-                            flex: '1 0 auto'
-                        }}
-                    >
-                        <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/auth" element={<AuthPage />} />
-                            <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
-                            <Route path="/friends" element={<FriendPage />} />
-                            <Route path="/profile" element={<ProfilePage />} />
-                            <Route path="*" element={<NotFoundPage />} />
-                        </Routes>
-                    </Box>
-                    <Footer />
-                </>
+            <>
+                {showNavbar && <Navbar/>}
+                <Box
+                    sx={{
+                        flex: '1 0 auto'
+                    }}
+                >
+                    <Routes>
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/auth" element={<AuthPage/>}/>
+                        <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler/>}/>
+                        <Route path="/friends" element={<FriendPage/>}/>
+                        <Route path="/profile" element={<ProfilePage/>}/>
+                        <Route path="/stats" element={<StatsPage/>}/>
+                        <Route path="*" element={<NotFoundPage/>}/>
+                    </Routes>
+                </Box>
+                <Footer/>
+            </>
 
         </Box>
     );

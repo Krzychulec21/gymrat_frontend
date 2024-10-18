@@ -1,4 +1,3 @@
-// websocketService.js
 import { Client } from '@stomp/stompjs';
 import authService from "./authService";
 

@@ -1,51 +1,53 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
+    Alert,
+    Avatar,
     Box,
     Button,
     Dialog,
-    DialogTitle,
-    DialogContent,
     DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControlLabel,
     IconButton,
+    Radio,
+    RadioGroup,
+    Snackbar,
     TextField,
     Typography,
-    RadioGroup,
-    FormControlLabel,
-    Radio, Snackbar, Alert, Avatar,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import EditIcon from '@mui/icons-material/Edit';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import {getUserAvatar, updatePersonalInfo} from "../service/userService";
+import {updatePersonalInfo} from "../service/userService";
 import axiosInstance from "../utils/axiosInstance";
+import Slide from '@mui/material/Slide';
+import * as Yup from "yup";
+import {Field, Form, Formik} from "formik";
 
-const ProfileInfo = ({user, personalInfo}) => {
-    const [avatar, setAvatar] = useState(null);
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const ProfileInfo = ({user, personalInfo, avatar, onDataUpdate}) => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
-
-    const bio = personalInfo.bio || '';
-
     const [openDialog, setOpenDialog] = useState(false);
-    const [formData, setFormData] = useState({
-        bio: user.bio || '',
-        weight: user.weight || '',
-        height: user.height || '',
-        gender: user.gender || '',
+
+    const validationSchema = Yup.object().shape({
+        bio: Yup.string().max(500, 'O mnie nie może przekraczać 500 znaków'),
+        weight: Yup.number()
+            .min(30, 'Waga musi wynosić co najmniej 30 kg')
+            .max(400, 'Waga nie może przekraczać 400 kg')
+            .required('Waga jest wymagana'),
+        height: Yup.number()
+            .min(50, 'Wzrost musi wynosić co najmniej 50 cm')
+            .max(300, 'Wzrost nie może przekraczać 300 cm')
+            .required('Wzrost jest wymagany'),
+        gender: Yup.string().required('Płeć jest wymagana'),
     });
 
-    useEffect(() => {
-        const fetchAvatar = async () => {
-            try {
-                const avatarData = await getUserAvatar();
-                setAvatar(avatarData);
-            } catch (error) {
-                console.error("Failed to load avatar", error);
-            }
-        };
 
-        fetchAvatar();
-    }, []);
     const handleAvatarChange = async (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -55,8 +57,7 @@ const ProfileInfo = ({user, personalInfo}) => {
 
                 await axiosInstance.patch('/avatar', formData);
 
-                const updatedAvatar = await getUserAvatar();
-                setAvatar(updatedAvatar);
+                onDataUpdate();
             } catch (error) {
                 setOpenSnackbar(true);
                 console.error("Failed to update avatar:", error);
@@ -75,23 +76,17 @@ const ProfileInfo = ({user, personalInfo}) => {
         setOpenDialog(false);
     };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
 
-    const handleSave = async () => {
+    const handleSave = async (values, { setSubmitting }) => {
         try {
-            await updatePersonalInfo(formData);
+            await updatePersonalInfo(values);
             setOpenDialog(false);
+            onDataUpdate();
         } catch (error) {
             console.error('Error updating personal info:', error);
         }
+        setSubmitting(false);
     };
-
 
 
     return (
@@ -100,11 +95,11 @@ const ProfileInfo = ({user, personalInfo}) => {
                 position: 'relative',
                 backgroundColor: '#2C2C2C',
                 borderRadius: '8px',
-                maxWidth: {xs: '85%', lg: '60%'},
+                maxWidth: {xs: '95%', lg: '60%'},
                 padding: '20px',
                 margin: '0 auto',
                 color: 'white',
-                minWidth: {xs: '80%', lg: '55%'} ,
+                minWidth: {xs: '80%', lg: '55%'},
             }}
         >
             <Box
@@ -142,7 +137,7 @@ const ProfileInfo = ({user, personalInfo}) => {
                 {/*Avatar with upload photo icon*/}
                 <Box sx={{
                     position: 'relative',
-                    mb:2
+                    mb: 2
                 }}
                 >
                     <Avatar
@@ -181,19 +176,19 @@ const ProfileInfo = ({user, personalInfo}) => {
                         {user.firstName} {user.lastName}
                     </Typography>
                     <Typography variant="body1"
-                    sx={{color: 'rgba(255,255,255,0.7)'}}>
+                                sx={{color: 'rgba(255,255,255,0.7)'}}>
                         {user.email}
                     </Typography>
                 </Box>
             </Box>
 
-        {/*user properties*/}
+            {/*user properties*/}
             <Box sx={{
-                display:'flex',
-                flexWrap:'wrap',
-                gap:3,
-                mb:2,
-                ml:3
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: 3,
+                mb: 2,
+                ml: 3
             }}>
                 {personalInfo && typeof personalInfo === 'object' && (
                     <Box>
@@ -204,13 +199,13 @@ const ProfileInfo = ({user, personalInfo}) => {
                 )}
             </Box>
 
-        {/*bio*/}
-            <Box sx={{ml:3}}>
-                <Typography variant="h6" sx={{mb:2}}>
+            {/*bio*/}
+            <Box sx={{ml: 3}}>
+                <Typography variant="h6" sx={{mb: 2}}>
                     O mnie:
                 </Typography>
-                <Typography sx={{maxWidth: {lg:'70%'}}}>
-                    {bio}
+                <Typography sx={{maxWidth: {lg: '70%'}}}>
+                    {personalInfo.bio}
                 </Typography>
             </Box>
             <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{
@@ -220,14 +215,21 @@ const ProfileInfo = ({user, personalInfo}) => {
                     Niepoprawny format pliku!
                 </Alert>
             </Snackbar>
-            <Dialog open={openDialog} PaperProps={{style: {
-                backgroundColor:'grey'
-                }}} onClose={handleDialogClose}>
+            <Dialog
+                open={openDialog}
+                TransitionComponent={Transition}
+                PaperProps={{
+                    style: {
+                        backgroundColor: '#161a1d',
+                    },
+                }}
+                onClose={() => setOpenDialog(false)}
+            >
                 <DialogTitle>
                     Edytuj Informacje
                     <IconButton
                         aria-label="close"
-                        onClick={handleDialogClose}
+                        onClick={() => setOpenDialog(false)}
                         sx={{
                             position: 'absolute',
                             right: 8,
@@ -238,60 +240,84 @@ const ProfileInfo = ({user, personalInfo}) => {
                     </IconButton>
                 </DialogTitle>
                 <DialogContent dividers>
-                    {/* Bio */}
-                    <TextField
-                        name="bio"
-                        label="O mnie"
-                        multiline
-                        rows={4}
-                        fullWidth
-                        margin="normal"
-                        value={formData.bio}
-                        onChange={handleInputChange}
-                    />
-                    {/* Weight */}
-                    <TextField
-                        name="weight"
-                        label="Waga (kg)"
-                        type="number"
-                        fullWidth
-                        margin="normal"
-                        value={formData.weight}
-                        onChange={handleInputChange}
-                    />
-                    {/* Height */}
-                    <TextField
-                        name="height"
-                        label="Wzrost (cm)"
-                        type="number"
-                        fullWidth
-                        margin="normal"
-                        value={formData.height}
-                        onChange={handleInputChange}
-                    />
-                    {/* Gender */}
-                    <Typography variant="subtitle1" sx={{ mt: 2 }}>
-                        Płeć
-                    </Typography>
-                    <RadioGroup
-                        row
-                        name="gender"
-                        value={formData.gender}
-                        onChange={handleInputChange}
+                    <Formik
+                        initialValues={{
+                            bio: personalInfo.bio || '',
+                            weight: personalInfo.weight || '',
+                            height: personalInfo.height || '',
+                            gender: personalInfo.gender || '',
+                        }}
+                        validationSchema={validationSchema}
+                        onSubmit={handleSave}
                     >
-                        <FormControlLabel value="MALE" control={<Radio />} label="Mężczyzna" />
-                        <FormControlLabel value="FEMALE" control={<Radio />} label="Kobieta" />
-                        <FormControlLabel value="OTHER" control={<Radio />} label="Inna" />
-                    </RadioGroup>
+                        {({ errors, touched, isSubmitting }) => (
+                            <Form>
+                                {/* Bio */}
+                                <Field
+                                    as={TextField}
+                                    name="bio"
+                                    label="O mnie"
+                                    multiline
+                                    rows={4}
+                                    fullWidth
+                                    margin="normal"
+                                    error={touched.bio && !!errors.bio}
+                                    helperText={touched.bio && errors.bio}
+                                />
+
+                                {/* Weight */}
+                                <Field
+                                    as={TextField}
+                                    name="weight"
+                                    label="Waga (kg)"
+                                    type="number"
+                                    fullWidth
+                                    margin="normal"
+                                    error={touched.weight && !!errors.weight}
+                                    helperText={touched.weight && errors.weight}
+                                />
+
+                                {/* Height */}
+                                <Field
+                                    as={TextField}
+                                    name="height"
+                                    label="Wzrost (cm)"
+                                    type="number"
+                                    fullWidth
+                                    margin="normal"
+                                    error={touched.height && !!errors.height}
+                                    helperText={touched.height && errors.height}
+                                />
+
+                                {/* Gender */}
+                                <Typography variant="subtitle1" sx={{ mt: 2 }}>
+                                    Płeć
+                                </Typography>
+                                <Field name="gender">
+                                    {({ field }) => (
+                                        <RadioGroup row {...field}>
+                                            <FormControlLabel value="MALE" control={<Radio />} label="Mężczyzna" />
+                                            <FormControlLabel value="FEMALE" control={<Radio />} label="Kobieta" />
+                                            <FormControlLabel value="OTHER" control={<Radio />} label="Inna" />
+                                        </RadioGroup>
+                                    )}
+                                </Field>
+                                {touched.gender && errors.gender && (
+                                    <Typography color="error">{errors.gender}</Typography>
+                                )}
+
+                                <DialogActions>
+                                    <Button onClick={() => setOpenDialog(false)} color="primary">
+                                        Anuluj
+                                    </Button>
+                                    <Button type="submit" color="primary" variant="contained" disabled={isSubmitting}>
+                                        Zapisz
+                                    </Button>
+                                </DialogActions>
+                            </Form>
+                        )}
+                    </Formik>
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleDialogClose} color="primary">
-                        Anuluj
-                    </Button>
-                    <Button onClick={handleSave} color="primary" variant="contained">
-                        Zapisz
-                    </Button>
-                </DialogActions>
             </Dialog>
 
         </Box>

@@ -1,6 +1,6 @@
 import ProfileInfo from "../components/ProfileInfo";
 import {Box, CircularProgress} from "@mui/material";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {getUser, getUserAvatar, getUserPersonalInfo} from "../service/userService";
 
 
@@ -11,26 +11,30 @@ const ProfilePage = () => {
     const [personalInfo, setPersonalInfo] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [avatarUrl, userData, personalInfoData] = await Promise.all([
-                    getUserAvatar(),
-                    getUser(),
-                    getUserPersonalInfo(),
-                ]);
-                setAvatar(avatarUrl);
-                setUser(userData);
-                setPersonalInfo(personalInfoData);
-            } catch (error) {
-                console.error("Failed to load data", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
+    const fetchData = useCallback(async () => {
+        try {
+            const [avatarData, userData, personalInfoData] = await Promise.all([
+                getUserAvatar(),
+                getUser(),
+                getUserPersonalInfo(),
+            ]);
+            setAvatar(avatarData);
+            setUser(userData);
+            setPersonalInfo(personalInfoData);
+        } catch (error) {
+            console.error("Failed to load data", error);
+        } finally {
+            setLoading(false);
+        }
     }, []);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
+    const handleDataUpdate = useCallback(() => {
+        fetchData();
+    }, [fetchData]);
 
     if (loading || !user || !personalInfo) {
         return (
@@ -41,7 +45,7 @@ const ProfilePage = () => {
     }
     return (
         <Box sx={{ display: 'flex' }}>
-            <ProfileInfo user={user} personalInfo={personalInfo} avatar={avatar} />
+            <ProfileInfo user={user} personalInfo={personalInfo} avatar={avatar} onDataUpdate={handleDataUpdate} />
         </Box>
     );
 };
