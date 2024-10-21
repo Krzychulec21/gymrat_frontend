@@ -5,11 +5,13 @@ import {NotificationsProvider} from './context/NotificationContext';
 import { ThemeProvider} from '@mui/material/styles';
 import Layout from "./utils/Layout";
 import theme from "./utils/theme"
+import {CssBaseline} from "@mui/material";
 
 
 function App() {
     return (
         <ThemeProvider theme={theme}>
+            <CssBaseline />
             <AuthProvider>
                 <NotificationsProvider>
                     <Router>

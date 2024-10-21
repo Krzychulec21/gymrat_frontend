@@ -84,7 +84,7 @@ const FriendsList = ({
                 <Box sx={{width: '270px'}}>
                     <Typography>Przedział wiekowy</Typography>
                     <Slider
-                        getAriaLabel={() => 'Temperature range'}
+                        getAriaLabel={() => 'Age range'}
                         value={ageValue}
                         onChange={handleAgeChange}
                         onChangeCommitted={handleCommittedChange}

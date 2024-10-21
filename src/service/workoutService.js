@@ -35,8 +35,6 @@ export const saveWorkoutSession = async (formData) => {
                 }))
             }))
         };
-
-        console.log("Dane wysyłane do backendu:", workoutSessionData);
         const response = await axiosInstance.post('/workout', workoutSessionData);
         return response.data;
     } catch (error) {
@@ -44,3 +42,40 @@ export const saveWorkoutSession = async (formData) => {
         throw error;
     }
 };
+
+export const getNumberOfUserWorkouts = async () => {
+    try {
+        const response = await axiosInstance.get(`/workout/count`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const getTotalWeightLiftedByUser = async () => {
+    try {
+        const response = await axiosInstance.get(`/workout/total-weight`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const getDateOfLastWorkout = async () => {
+    try {
+        const response = await axiosInstance.get(`/workout/last-workout`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const getTopCategoriesForUser = async () => {
+    try {
+        const response = await axiosInstance.get(`/workout/top-categories`);
+        console.log("dane z serwisu", response.data);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}

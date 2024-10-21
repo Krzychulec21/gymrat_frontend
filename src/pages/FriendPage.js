@@ -146,9 +146,9 @@ const FriendsPage = () => {
                 flexDirection: { xs: 'column', md: 'row' },
                 justifyContent: 'center',
                 my:'auto',
-                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-                border: '5px solid rgba(0, 0, 0, 0.1)',
-                borderRadius: '8px'
+
+                borderRadius: '8px',
+                backgroundColor:'#2C2C2C'
             }}
         >
             {!isMdUp && (

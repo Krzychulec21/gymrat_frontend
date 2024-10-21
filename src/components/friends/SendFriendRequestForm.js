@@ -81,13 +81,7 @@ const SendFriendRequestForm = () => {
             </Box>
             <Box
                 sx={{
-                    overflowY: "auto", height: "100%", '&::-webkit-scrollbar': {
-                        width: '8px'
-                    },
-
-                    '&::-webkit-scrollbar-thumb': {
-                        backgroundColor: 'rgba(0,0,0,.1)', outline: '1px solid white', borderRadius: '10px'
-                    }
+                    overflowY: "auto", height: "100%",
                 }}
             >
                 <List>

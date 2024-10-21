@@ -20,6 +20,7 @@ const theme = createTheme({
             textTransform: 'none',
         },
     },
+
     components: {
         MuiButton: {
             styleOverrides: {
@@ -92,9 +93,46 @@ const theme = createTheme({
                 },
             },
         },
-
+        MuiIconButton: {
+            styleOverrides: {
+                root: {
+                    color: '#FFFFFF', // Set icons color to white
+                },
+            },
+        },
+        MuiSvgIcon: {
+            styleOverrides: {
+                root: {
+                    color: '#FFFFFF', // Set SVG icons (like AddIcon, RemoveIcon) to white
+                },
+            },
+        },
+        MuiInputAdornment: {
+            styleOverrides: {
+                root: {
+                    color: '#FFFFFF', // Color for calendar icon in date fields
+                },
+            },
+        },
+        MuiCssBaseline: {
+            styleOverrides: {
+                // Custom scrollbar styles
+                '::-webkit-scrollbar': {
+                    width: '8px',
+                },
+                '::-webkit-scrollbar-thumb': {
+                    backgroundColor: 'rgba(0,0,0,.1)',
+                    borderRadius: '10px',
+                    outline: '1px solid white',
+                },
+                '::-webkit-scrollbar-track': {
+                    backgroundColor: 'rgba(255,255,255,0.1)',
+                },
+            },
+        },
 
     },
+
 });
 
 export default theme;

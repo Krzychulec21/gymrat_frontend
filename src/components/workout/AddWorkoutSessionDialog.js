@@ -1,85 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { Formik, Field, Form, FieldArray } from 'formik';
-import {
-    Button,
-    Dialog,
-    DialogContent,
-    DialogActions,
-    TextField,
-    IconButton,
-} from '@mui/material';
-import Autocomplete from '@mui/material/Autocomplete';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import * as Yup from 'yup';
-import { getAllExercises, saveWorkoutSession } from '../../service/workoutService';
+import React, {useEffect, useState} from 'react';
+import {Field, FieldArray, Form, Formik} from 'formik';
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField,} from '@mui/material';
+import {getAllExercises, saveWorkoutSession} from '../../service/workoutService';
+import validationSchema from "./ValidationSchema";
+import ExerciseField from "./ExerciseField";
+import {DatePicker} from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 
-const validationSchema = Yup.object({
-    date: Yup.date().required('Data jest wymagana'),
-    note: Yup.string(),
-    exercises: Yup.array()
-        .of(
-            Yup.object({
-                exerciseId: Yup.number().required('Wybierz ćwiczenie'),
-                sets: Yup.array()
-                    .of(
-                        Yup.object({
-                            reps: Yup.number()
-                                .required('Podaj liczbę powtórzeń')
-                                .min(1, 'Liczba powtórzeń musi być większa niż 0'),
-                            weight: Yup.number()
-                                .required('Podaj ciężar')
-                                .min(0, 'Ciężar musi być większy lub równy 0'),
-                        })
-                    )
-                    .min(1, 'Przynajmniej jeden zestaw jest wymagany'),
-            })
-        )
-        .min(1, 'Przynajmniej jedno ćwiczenie jest wymagane'),
-});
 
-const AddWorkoutSessionDialog = ({ open, onClose, Transition }) => {
+const AddWorkoutSessionDialog = ({ open, onClose, Transition, onWorkoutAdded }) => {
     const [exerciseOptions, setExerciseOptions] = useState([]);
+    const today = dayjs().format('YYYY-MM-DD');
 
     useEffect(() => {
         const fetchExercises = async () => {
             const exercises = await getAllExercises();
-            const options = exercises.map((exercise) => ({
-                id: exercise.id,
-                name: exercise.name,
-                categoryName: exercise.categoryName,
-            }));
-            setExerciseOptions(options);
+            setExerciseOptions(exercises.map(ex => ({
+                id: ex.id, name: ex.name, categoryName: ex.categoryName,
+            })));
         };
-
         fetchExercises();
     }, []);
 
     return (
-        <Dialog
-            open={open}
-            onClose={onClose}
-            TransitionComponent={Transition}
-            PaperProps={{ style: { backgroundColor: '#161a1d' } }}
-        >
+        <Dialog open={open} onClose={onClose} TransitionComponent={Transition} PaperProps={{ style: { backgroundColor: '#161a1d' }}} title="elo" >
             <Formik
                 initialValues={{
                     date: new Date().toISOString().split('T')[0],
                     note: '',
-                    exercises: [
-                        {
-                            exerciseId: '',
-                            sets: [{ reps: '', weight: '' }],
-                        },
-                    ],
+                    exercises: [{ exerciseId: '', sets: [{ reps: '', weight: '' }] }],
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
-                    console.log("dane przesylane do metody save z formularza", values)
                     saveWorkoutSession(values)
                         .then(() => {
                             setSubmitting(false);
                             onClose();
+                            onWorkoutAdded();
                         })
                         .catch((error) => {
                             console.error(error);
@@ -87,9 +44,10 @@ const AddWorkoutSessionDialog = ({ open, onClose, Transition }) => {
                         });
                 }}
             >
-                {({ values, errors, touched, isSubmitting }) => (
+                {({ values, isSubmitting }) => (
                     <Form>
                         <DialogContent>
+                            <DialogTitle>Nowa sesja treningowa</DialogTitle>
                             <Field
                                 name="date"
                                 as={TextField}
@@ -97,9 +55,15 @@ const AddWorkoutSessionDialog = ({ open, onClose, Transition }) => {
                                 type="date"
                                 fullWidth
                                 InputLabelProps={{ shrink: true }}
+                                inputProps={{max: today}}
                                 margin="normal"
-                                error={touched.date && Boolean(errors.date)}
-                                helperText={touched.date && errors.date}
+                                InputProps={{
+                                    sx: {
+                                        '& input[type="date"]::-webkit-calendar-picker-indicator': {
+                                            filter: 'invert(1)', // This will invert the icon color to white
+                                        },
+                                    },
+                                }}
                             />
                             <Field
                                 name="note"
@@ -107,192 +71,19 @@ const AddWorkoutSessionDialog = ({ open, onClose, Transition }) => {
                                 label="Notatka"
                                 fullWidth
                                 margin="normal"
-                                error={touched.note && Boolean(errors.note)}
-                                helperText={touched.note && errors.note}
                             />
                             <FieldArray name="exercises">
                                 {({ push, remove }) => (
                                     <>
-                                        {values.exercises.map((exercise, exerciseIndex) => (
-                                            <div key={exerciseIndex} style={{ marginBottom: '20px' }}>
-                                                <Field name={`exercises[${exerciseIndex}].exerciseId`}>
-                                                    {({ field, form, meta }) => (
-                                                        <Autocomplete
-
-                                                            options={exerciseOptions}
-                                                            getOptionLabel={(option) => option.name}
-                                                            groupBy={(option) => option.categoryName}
-                                                            value={
-                                                                exerciseOptions.find(
-                                                                    (option) => option.id === field.value
-                                                                ) || null
-                                                            }
-                                                            onChange={(event, value) => {
-                                                                form.setFieldValue(
-                                                                    field.name,
-                                                                    value ? value.id : ''
-                                                                );
-                                                            }}
-                                                            renderOption={(props, option) => (
-                                                                <li {...props} style={{ color: 'blue' }}>
-                                                                    {option.name}
-                                                                </li>
-                                                            )}
-                                                            renderInput={(params) => (
-                                                                <TextField
-                                                                    {...params}
-                                                                    label="Wybierz ćwiczenie"
-                                                                    margin="normal"
-                                                                    error={meta.touched && Boolean(meta.error)}
-                                                                    helperText={meta.touched && meta.error}
-                                                                />
-                                                            )}
-                                                        />
-                                                    )}
-                                                </Field>
-                                                <FieldArray name={`exercises[${exerciseIndex}].sets`}>
-                                                    {({ push: pushSet, remove: removeSet }) => (
-                                                        <>
-                                                            {exercise.sets.map((set, setIndex) => (
-                                                                <div
-                                                                    key={setIndex}
-                                                                    style={{
-                                                                        display: 'flex',
-                                                                        gap: '10px',
-                                                                        alignItems: 'center',
-                                                                    }}
-                                                                >
-                                                                    <Field
-                                                                        name={`exercises[${exerciseIndex}].sets[${setIndex}].reps`}
-                                                                        as={TextField}
-                                                                        label="Powtórzenia"
-                                                                        type="number"
-                                                                        fullWidth
-                                                                        margin="normal"
-                                                                        error={
-                                                                            touched.exercises &&
-                                                                            touched.exercises[exerciseIndex] &&
-                                                                            touched.exercises[exerciseIndex].sets &&
-                                                                            touched.exercises[exerciseIndex].sets[
-                                                                                setIndex
-                                                                                ] &&
-                                                                            touched.exercises[exerciseIndex].sets[
-                                                                                setIndex
-                                                                                ].reps &&
-                                                                            Boolean(
-                                                                                errors.exercises &&
-                                                                                errors.exercises[exerciseIndex] &&
-                                                                                errors.exercises[exerciseIndex].sets &&
-                                                                                errors.exercises[exerciseIndex].sets[
-                                                                                    setIndex
-                                                                                    ] &&
-                                                                                errors.exercises[exerciseIndex].sets[
-                                                                                    setIndex
-                                                                                    ].reps
-                                                                            )
-                                                                        }
-                                                                        helperText={
-                                                                            touched.exercises &&
-                                                                            touched.exercises[exerciseIndex] &&
-                                                                            touched.exercises[exerciseIndex].sets &&
-                                                                            touched.exercises[exerciseIndex].sets[
-                                                                                setIndex
-                                                                                ] &&
-                                                                            touched.exercises[exerciseIndex].sets[
-                                                                                setIndex
-                                                                                ].reps &&
-                                                                            errors.exercises &&
-                                                                            errors.exercises[exerciseIndex] &&
-                                                                            errors.exercises[exerciseIndex].sets &&
-                                                                            errors.exercises[exerciseIndex].sets[
-                                                                                setIndex
-                                                                                ] &&
-                                                                            errors.exercises[exerciseIndex].sets[
-                                                                                setIndex
-                                                                                ].reps
-                                                                        }
-                                                                    />
-                                                                    <Field
-                                                                        name={`exercises[${exerciseIndex}].sets[${setIndex}].weight`}
-                                                                        as={TextField}
-                                                                        label="Ciężar (kg)"
-                                                                        type="number"
-                                                                        fullWidth
-                                                                        margin="normal"
-                                                                        error={
-                                                                            touched.exercises &&
-                                                                            touched.exercises[exerciseIndex] &&
-                                                                            touched.exercises[exerciseIndex].sets &&
-                                                                            touched.exercises[exerciseIndex].sets[
-                                                                                setIndex
-                                                                                ] &&
-                                                                            touched.exercises[exerciseIndex].sets[
-                                                                                setIndex
-                                                                                ].weight &&
-                                                                            Boolean(
-                                                                                errors.exercises &&
-                                                                                errors.exercises[exerciseIndex] &&
-                                                                                errors.exercises[exerciseIndex].sets &&
-                                                                                errors.exercises[exerciseIndex].sets[
-                                                                                    setIndex
-                                                                                    ] &&
-                                                                                errors.exercises[exerciseIndex].sets[
-                                                                                    setIndex
-                                                                                    ].weight
-                                                                            )
-                                                                        }
-                                                                        helperText={
-                                                                            touched.exercises &&
-                                                                            touched.exercises[exerciseIndex] &&
-                                                                            touched.exercises[exerciseIndex].sets &&
-                                                                            touched.exercises[exerciseIndex].sets[
-                                                                                setIndex
-                                                                                ] &&
-                                                                            touched.exercises[exerciseIndex].sets[
-                                                                                setIndex
-                                                                                ].weight &&
-                                                                            errors.exercises &&
-                                                                            errors.exercises[exerciseIndex] &&
-                                                                            errors.exercises[exerciseIndex].sets &&
-                                                                            errors.exercises[exerciseIndex].sets[
-                                                                                setIndex
-                                                                                ] &&
-                                                                            errors.exercises[exerciseIndex].sets[
-                                                                                setIndex
-                                                                                ].weight
-                                                                        }
-                                                                    />
-                                                                    <IconButton
-                                                                        onClick={() => removeSet(setIndex)}
-                                                                        disabled={exercise.sets.length === 1}
-                                                                    >
-                                                                        <RemoveIcon />
-                                                                    </IconButton>
-                                                                    <IconButton
-                                                                        onClick={() =>
-                                                                            pushSet({ reps: '', weight: '' })
-                                                                        }
-                                                                    >
-                                                                        <AddIcon />
-                                                                    </IconButton>
-                                                                </div>
-                                                            ))}
-                                                        </>
-                                                    )}
-                                                </FieldArray>
-                                                <Button
-                                                    onClick={() => remove(exerciseIndex)}
-                                                    disabled={values.exercises.length === 1}
-                                                >
-                                                    Usuń ćwiczenie
-                                                </Button>
-                                            </div>
+                                        {values.exercises.map((_, exerciseIndex) => (
+                                            <ExerciseField
+                                                key={exerciseIndex}
+                                                exerciseOptions={exerciseOptions}
+                                                exerciseIndex={exerciseIndex}
+                                                removeExercise={remove}
+                                            />
                                         ))}
-                                        <Button
-                                            onClick={() =>
-                                                push({ exerciseId: '', sets: [{ reps: '', weight: '' }] })
-                                            }
-                                        >
+                                        <Button onClick={() => push({ exerciseId: '', sets: [{ reps: '', weight: '' }] })}>
                                             Dodaj kolejne ćwiczenie
                                         </Button>
                                     </>
