@@ -8,6 +8,7 @@ import CustomCard from "./display/CustomCard";
 import GeneralStatsCard from "./workout/GeneralStatsCard";
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import {getTopCategoriesForUser} from "../service/workoutService";
+import PopularExerciseChart from "./workout/PopularExerciseChart";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -16,7 +17,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const MainStats = () => {
     const [refresh, setRefresh] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
-    const [topCategories, setTopCategories] = useState([]);
+
     const handleDialogClose = (event, reason) => {
         if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
             return;
@@ -33,21 +34,15 @@ const MainStats = () => {
         setRefresh(!refresh);
     }
 
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-    const loadTopCategoriesForUser = async () => {
-        const data = await getTopCategoriesForUser();
-        setTopCategories(data);
-    }
-    useEffect(() => {
-        loadTopCategoriesForUser();
-    }, [])
+
+
     return (
         <Box sx={{
             position: 'relative',
             backgroundColor: '#2C2C2C',
             borderRadius: '8px',
-            maxWidth: {xs: '95%', lg: '60%'},
+            maxWidth: {xs: '95%', lg: '80%'},
             padding: '20px',
             margin: '0 auto',
             color: 'white',
@@ -61,24 +56,7 @@ const MainStats = () => {
             }} onClick={handleAddWorkoutButton}>Dodaj trening</Button>
             <AddWorkoutSessionDialog open={openDialog} onClose={handleDialogClose} Transition={Transition} onWorkoutAdded={handleWorkoutAdded}/>
             <GeneralStatsCard refresh={refresh}/>
-            <PieChart width={400} height={400}>
-                <Pie
-                    data={topCategories}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    outerRadius={150}
-                    fill="#8884d8"
-                    dataKey="percentage"
-                    nameKey="category"
-                >
-                    {topCategories.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-            </PieChart>
+            <PopularExerciseChart refresh={refresh}/>
         </Box>
     );
 };

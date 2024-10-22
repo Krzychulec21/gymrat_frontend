@@ -15,7 +15,6 @@ const StatsPage = () => {
     return (
         <>
         <MainStats></MainStats>
-        <Button onClick={handleClick}>Essa</Button>
 
             </>
     );
