@@ -16,8 +16,8 @@ const GeneralStatsCard = ({refresh}) => {
     const loadLiftedWeight = async () => {
         const workoutData = await getTotalWeightLiftedByUser();
         if (workoutData < 100000) {
-            setLiftedWeight((workoutData/1000).toFixed(2));
-        }else {
+            setLiftedWeight((workoutData / 1000).toFixed(2));
+        } else {
             const roundedWeight = Math.round(workoutData / 1000);
             setLiftedWeight(roundedWeight);
         }
@@ -40,20 +40,20 @@ const GeneralStatsCard = ({refresh}) => {
         loadTotalWorkouts();
         loadLiftedWeight();
         loadTheLastWorkout();
-    },[refresh]);
+    }, [refresh]);
     return (
         <Box sx={{
-            mt:10,
-            display:'flex',
-            gap:8,
-            ml:4,
-            mr:4,
+            mt: 10,
+            display: 'flex',
+            gap: 8,
+            ml: 4,
+            mr: 4,
             justifyContent: 'center',
             flexWrap: 'wrap',
         }}>
             <CustomCard value={totalWorkouts} title="Łączna liczba treningów"/>
             <CustomCard value={liftedWeight + " t"} title="Suma podniesionych kilogramów"/>
-            <CustomCard sx={{fontSize:10}} value={lastWorkoutDate} title="Ostatni trening"/>
+            <CustomCard sx={{fontSize: 10}} value={lastWorkoutDate} title="Ostatni trening"/>
 
         </Box>
     );

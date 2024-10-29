@@ -53,6 +53,16 @@ const theme = createTheme({
             },
             variants: [
                 {
+                    props: {variant: "secondAction"},
+                    style: {
+                        backgroundColor: '#3f3f3f',
+                        '&:hover': {
+                            backgroundColor: '#383838',
+                        },
+                    }
+                },
+
+                {
                     props: { variant: 'google' },
                     style: {
                         textTransform: 'none',
@@ -93,24 +103,55 @@ const theme = createTheme({
                 },
             },
         },
+        MuiPagination: {
+          styleOverrides: {
+              root:{
+              "& .MuiPaginationItem-root": {
+                  color: 'white',
+              },
+              "& .Mui-selected": {
+                  backgroundColor: 'rgba(80,80,80,0.8)',
+                  color: 'red'
+              },
+              "& .MuiPaginationItem-root:hover": {
+                  backgroundColor: 'rgba(255, 255, 255, 0.4)',
+              }
+          },
+          }
+        },
+        MuiPaper: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: '#252525',
+                }
+            }
+        },
+
+        MuiDialogContentText: {
+            styleOverrides: {
+                root: {
+                color: 'white',
+            }
+            }
+        },
         MuiIconButton: {
             styleOverrides: {
                 root: {
-                    color: '#FFFFFF', // Set icons color to white
+                    color: '#FFFFFF',
                 },
             },
         },
         MuiSvgIcon: {
             styleOverrides: {
                 root: {
-                    color: '#FFFFFF', // Set SVG icons (like AddIcon, RemoveIcon) to white
+                    color: '#FFFFFF',
                 },
             },
         },
         MuiInputAdornment: {
             styleOverrides: {
                 root: {
-                    color: '#FFFFFF', // Color for calendar icon in date fields
+                    color: '#FFFFFF',
                 },
             },
         },

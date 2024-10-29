@@ -1,14 +1,11 @@
-import {Box, Dialog, DialogActions, DialogContent, DialogTitle, IconButton} from "@mui/material";
+import {Box} from "@mui/material";
 import Button from "@mui/material/Button";
-import CloseIcon from "@mui/icons-material/Close";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import Slide from "@mui/material/Slide";
-import AddWorkoutSessionDialog from "./workout/AddWorkoutSessionDialog";
-import CustomCard from "./display/CustomCard";
+import WorkoutSessionDialog from "./workout/WorkoutSessionDialog";
 import GeneralStatsCard from "./workout/GeneralStatsCard";
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
-import {getTopCategoriesForUser} from "../service/workoutService";
 import PopularExerciseChart from "./workout/PopularExerciseChart";
+import WorkoutSessions from "./workout/WorkoutSessions";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -54,9 +51,10 @@ const MainStats = () => {
                 top: 10,
                 right: 10
             }} onClick={handleAddWorkoutButton}>Dodaj trening</Button>
-            <AddWorkoutSessionDialog open={openDialog} onClose={handleDialogClose} Transition={Transition} onWorkoutAdded={handleWorkoutAdded}/>
+            <WorkoutSessionDialog open={openDialog} onClose={handleDialogClose} Transition={Transition} onWorkoutAdded={handleWorkoutAdded}/>
             <GeneralStatsCard refresh={refresh}/>
             <PopularExerciseChart refresh={refresh}/>
+            <WorkoutSessions refresh={refresh} onWorkoutChanged={handleWorkoutAdded}/>
         </Box>
     );
 };

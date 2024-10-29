@@ -95,7 +95,7 @@ const ProfileInfo = ({user, personalInfo, avatar, onDataUpdate}) => {
                 position: 'relative',
                 backgroundColor: '#2C2C2C',
                 borderRadius: '8px',
-                maxWidth: {xs: '95%', lg: '60%'},
+                maxWidth: {xs: '90%', lg: '70%'},
                 padding: '20px',
                 margin: '0 auto',
                 color: 'white',
@@ -201,10 +201,10 @@ const ProfileInfo = ({user, personalInfo, avatar, onDataUpdate}) => {
 
             {/*bio*/}
             <Box sx={{ml: 3}}>
-                <Typography variant="h6" sx={{mb: 2}}>
+                <Typography variant="h6" sx={{mb: 2}} >
                     O mnie:
                 </Typography>
-                <Typography sx={{maxWidth: {lg: '70%'}}}>
+                <Typography sx={{maxWidth: {xs: '85%', wordBreak: 'break-word'}}}>
                     {personalInfo.bio}
                 </Typography>
             </Box>
@@ -218,11 +218,6 @@ const ProfileInfo = ({user, personalInfo, avatar, onDataUpdate}) => {
             <Dialog
                 open={openDialog}
                 TransitionComponent={Transition}
-                PaperProps={{
-                    style: {
-                        backgroundColor: '#161a1d',
-                    },
-                }}
                 onClose={() => setOpenDialog(false)}
             >
                 <DialogTitle>

@@ -182,16 +182,7 @@ const FriendsList = ({
                         mt: 2,
                         display: 'flex',
                         justifyContent: 'center',
-                        "& .MuiPaginationItem-root": {
-                            color: 'white',
-                        },
-                        "& .Mui-selected": {
-                            backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                            color: 'red'
-                        },
-                        "& .MuiPaginationItem-root:hover": {
-                            backgroundColor: 'rgba(255, 255, 255, 0.4)',
-                        }
+
                     }}
                 />
             </Box>
@@ -206,10 +197,10 @@ const FriendsList = ({
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDialog} color="primary">
+                    <Button onClick={handleCloseDialog} variant="secondAction">
                         Anuluj
                     </Button>
-                    <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+                    <Button onClick={handleConfirmDelete}>
                         Usuń
                     </Button>
                 </DialogActions>

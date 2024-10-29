@@ -9,6 +9,15 @@ export const getAllExercises = async () => {
     }
 }
 
+export const getExerciseInfo = async (id) => {
+    try {
+        const response = await axiosInstance.get(`/exercise/${id}`)
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 export const getExercisesByCategory = async (category) => {
     try {
         const response = await axiosInstance.get(`/exercise/category`, {
@@ -79,3 +88,51 @@ export const getTopCategoriesForUser = async () => {
         console.error(error);
     }
 }
+
+export const getUserWorkouts = async (page = 0, size = 8, sortBy = 'date', sortDir = 'desc') => {
+    try {
+        const response = await axiosInstance.get('/workout/workouts', {
+            params: {
+                page,
+                size,
+                sortBy,
+                sortDir
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+export const updateWorkoutSession = async (id, formData) => {
+    try {
+        const workoutSessionData = {
+            date: formData.date,
+            note: formData.note,
+            exerciseSessions: formData.exercises.map(exercise => ({
+                exerciseId: exercise.exerciseId,
+                sets: exercise.sets.map(set => ({
+                    reps: parseInt(set.reps),
+                    weight: parseFloat(set.weight)
+                }))
+            }))
+        };
+        const response = await axiosInstance.put(`/workout/${id}`, workoutSessionData);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+export const deleteWorkoutSession = async (id) => {
+    try {
+        const response = await axiosInstance.delete(`/workout/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};

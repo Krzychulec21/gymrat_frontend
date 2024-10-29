@@ -238,13 +238,11 @@ function Navbar() {
 
                         >
                             <MenuItem
-                                sx={{color: 'secondary.main'}}
                                 onClick={() => {
                                     navigate('/profile');
                                     handleMenuClose();
                                 }}>Profil</MenuItem>
                             <MenuItem
-                                sx={{color: 'secondary.main'}}
                                 onClick={handleLogout}>Wyloguj</MenuItem>
                         </Menu>
                     </>
@@ -264,9 +262,6 @@ function Navbar() {
                             isMobile={true}
                             handleClose={handleMobileMenuClose}
                             key={item.label}
-                            sx={{
-                                color: 'secondary.main'
-                            }}
                         />
                     ))}
                 </Menu>

@@ -1,14 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {Field, FieldArray, Form, Formik} from 'formik';
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField,} from '@mui/material';
-import {getAllExercises, saveWorkoutSession} from '../../service/workoutService';
+import {getAllExercises, saveWorkoutSession, updateWorkoutSession} from '../../service/workoutService';
 import validationSchema from "./ValidationSchema";
 import ExerciseField from "./ExerciseField";
-import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 
-
-const AddWorkoutSessionDialog = ({ open, onClose, Transition, onWorkoutAdded }) => {
+const WorkoutSessionDialog = ({ open, onClose, initialValues, isEditMode, onWorkoutAdded}) => {
     const [exerciseOptions, setExerciseOptions] = useState([]);
     const today = dayjs().format('YYYY-MM-DD');
 
@@ -22,21 +20,36 @@ const AddWorkoutSessionDialog = ({ open, onClose, Transition, onWorkoutAdded }) 
         fetchExercises();
     }, []);
 
+    const defaultInitialValues = initialValues ? {
+        date: initialValues.date,
+        note: initialValues.note,
+        exercises: initialValues.exerciseSessions.map(exerciseSession => ({
+            exerciseId: exerciseSession.exerciseId,
+            sets: exerciseSession.sets.map(set => ({
+                reps: set.reps.toString(),
+                weight: set.weight.toString(),
+            }))
+        }))
+    } : {
+        date: new Date().toISOString().split('T')[0],
+        note: '',
+        exercises: [{ exerciseId: '', sets: [{ reps: '', weight: '' }] }],
+    };
+
     return (
-        <Dialog open={open} onClose={onClose} TransitionComponent={Transition} PaperProps={{ style: { backgroundColor: '#161a1d' }}} title="elo" >
+        <Dialog open={open} onClose={onClose} PaperProps={{ style: { backgroundColor: '#252525' }}}>
             <Formik
-                initialValues={{
-                    date: new Date().toISOString().split('T')[0],
-                    note: '',
-                    exercises: [{ exerciseId: '', sets: [{ reps: '', weight: '' }] }],
-                }}
+                initialValues={defaultInitialValues}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
-                    saveWorkoutSession(values)
+                    const action = isEditMode
+                        ? updateWorkoutSession(initialValues.id, values)
+                        : saveWorkoutSession(values);
+                    action
                         .then(() => {
                             setSubmitting(false);
-                            onClose();
                             onWorkoutAdded();
+                            onClose();
                         })
                         .catch((error) => {
                             console.error(error);
@@ -47,7 +60,7 @@ const AddWorkoutSessionDialog = ({ open, onClose, Transition, onWorkoutAdded }) 
                 {({ values, isSubmitting }) => (
                     <Form>
                         <DialogContent>
-                            <DialogTitle>Nowa sesja treningowa</DialogTitle>
+                            <DialogTitle>{isEditMode ? 'Edytuj sesję treningową' : 'Nowa sesja treningowa'}</DialogTitle>
                             <Field
                                 name="date"
                                 as={TextField}
@@ -60,7 +73,7 @@ const AddWorkoutSessionDialog = ({ open, onClose, Transition, onWorkoutAdded }) 
                                 InputProps={{
                                     sx: {
                                         '& input[type="date"]::-webkit-calendar-picker-indicator': {
-                                            filter: 'invert(1)', // This will invert the icon color to white
+                                            filter: 'invert(1)',
                                         },
                                     },
                                 }}
@@ -103,4 +116,4 @@ const AddWorkoutSessionDialog = ({ open, onClose, Transition, onWorkoutAdded }) 
     );
 };
 
-export default AddWorkoutSessionDialog;
+export default WorkoutSessionDialog;
