@@ -8,27 +8,22 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import Tooltip from '@mui/material/Tooltip';
 import {getExerciseInfo} from "../../service/workoutService";
 import CloseIcon from "@mui/icons-material/Close";
+import AboutExerciseDialog from "./AboutExerciseDialog";
 
-const ExerciseField = memo(({exerciseOptions, exerciseIndex, removeExercise}) => {
+const ExerciseFieldForm = memo(({exerciseOptions, exerciseIndex, removeExercise}) => {
     const {values, touched, errors, setFieldValue} = useFormikContext();
-    const [open, setOpen] = useState(false);
-    const [selectedExercise, setSelectedExercise] = useState(null);
+    const [dialogOpen, setDialogOpen] = useState(false);
     const [exerciseInfo, setExerciseInfo] = useState(null);
 
-    const handleOpenDescription = (exercise) => {
-        setSelectedExercise(exercise);
-        setOpen(true);
+    const handleOpenDescription = async (exerciseId) => {
+        try {
+            const data = await getExerciseInfo(exerciseId);
+            setExerciseInfo(data);
+            setDialogOpen(true);
+        } catch (error) {
+            console.error("Błąd podczas pobierania informacji o ćwiczeniu:", error);
+        }
     };
-
-    const loadExerciseInfo = async (exerciseId) => {
-        const data = await getExerciseInfo(exerciseId);
-        setExerciseInfo(data);
-        console.log("otrzymane dane: ", data)
-    }
-
-    useEffect(() => {
-        loadExerciseInfo();
-    }, []);
 
     return (
         <div style={{marginBottom: '20px'}}>
@@ -44,16 +39,17 @@ const ExerciseField = memo(({exerciseOptions, exerciseIndex, removeExercise}) =>
                         onChange={(event, value) =>
                             setFieldValue(field.name, value ? value.id : '')
                         }
+                        disableCloseOnSelect
                         renderOption={(props, option) => (
                             <li {...props}
                                 style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <span>{option.name}</span>
+                                {/*Informacje o cwiczeniu kompnent*/}
                                 <Tooltip title="Informacje o ćwiczeniu" placement="top">
                                     <IconButton
                                         onClick={(e) => {
-                                            loadExerciseInfo(option.id)
                                             e.stopPropagation();
-                                            handleOpenDescription(option);
+                                            handleOpenDescription(option.id);
                                         }}
                                     >
                                         <HelpOutlineIcon/>
@@ -84,6 +80,7 @@ const ExerciseField = memo(({exerciseOptions, exerciseIndex, removeExercise}) =>
                                 label="Powtórzenia"
                                 type="number"
                                 fullWidth
+                                inputProps={{min: 0}}
                                 margin="normal"
                                 error={touched.exercises?.[exerciseIndex]?.sets?.[setIndex]?.reps && Boolean(errors.exercises?.[exerciseIndex]?.sets?.[setIndex]?.reps)}
                                 helperText={touched.exercises?.[exerciseIndex]?.sets?.[setIndex]?.reps && errors.exercises?.[exerciseIndex]?.sets?.[setIndex]?.reps}
@@ -94,6 +91,7 @@ const ExerciseField = memo(({exerciseOptions, exerciseIndex, removeExercise}) =>
                                 label="Ciężar (kg)"
                                 type="number"
                                 fullWidth
+                                inputProps={{min: 0}}
                                 margin="normal"
                                 error={touched.exercises?.[exerciseIndex]?.sets?.[setIndex]?.weight && Boolean(errors.exercises?.[exerciseIndex]?.sets?.[setIndex]?.weight)}
                                 helperText={touched.exercises?.[exerciseIndex]?.sets?.[setIndex]?.weight && errors.exercises?.[exerciseIndex]?.sets?.[setIndex]?.weight}
@@ -109,60 +107,18 @@ const ExerciseField = memo(({exerciseOptions, exerciseIndex, removeExercise}) =>
                     ))
                 )}
             </FieldArray>
-
             <Button onClick={() => removeExercise(exerciseIndex)} disabled={values.exercises.length === 1}>
                 Usuń ćwiczenie
             </Button>
 
-            {/* Dialog to display exercise description */}
-            <Dialog open={open} onClose={() => setOpen(false)}>
-                <DialogTitle>
-                    {selectedExercise?.name}
-                </DialogTitle>
-                <IconButton
-                    aria-label="close"
-                    onClick={() => setOpen(false)}
-                    sx={{
-                        position: 'absolute',
-                        right: 8,
-                        top: 8,
-                    }}
-                >
-                    <CloseIcon/>
-                </IconButton>
-                <DialogContent>
-                    <iframe
-                        width="100%"
-                        height="400"
-                        src={`https://www.youtube.com/embed/${exerciseInfo?.videoId}`}
-                        title="YouTube video player"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        style={{
-                            maxWidth: "100%",
-                            height: "auto",
-                            marginBottom: "16px",
-                        }}
-                    ></iframe>
+            <AboutExerciseDialog
+                open={dialogOpen}
+                onClose={() => setDialogOpen(false)}
+                exerciseInfo={exerciseInfo}
+            />
 
-                    {Array.isArray(exerciseInfo?.description) ? (
-                        <ol>
-                            {exerciseInfo.description.map((step, index) => (
-                                <Typography component="li" key={index} variant="body1">
-                                    {step}
-                                </Typography>
-                            ))}
-                        </ol>
-                    ) : (
-                        <Typography variant="body1" sx={{wordBreak: 'break-word'}}>
-                            {exerciseInfo?.description || "Brak opisu dla tego ćwiczenia"}
-                        </Typography>
-                    )}
-                </DialogContent>
-            </Dialog>
         </div>
     );
 });
 
-export default ExerciseField;
+export default ExerciseFieldForm;

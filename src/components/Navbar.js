@@ -189,9 +189,7 @@ function Navbar() {
                                 horizontal: 'right',
                             }}
                         >
-                            <List sx={{width: '350px','& .MuiTypography-root': {
-                                    color: 'black',
-                                }}}>
+                            <List sx={{width: '350px'}}>
                                 {notifications.length === 0 ? (
                                     <ListItem>
                                         <ListItemText primary="No new notifications"/>

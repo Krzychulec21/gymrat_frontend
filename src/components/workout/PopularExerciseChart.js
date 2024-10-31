@@ -27,7 +27,7 @@ const PopularExerciseChart = ({refresh}) => {
             textAlign: 'center'
         }}>
             <Typography variant='h5'>
-                Najczęściej trenowane partie mięśniowe.
+                Najczęściej trenowane partie mięśniowe
             </Typography>
 
 

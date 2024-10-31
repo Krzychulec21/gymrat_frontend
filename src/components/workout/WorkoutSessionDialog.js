@@ -3,7 +3,7 @@ import {Field, FieldArray, Form, Formik} from 'formik';
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField,} from '@mui/material';
 import {getAllExercises, saveWorkoutSession, updateWorkoutSession} from '../../service/workoutService';
 import validationSchema from "./ValidationSchema";
-import ExerciseField from "./ExerciseField";
+import ExerciseFieldForm from "./ExerciseFieldForm";
 import dayjs from "dayjs";
 
 const WorkoutSessionDialog = ({ open, onClose, initialValues, isEditMode, onWorkoutAdded}) => {
@@ -89,7 +89,7 @@ const WorkoutSessionDialog = ({ open, onClose, initialValues, isEditMode, onWork
                                 {({ push, remove }) => (
                                     <>
                                         {values.exercises.map((_, exerciseIndex) => (
-                                            <ExerciseField
+                                            <ExerciseFieldForm
                                                 key={exerciseIndex}
                                                 exerciseOptions={exerciseOptions}
                                                 exerciseIndex={exerciseIndex}
