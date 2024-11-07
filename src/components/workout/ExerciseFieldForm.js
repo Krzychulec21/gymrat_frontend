@@ -1,13 +1,12 @@
-import React, {memo, useEffect, useState} from "react";
+import React, {memo, useState} from "react";
 import {Field, FieldArray, useFormikContext} from "formik";
 import Autocomplete from "@mui/material/Autocomplete";
-import {Button, Dialog, DialogContent, DialogTitle, IconButton, TextField, Typography} from "@mui/material";
+import {Button, IconButton, TextField} from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import Tooltip from '@mui/material/Tooltip';
 import {getExerciseInfo} from "../../service/workoutService";
-import CloseIcon from "@mui/icons-material/Close";
 import AboutExerciseDialog from "./AboutExerciseDialog";
 
 const ExerciseFieldForm = memo(({exerciseOptions, exerciseIndex, removeExercise}) => {
@@ -39,7 +38,7 @@ const ExerciseFieldForm = memo(({exerciseOptions, exerciseIndex, removeExercise}
                         onChange={(event, value) =>
                             setFieldValue(field.name, value ? value.id : '')
                         }
-                        disableCloseOnSelect
+
                         renderOption={(props, option) => (
                             <li {...props}
                                 style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>

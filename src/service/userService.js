@@ -3,7 +3,7 @@ import axiosInstance from '../utils/axiosInstance';
 
 export const getUserAvatar = async () => {
     try {
-        const response = await axiosInstance.get('/avatar', {
+        const response = await axiosInstance.get('/personal-info/avatar', {
             responseType: 'arraybuffer',
         });
 
