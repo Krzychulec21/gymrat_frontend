@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
     Alert,
     Avatar,
@@ -20,19 +20,22 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import EditIcon from '@mui/icons-material/Edit';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import {updatePersonalInfo} from "../service/userService";
+import {getUserAvatar, updatePersonalInfo} from "../service/userService";
 import axiosInstance from "../utils/axiosInstance";
 import Slide from '@mui/material/Slide';
 import * as Yup from "yup";
 import {Field, Form, Formik} from "formik";
+import {AvatarContext} from "../context/AvatarContext";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const ProfileInfo = ({user, personalInfo, avatar, onDataUpdate}) => {
+const ProfileInfo = ({user, personalInfo, avatar:initialAvatar, onDataUpdate}) => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
+    const {updateAvatar} = useContext(AvatarContext);
+
 
     const validationSchema = Yup.object().shape({
         bio: Yup.string().max(500, 'O mnie nie może przekraczać 500 znaków'),
@@ -57,6 +60,9 @@ const ProfileInfo = ({user, personalInfo, avatar, onDataUpdate}) => {
 
                 await axiosInstance.patch('/personal-info/avatar', formData);
 
+                const updatedAvatar = await getUserAvatar();
+
+                updateAvatar(updatedAvatar);
                 if (onDataUpdate) {
                     onDataUpdate();
                 }
@@ -144,7 +150,7 @@ const ProfileInfo = ({user, personalInfo, avatar, onDataUpdate}) => {
                 >
                     <Avatar
                         sx={{width: 120, height: 120}}
-                        src={avatar}
+                        src={initialAvatar}
                         alt={user.firstName}
                     />
                     <IconButton

@@ -15,8 +15,13 @@ export const AvatarProvider = ({children}) => {
         fetchAvatar();
     }, [fetchAvatar]);
 
+
+    const updateAvatar = (newAvatar) => {
+        setAvatar(newAvatar);
+    };
+
     return (
-        <AvatarContext.Provider value={{avatar, refreshAvatar: fetchAvatar}}>
+        <AvatarContext.Provider value={{avatar, refreshAvatar: fetchAvatar, updateAvatar}}>
             {children}
         </AvatarContext.Provider>
     )
