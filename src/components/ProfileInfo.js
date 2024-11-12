@@ -55,9 +55,11 @@ const ProfileInfo = ({user, personalInfo, avatar, onDataUpdate}) => {
                 const formData = new FormData();
                 formData.append('file', file);
 
-                await axiosInstance.patch('/avatar', formData);
+                await axiosInstance.patch('/personal-info/avatar', formData);
 
-                onDataUpdate();
+                if (onDataUpdate) {
+                    onDataUpdate();
+                }
             } catch (error) {
                 setOpenSnackbar(true);
                 console.error("Failed to update avatar:", error);
@@ -77,7 +79,7 @@ const ProfileInfo = ({user, personalInfo, avatar, onDataUpdate}) => {
     };
 
 
-    const handleSave = async (values, { setSubmitting }) => {
+    const handleSave = async (values, {setSubmitting}) => {
         try {
             await updatePersonalInfo(values);
             setOpenDialog(false);
@@ -201,7 +203,7 @@ const ProfileInfo = ({user, personalInfo, avatar, onDataUpdate}) => {
 
             {/*bio*/}
             <Box sx={{ml: 3}}>
-                <Typography variant="h6" sx={{mb: 2}} >
+                <Typography variant="h6" sx={{mb: 2}}>
                     O mnie:
                 </Typography>
                 <Typography sx={{maxWidth: {xs: '85%', wordBreak: 'break-word'}}}>
@@ -231,7 +233,7 @@ const ProfileInfo = ({user, personalInfo, avatar, onDataUpdate}) => {
                             top: 8,
                         }}
                     >
-                        <CloseIcon />
+                        <CloseIcon/>
                     </IconButton>
                 </DialogTitle>
                 <DialogContent dividers>
@@ -245,7 +247,7 @@ const ProfileInfo = ({user, personalInfo, avatar, onDataUpdate}) => {
                         validationSchema={validationSchema}
                         onSubmit={handleSave}
                     >
-                        {({ errors, touched, isSubmitting }) => (
+                        {({errors, touched, isSubmitting}) => (
                             <Form>
                                 {/* Bio */}
                                 <Field
@@ -285,15 +287,15 @@ const ProfileInfo = ({user, personalInfo, avatar, onDataUpdate}) => {
                                 />
 
                                 {/* Gender */}
-                                <Typography variant="subtitle1" sx={{ mt: 2 }}>
+                                <Typography variant="subtitle1" sx={{mt: 2}}>
                                     Płeć
                                 </Typography>
                                 <Field name="gender">
-                                    {({ field }) => (
+                                    {({field}) => (
                                         <RadioGroup row {...field}>
-                                            <FormControlLabel value="MALE" control={<Radio />} label="Mężczyzna" />
-                                            <FormControlLabel value="FEMALE" control={<Radio />} label="Kobieta" />
-                                            <FormControlLabel value="OTHER" control={<Radio />} label="Inna" />
+                                            <FormControlLabel value="MALE" control={<Radio/>} label="Mężczyzna"/>
+                                            <FormControlLabel value="FEMALE" control={<Radio/>} label="Kobieta"/>
+                                            <FormControlLabel value="OTHER" control={<Radio/>} label="Inna"/>
                                         </RadioGroup>
                                     )}
                                 </Field>

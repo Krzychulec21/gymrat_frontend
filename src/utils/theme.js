@@ -22,6 +22,45 @@ const theme = createTheme({
     },
 
     components: {
+        MuiFormControl: {
+            styleOverrides: {
+                root: {
+                    marginRight: "10px",
+                    minWidth: "200px",
+                    "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                            borderColor: "white",
+                        },
+                        "&:hover fieldset": {
+                            borderColor: "white",
+                        },
+                        "&.Mui-focused fieldset": {
+                            borderColor: "white",
+                        },
+                    },
+                },
+            },
+        },
+        MuiInputLabel: {
+            styleOverrides: {
+                root: {
+                    color: "white",
+                    "&.Mui-focused": {
+                        color: "white",
+                    },
+                    "&.MuiInputLabel-shrink": {
+                        color: "white",
+                    },
+                },
+            },
+        },
+        MuiSelect: {
+            styleOverrides: {
+                icon: {
+                    color: "white",
+                },
+            },
+        },
         MuiButton: {
             styleOverrides: {
                 root: {

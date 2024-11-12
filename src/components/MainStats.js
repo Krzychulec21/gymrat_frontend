@@ -32,14 +32,12 @@ const MainStats = () => {
     }
 
 
-
-
     return (
         <Box sx={{
             position: 'relative',
             backgroundColor: '#2C2C2C',
             borderRadius: '8px',
-            maxWidth: {xs: '95%', lg: '80%'},
+            maxWidth: {xs: '95%', lg: '90%'},
             padding: '20px',
             margin: '0 auto',
             color: 'white',
@@ -47,11 +45,12 @@ const MainStats = () => {
         }}
         >
             <Button sx={{
-                position:'absolute',
+                position: 'absolute',
                 top: 10,
                 right: 10
             }} onClick={handleAddWorkoutButton}>Dodaj trening</Button>
-            <WorkoutSessionDialog open={openDialog} onClose={handleDialogClose} Transition={Transition} onWorkoutAdded={handleWorkoutAdded}/>
+            <WorkoutSessionDialog open={openDialog} onClose={handleDialogClose} Transition={Transition}
+                                  onWorkoutAdded={handleWorkoutAdded}/>
             <GeneralStatsCard refresh={refresh}/>
             <PopularExerciseChart refresh={refresh}/>
             <WorkoutSessions refresh={refresh} onWorkoutChanged={handleWorkoutAdded}/>

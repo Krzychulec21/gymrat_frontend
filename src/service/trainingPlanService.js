@@ -1,11 +1,17 @@
 import axiosInstance from "../utils/axiosInstance";
+import qs from "qs";
 
 export const getAllTrainingPlans = async (params) => {
     try {
-        const response = await axiosInstance.get("/plan", { params });
+        const response = await axiosInstance.get('/plan', {
+            params,
+            paramsSerializer: (params) => {
+                return qs.stringify(params, { arrayFormat: 'repeat' });
+            },
+        });
         return response.data;
     } catch (error) {
-        console.error("Error fetching training plans:", error);
+        console.error(error);
         throw error;
     }
 };

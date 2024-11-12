@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     AppBar,
     Avatar,
@@ -20,6 +20,8 @@ import logo from '../assets/logo.svg';
 import {useNotifications} from "../context/NotificationContext";
 import MenuItemComponent from "./MenuItemComponent";
 import Button from "@mui/material/Button";
+import {getUserAvatar} from "../service/userService";
+import {AvatarContext} from "../context/AvatarContext";
 
 function Navbar() {
     const {isAuthenticated, logout} = useAuth();
@@ -28,6 +30,9 @@ function Navbar() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
     const [mobileMenuAnchorEl, setMobileMenuAnchorEl] = useState(null);
+    const { avatar, refreshAvatar } = useContext(AvatarContext);
+
+
 
     const handleMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -219,7 +224,7 @@ function Navbar() {
                             color="inherit"
                             onClick={handleMenuOpen}
                         >
-                            <Avatar alt="Profile Picture"/>
+                            <Avatar src={avatar} alt="Profile Picture"/>
                         </IconButton>
                         <Menu
                             anchorEl={anchorEl}
