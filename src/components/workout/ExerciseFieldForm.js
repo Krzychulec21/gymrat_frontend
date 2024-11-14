@@ -14,6 +14,17 @@ const ExerciseFieldForm = memo(({exerciseOptions, exerciseIndex, removeExercise}
     const [dialogOpen, setDialogOpen] = useState(false);
     const [exerciseInfo, setExerciseInfo] = useState(null);
 
+    const categoryMapping = {
+        "NOGI": "Nogi",
+        "BARKI": "Barki",
+        "PLECY": "Plecy",
+        "BICEPS": "Biceps",
+        "TRICEPS": "Triceps",
+        "KLATKA_PIERSIOWA": "Klatka piersiowa",
+        "BRZUCH": "Brzuch"
+    };
+
+
     const handleOpenDescription = async (exerciseId) => {
         try {
             const data = await getExerciseInfo(exerciseId);
@@ -31,7 +42,7 @@ const ExerciseFieldForm = memo(({exerciseOptions, exerciseIndex, removeExercise}
                     <Autocomplete
                         options={exerciseOptions}
                         getOptionLabel={(option) => option.name}
-                        groupBy={(option) => option.categoryName}
+                        groupBy={(option) => categoryMapping[option.categoryName] || option.categoryName}
                         value={
                             exerciseOptions.find(option => option.id === field.value) || null
                         }

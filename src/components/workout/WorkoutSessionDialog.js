@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Field, FieldArray, Form, Formik} from 'formik';
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField,} from '@mui/material';
 import {getAllExercises, saveWorkoutSession, updateWorkoutSession} from '../../service/workoutService';
-import validationSchema from "./ValidationSchema";
+import workoutSessionValidationSchema from "./WorkoutSessionValidationSchema";
 import ExerciseFieldForm from "./ExerciseFieldForm";
 import dayjs from "dayjs";
 
@@ -40,7 +40,7 @@ const WorkoutSessionDialog = ({ open, onClose, initialValues, isEditMode, onWork
         <Dialog open={open} onClose={onClose} PaperProps={{ style: { backgroundColor: '#252525' }}}>
             <Formik
                 initialValues={defaultInitialValues}
-                validationSchema={validationSchema}
+                validationSchema={workoutSessionValidationSchema}
                 onSubmit={(values, { setSubmitting }) => {
                     const action = isEditMode
                         ? updateWorkoutSession(initialValues.id, values)

@@ -13,13 +13,18 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {addLike, deleteTrainingPlan, getTrainingPlanById,} from "../service/trainingPlanService";
+import {addLike, deleteTrainingPlan, getTrainingPlanById,} from "../../service/trainingPlanService";
 import {useNavigate, useParams} from "react-router-dom";
 import TrainingPlanForm from "./TrainingPlanForm";
 import CommentsSection from "./CommentSection";
-import {getUser} from "../service/userService";
+import {getUser} from "../../service/userService";
 import FitnessCenterOutlinedIcon from '@mui/icons-material/FitnessCenterOutlined';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import Tooltip from "@mui/material/Tooltip";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import AboutExerciseDialog from "../workout/AboutExerciseDialog";
+import {getExerciseInfo} from "../../service/workoutService";
+import {Stack} from "@mui/system";
 
 
 const TrainingPlanDetails = () => {
@@ -39,6 +44,8 @@ const TrainingPlanDetails = () => {
         "KLATKA_PIERSIOWA": "Klatka piersiowa",
         "BRZUCH": "Brzuch"
     };
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [exerciseInfo, setExerciseInfo] = useState(null);
 
 
     useEffect(() => {
@@ -97,6 +104,16 @@ const TrainingPlanDetails = () => {
         }
     };
 
+    const handleOpenDescription = async (exerciseId) => {
+        try {
+            const data = await getExerciseInfo(exerciseId);
+            setExerciseInfo(data);
+            setDialogOpen(true);
+        } catch (error) {
+            console.error("Błąd podczas pobierania informacji o ćwiczeniu:", error);
+        }
+    };
+
     if (!trainingPlan) {
         return <Typography>Ładowanie...</Typography>;
     }
@@ -109,9 +126,10 @@ const TrainingPlanDetails = () => {
             borderRadius: "8px",
             color: "white",
             margin: "auto",
-            maxWidth: '80%'
+            maxWidth: '80%',
+            mb:5,
         }}>
-            <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Box display="flex" justifyContent="space-between" alignItems="center" >
                 <Typography variant="h4">{trainingPlan.name}</Typography>
                 <Box display="flex" alignItems="center">
                     <Typography variant="h6" sx={{marginRight: "10px"}}>
@@ -155,11 +173,7 @@ const TrainingPlanDetails = () => {
             <Box sx={{mb: 4, maxWidth: {xs: '95%', lg: '80%'}}}>
                 <Typography variant="h6" sx={{mb: 1}}>Opis:</Typography>
                 <Typography variant="body1" gutterBottom sx={{wordBreak: 'break-word'}}>
-                    {trainingPlan.description} sadadddddddddddddddddddddddddddddddddddddddddddadadddddddddddddddddddddddddddddddddddddddddddadadddddddddddddddddddddddd
-                    dddddddddddddddddddadaddddddddddddddddddddddddddddddddddddddddddda
-                    dadddddddddddddddddddddddddddddddddddddddddddadadddddddddddddddddddddddddddddddddddddddddddadadddddddddddddddddddddddddddddddddddddddddddadadddddddd
-                    dddddddddddddddddddddddddddddddddddadadddddddddddddddddddddddddddddddddddddddddddadadddddddddddddddddddddddddddddddddddddddddddadadddddddddddddddddddddddddddddddddddddddddddadaddddddddddddddddddddddddddddddddddddddddddd
-                </Typography></Box>
+                    {trainingPlan.description} </Typography></Box>
 
             <Box sx={{display: 'flex', flexDirection: "column"}}>
                 <Typography variant="h6" gutterBottom sx={{textAlign: 'center'}}>
@@ -173,7 +187,17 @@ const TrainingPlanDetails = () => {
                         borderRadius: "4px",
                         padding: '5px',
                     }}>
-                        <Typography variant="h6">{exercise.exerciseName}</Typography>
+                        <Stack direction="row" alignItems="center" spacing={1} ><Typography variant="h6">{exercise.exerciseName}</Typography>
+                            <Tooltip title="Informacje o ćwiczeniu" placement="top">
+                                <IconButton
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleOpenDescription(exercise.id);
+                                    }}
+                                >
+                                    <HelpOutlineIcon/>
+                                </IconButton>
+                            </Tooltip></Stack>
                         <Typography variant="body2">{exercise.customInstructions}</Typography>
                     </Box>
                 ))}
@@ -219,6 +243,11 @@ const TrainingPlanDetails = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+            <AboutExerciseDialog
+                open={dialogOpen}
+                onClose={() => setDialogOpen(false)}
+                exerciseInfo={exerciseInfo}
+            />
         </Box>
     );
 };

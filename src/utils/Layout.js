@@ -11,8 +11,8 @@ import ProfilePage from "../pages/ProfilePage";
 import Footer from "../components/Footer";
 import StatsPage from "../pages/StatsPage";
 import TrainingPlansPage from "../pages/TrainingPlanPage";
-import TrainingPlanDetails from "../components/TrainingPlanDetails";
-import TrainingPlanForm from "../components/TrainingPlanForm";
+import TrainingPlanDetails from "../components/trainingPlan/TrainingPlanDetails";
+import TrainingPlanForm from "../components/trainingPlan/TrainingPlanForm";
 
 
 function Layout() {

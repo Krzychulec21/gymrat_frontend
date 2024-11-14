@@ -97,19 +97,19 @@ const FriendsList = ({
                         onChange={(e) => setSortBy(e.target.value)}
                         MenuProps={menuProps}
                         sx={{
-                            backgroundColor: 'grey',
+                            backgroundColor: '#363636',
                             color: 'black',
                             '.MuiSelect-icon': {
-                                color: 'black',
+                                color: 'white',
                             },
                             '.MuiOutlinedInput-notchedOutline': {
-                                borderColor: 'grey',
+                                borderColor: '#363636',
                             },
                             '&:hover .MuiOutlinedInput-notchedOutline': {
-                                borderColor: 'grey',
+                                borderColor: '#363636',
                             },
                             '.MuiSelect-select': {
-                                color: 'black',
+                                color: 'white',
                             }
                         }}
                     >
@@ -123,19 +123,19 @@ const FriendsList = ({
                         value={sortDir}
                         onChange={(e) => setSortDir(e.target.value)}
                         sx={{
-                            backgroundColor: 'grey',
+                            backgroundColor: '#363636',
                             color: 'black',
                             '.MuiSelect-icon': {
-                                color: 'black',
+                                color: 'white',
                             },
                             '.MuiOutlinedInput-notchedOutline': {
-                                borderColor: 'grey',
+                                borderColor: '#363636',
                             },
                             '&:hover .MuiOutlinedInput-notchedOutline': {
-                                borderColor: 'grey',
+                                borderColor: '#363636',
                             },
                             '.MuiSelect-select': {
-                                color: 'black',
+                                color: 'white',
                             }
                         }}
                         MenuProps={menuProps}

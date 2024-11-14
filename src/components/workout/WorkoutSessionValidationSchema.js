@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-const validationSchema = Yup.object({
+const workoutSessionValidationSchema = Yup.object({
     date: Yup.date().required('Data jest wymagana'),
     note: Yup.string(),
     exercises: Yup.array()
@@ -24,4 +24,4 @@ const validationSchema = Yup.object({
         .min(1, 'Przynajmniej jedno ćwiczenie jest wymagane'),
 });
 
-export default validationSchema;
+export default workoutSessionValidationSchema;

@@ -23,6 +23,8 @@ import {useNavigate} from "react-router-dom";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import ClearIcon from "@mui/icons-material/Clear";
 import FitnessCenterOutlinedIcon from '@mui/icons-material/FitnessCenterOutlined';
+import TrainingPlanForm from "../components/trainingPlan/TrainingPlanForm";
+import validationSchema from "../components/trainingPlan/TrainingPlanValidationSchema";
 
 const TrainingPlansPage = () => {
     const [trainingPlans, setTrainingPlans] = useState([]);
@@ -43,6 +45,7 @@ const TrainingPlansPage = () => {
     const difficultyLevels = [1, 2, 3, 4, 5];
     const [showFilters, setShowFilters] = useState(false);
     const navigate = useNavigate();
+    const [openForm, setOpenForm] = useState(false);
 
     const categoryMapping = {
         "NOGI": "Nogi",
@@ -62,6 +65,10 @@ const TrainingPlansPage = () => {
     const translateCategories = (categories) => {
         return categories.map(category => translateCategory(category));
     };
+
+    const onUpdate = () => {
+        fetchTrainingPlans();
+    }
 
     useEffect(() => {
         fetchTrainingPlans();
@@ -122,6 +129,16 @@ const TrainingPlansPage = () => {
         navigate(`/plans/${id}`);
     };
 
+
+    const handleOpenForm = () => {
+        setOpenForm(true);
+    };
+
+    const handleCloseForm = () => {
+        setOpenForm(false);
+    };
+
+
     return (
         <Box sx={{
             padding: "20px",
@@ -131,13 +148,26 @@ const TrainingPlansPage = () => {
             width: '90%',
             margin: 'auto'
         }}>
-            <Button
-                startIcon={<FilterListIcon/>}
-                onClick={() => setShowFilters(!showFilters)}
-                sx={{marginBottom: "10px"}}
-            >
-                {showFilters ? "Ukryj filtry" : "Pokaż filtry"}
-            </Button>
+            <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'space-between' }}>
+                <Button
+                    startIcon={<FilterListIcon />}
+                    onClick={() => setShowFilters(!showFilters)}
+                    sx={{ marginBottom: '10px' }}
+                >
+                    {showFilters ? "Ukryj filtry" : "Pokaż filtry"}
+                </Button>
+                <Button
+                    onClick={handleOpenForm}
+                    sx={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                    }}
+                >
+                    Dodaj plan
+                </Button>
+            </Box>
+
             {showFilters && (
                 <Box sx={{display: 'flex', gap: 1, flexWrap: 'wrap'}}>
                     <FormControl>
@@ -251,6 +281,14 @@ const TrainingPlansPage = () => {
                 onPageChange={handleChangePage}
                 rowsPerPage={size}
                 rowsPerPageOptions={[10]}
+            />
+            <TrainingPlanForm
+                open={openForm}
+                onClose={handleCloseForm}
+                initialValues={null}
+                isEditMode={false}
+                validationSchema={validationSchema}
+                onUpdate={onUpdate}
             />
         </Box>
     );

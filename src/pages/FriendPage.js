@@ -157,7 +157,6 @@ const FriendsPage = () => {
                 </Button>
             )}
 
-            {/* Sidebar */}
             {(isSidebarOpen || isMdUp) && (
                 <Sidebar
                     selectedTab={selectedTab}

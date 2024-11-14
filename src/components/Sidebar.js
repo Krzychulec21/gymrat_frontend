@@ -30,7 +30,7 @@ const Sidebar = ({selectedTab, setSelectedTab, friendsCount, pendingCount}) => {
                     onClick={() => setSelectedTab(tab.value)}
                     sx={{
                         width: {xs: '50%', md: '100%'},
-                        backgroundColor: selectedTab === tab.value ? 'red' : 'darkgrey',
+                        backgroundColor: selectedTab === tab.value ? 'red' : '#434343',
                     }}
                 >
                     {tab.label}

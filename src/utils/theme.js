@@ -22,6 +22,13 @@ const theme = createTheme({
     },
 
     components: {
+        MuiListItemText: {
+            styleOverrides: {
+                secondary:{
+                    color: "white"
+                }
+            }
+        },
         MuiFormControl: {
             styleOverrides: {
                 root: {
