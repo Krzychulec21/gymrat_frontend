@@ -6,6 +6,11 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import GoogleLoginButton from "./button/GoogleLoginButton";
 import Button from "@mui/material/Button";
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import {IconButton} from "@mui/material";
+
 
 function SignIn() {
     const [showPassword, setShowPassword] = React.useState(false);
@@ -67,38 +72,27 @@ function SignIn() {
                 size="small"
                 label="Password"
                 name="password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 variant="outlined"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.password}
                 error={formik.touched.password && Boolean(formik.errors.password)}
                 helperText={formik.touched.password && formik.errors.password}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <IconButton
+                                aria-label={showPassword ? 'hide password' : 'show password'}
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                            >
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                        </InputAdornment>
+                    )
+                }}
             />
-            {/*<FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">*/}
-            {/*    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>*/}
-            {/*    <OutlinedInput*/}
-            {/*        id="outlined-adornment-password"*/}
-            {/*        type={showPassword ? 'text' : 'password'}*/}
-            {/*        endAdornment={*/}
-            {/*            <InputAdornment position="end">*/}
-            {/*                <IconButton*/}
-            {/*                    aria-label="toggle password visibility"*/}
-            {/*                    onClick={handleClickShowPassword}*/}
-            {/*                    onMouseDown={handleMouseDownPassword}*/}
-            {/*                    onMouseUp={handleMouseUpPassword}*/}
-            {/*                    edge="end"*/}
-            {/*                >*/}
-            {/*                    {showPassword ? <VisibilityOff /> : <Visibility />}*/}
-            {/*                </IconButton>*/}
-            {/*            </InputAdornment>*/}
-            {/*        }*/}
-            {/*        label="Password"*/}
-            {/*    />*/}
-            {/*</FormControl>*/}
-            {/*todo: zrobic password input*/}
-
-
             <Button type="submit" variant="contained" color="primary">
                 Sign In
             </Button>

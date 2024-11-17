@@ -10,9 +10,20 @@ import {Grid} from "@mui/system";
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import InputAdornment from "@mui/material/InputAdornment";
+import {IconButton} from "@mui/material";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
 
 
 function SignUp() {
+    const [showPassword, setShowPassword] = React.useState(false);
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+
     const formik = useFormik({
         initialValues: {
             firstName: '',
@@ -135,16 +146,28 @@ function SignUp() {
                             size="small"
                             label="Password"
                             name="password"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             variant="outlined"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.password}
                             error={formik.touched.password && Boolean(formik.errors.password)}
                             helperText={formik.touched.password && formik.errors.password}
-                            autoComplete="new-password"
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label={showPassword ? 'hide password' : 'show password'}
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
                             fullWidth
-                            sx={{maxWidth: '300px'}}
+                            sx={{maxWidth: '225px'}}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} sx={{display: 'flex', justifyContent: 'center'}}>
@@ -152,7 +175,7 @@ function SignUp() {
                             size="small"
                             label="Confirm Password"
                             name="confirmPassword"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             variant="outlined"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -161,9 +184,21 @@ function SignUp() {
                                 formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)
                             }
                             helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
-                            autoComplete="new-password"
                             fullWidth
-                            sx={{maxWidth: '300px'}}
+                            sx={{maxWidth: '225px'}}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label={showPassword ? 'hide password' : 'show password'}
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
                         />
                     </Grid>
                     <Grid container spacing={2} justifyContent="center">
