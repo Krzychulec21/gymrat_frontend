@@ -151,7 +151,6 @@ const ProfileInfo = ({user, personalInfo, avatar:initialAvatar, onDataUpdate}) =
                     <Avatar
                         sx={{width: 120, height: 120}}
                         src={initialAvatar}
-                        alt={user.firstName}
                     />
                     <IconButton
                         component="label"

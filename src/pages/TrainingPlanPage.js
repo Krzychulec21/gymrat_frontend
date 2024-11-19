@@ -3,7 +3,7 @@ import {
     Box,
     Button,
     Checkbox,
-    FormControl,
+    FormControl, FormControlLabel,
     IconButton,
     InputLabel,
     MenuItem,
@@ -18,13 +18,16 @@ import {
     TableSortLabel,
     TextField,
 } from "@mui/material";
-import {getAllTrainingPlans} from "../service/trainingPlanService";
+import {getAllTrainingPlans, toggleFavorite} from "../service/trainingPlanService";
 import {useNavigate} from "react-router-dom";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import ClearIcon from "@mui/icons-material/Clear";
 import FitnessCenterOutlinedIcon from '@mui/icons-material/FitnessCenterOutlined';
 import TrainingPlanForm from "../components/trainingPlan/TrainingPlanForm";
 import validationSchema from "../components/trainingPlan/TrainingPlanValidationSchema";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import StarIcon from "@mui/icons-material/Star";
+import Tooltip from "@mui/material/Tooltip";
 
 const TrainingPlansPage = () => {
     const [trainingPlans, setTrainingPlans] = useState([]);
@@ -84,6 +87,7 @@ const TrainingPlansPage = () => {
                 categories: filters.categories,
                 difficultyLevels: filters.difficultyLevels,
                 authorNickname: filters.authorNickname,
+                onlyFavorites: filters.onlyFavorites
             };
             const data = await getAllTrainingPlans(params);
             setTrainingPlans(data.content);
@@ -138,6 +142,14 @@ const TrainingPlansPage = () => {
         setOpenForm(false);
     };
 
+    const handleToggleFavorite = async (id) => {
+        try {
+            await toggleFavorite(id);
+            fetchTrainingPlans();
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <Box sx={{
@@ -218,12 +230,22 @@ const TrainingPlansPage = () => {
                         InputLabelProps={{style: {color: "white"}}}
                         InputProps={{style: {color: "white"}}}
                     />
-                    <IconButton onClick={handleClearFilters}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filters.onlyFavorites || false}
+                                onChange={(event) => setFilters(prev => ({ ...prev, onlyFavorites: event.target.checked }))}
+                            />
+                        }
+                        label="Tylko ulubione"
+                    />
+                    <Tooltip title="Wyczyść filtry" placement="top"><IconButton onClick={handleClearFilters}>
                         <ClearIcon/>
-                    </IconButton>
+                    </IconButton></Tooltip>
                 </Box>
             )}
-            <TableContainer><Table>
+            <TableContainer>
+                <Table>
                 <TableHead>
                     <TableRow>
                         <TableCell sortDirection={orderBy === "name" ? order : false}>
@@ -255,6 +277,9 @@ const TrainingPlansPage = () => {
                                 Polubienia
                             </TableSortLabel>
                         </TableCell>
+                        <TableCell>
+                            Ulubione
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -270,6 +295,20 @@ const TrainingPlansPage = () => {
                                 ))}
                             </TableCell>
                             <TableCell>{plan.likeCount}</TableCell>
+                            <TableCell>
+                                <IconButton
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                        handleToggleFavorite(plan.id, plan.isFavorite);
+                                    }}
+                                >
+                                    {plan.isFavorite ? (
+                                        <StarIcon style={{ color: "gold" }} />
+                                    ) : (
+                                        <StarBorderIcon style={{ color: "gray" }} />
+                                    )}
+                                </IconButton>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

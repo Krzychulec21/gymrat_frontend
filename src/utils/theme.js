@@ -22,6 +22,13 @@ const theme = createTheme({
     },
 
     components: {
+        MuiTableSortLabel: {
+            styleOverrides: {
+                icon: {
+                    color:"white !important"
+                }
+            }
+        },
         MuiListItemText: {
             styleOverrides: {
                 secondary:{

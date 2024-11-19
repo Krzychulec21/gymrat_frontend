@@ -224,7 +224,7 @@ function Navbar() {
                             color="inherit"
                             onClick={handleMenuOpen}
                         >
-                            <Avatar src={avatar} alt="Profile Picture"/>
+                            <Avatar src={avatar} />
                         </IconButton>
                         <Menu
                             anchorEl={anchorEl}

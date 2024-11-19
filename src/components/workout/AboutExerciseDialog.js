@@ -15,7 +15,7 @@ const AboutExerciseDialog = ({open, onClose, exerciseInfo}) => {
                 open={open}
                 onClose={onClose}>
                 <DialogTitle>
-                    {exerciseInfo?.name}
+                    {exerciseInfo?.exerciseName}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"

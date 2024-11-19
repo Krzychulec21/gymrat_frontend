@@ -115,3 +115,13 @@ export const updateComment = async (trainingPlanId, commentId, content) => {
         throw error;
     }
 };
+
+export const toggleFavorite = async (id) => {
+    try {
+        const response = await axiosInstance.post(`/plan/${id}/favorite`, {id});
+        return response.data;
+    } catch (error) {
+        console.error("Error adding like:", error);
+        throw error;
+    }
+}

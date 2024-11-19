@@ -6,7 +6,8 @@ export const getFriends = async (
     sortBy = 'latestMessage',
     sortDir = 'asc',
     minAge = 18,
-    maxAge = 50) => {
+    maxAge = 50
+) => {
     try {
         const response = await axiosInstance.get('/friends', {
             params: {
@@ -15,10 +16,21 @@ export const getFriends = async (
                 sortBy: sortBy,
                 sortDir: sortDir,
                 minAge: minAge,
-                maxAge: maxAge
-            }
+                maxAge: maxAge,
+            },
         });
-        return response.data;
+        const friendsWithAvatars = response.data.content.map((friend) => {
+            if (friend.avatar) {
+                if (!friend.avatar.startsWith('data:image/')) {
+                    friend.avatar = `data:image/jpeg;base64,${friend.avatar}`;
+                }
+            } else {
+                friend.avatar = null;
+            }
+            return friend;
+        });
+
+        return { ...response.data, content: friendsWithAvatars };
     } catch (error) {
         console.error('Error fetching friends', error);
         throw error;

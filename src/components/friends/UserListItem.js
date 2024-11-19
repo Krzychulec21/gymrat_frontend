@@ -12,7 +12,7 @@ const UserListItem = ({
         <ListItem sx={{display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
             <Box sx={{display: 'flex', alignItems: 'center', flexGrow: 1}}>
                 <ListItemAvatar>
-                    <Avatar alt={`${user.firstName} ${user.lastName}`} src={user.avatarUrl}/>
+                    <Avatar alt={`${user.firstName} ${user.lastName}`} src={user.avatar}/>
                 </ListItemAvatar>
                 <ListItemText
                     primary={`${user.firstName} ${user.lastName} (${user.email})`}

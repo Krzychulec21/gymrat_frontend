@@ -82,7 +82,6 @@ export const getDateOfLastWorkout = async () => {
 export const getTopCategoriesForUser = async () => {
     try {
         const response = await axiosInstance.get(`/workout/top-categories`);
-        console.log("dane z serwisu", response.data);
         return response.data;
     } catch (error) {
         console.error(error);
