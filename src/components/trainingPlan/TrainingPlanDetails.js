@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {
+    Alert,
     Box,
     Button,
     Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
-    IconButton,
+    IconButton, Snackbar,
     Typography,
 } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -25,9 +26,12 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import AboutExerciseDialog from "../workout/AboutExerciseDialog";
 import {getExerciseInfo} from "../../service/workoutService";
 import {Stack} from "@mui/system";
+import Slide from "@mui/material/Slide";
+import {useSnackbar} from "../../context/SnackbarContext";
 
 
 const TrainingPlanDetails = () => {
+    const { showSnackbar } = useSnackbar();
     const {id} = useParams();
     const [trainingPlan, setTrainingPlan] = useState(null);
     const [likeCount, setLikeCount] = useState(0);
@@ -46,7 +50,6 @@ const TrainingPlanDetails = () => {
     };
     const [dialogOpen, setDialogOpen] = useState(false);
     const [exerciseInfo, setExerciseInfo] = useState(null);
-
 
     useEffect(() => {
         fetchTrainingPlan();
@@ -82,7 +85,6 @@ const TrainingPlanDetails = () => {
     const handleLike = async (isLike) => {
         try {
             await addLike(id, isLike);
-            // Refresh the training plan data
             fetchTrainingPlan();
             console.log("dane z training plan", trainingPlan)
             console.log("user obiekt", currentUser)
@@ -98,8 +100,10 @@ const TrainingPlanDetails = () => {
     const handleDelete = async () => {
         try {
             await deleteTrainingPlan(id);
+            showSnackbar("Pomyślnie usunięto plan treningowy", "success");
             navigate("/plans");
         } catch (error) {
+            showSnackbar("Wystąpił błąd podczas usuwania", "error");
             console.error("Error deleting training plan:", error);
         }
     };
@@ -113,6 +117,7 @@ const TrainingPlanDetails = () => {
             console.error("Błąd podczas pobierania informacji o ćwiczeniu:", error);
         }
     };
+
 
     if (!trainingPlan) {
         return <Typography>Ładowanie...</Typography>;
@@ -129,9 +134,9 @@ const TrainingPlanDetails = () => {
             maxWidth: '80%',
             mb:5,
         }}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" >
-                <Typography variant="h4">{trainingPlan.name}</Typography>
-                <Box display="flex" alignItems="center">
+            <Box >
+                <Typography variant="h4" sx={{textAlign:'center'}}>{trainingPlan.name}</Typography>
+                <Box display="flex" alignItems="center" justifyContent="right">
                     <Typography variant="h6" sx={{marginRight: "10px"}}>
                         {likeCount}
                     </Typography>
@@ -150,7 +155,7 @@ const TrainingPlanDetails = () => {
             <Box sx={{mb: 5}}><Typography variant="subtitle1" gutterBottom>
                 Autor: {trainingPlan.authorNickname}
             </Typography>
-                <Typography variant="subtitle1" gutterBottom display="inline-flex" alignItems="center">
+                <Typography variant="h6" gutterBottom display="inline-flex" alignItems="center">
                     Poziom trudności:
                     <Box display="inline-flex" alignItems="center" sx={{marginLeft: "8px"}}>
                         {[...Array(5)].map((_, index) => (
@@ -165,23 +170,23 @@ const TrainingPlanDetails = () => {
                     </Box>
                 </Typography>
 
-                <Typography variant="subtitle1" gutterBottom>
+                <Typography variant="h6" gutterBottom>
                     Kategorie: {translateCategories(trainingPlan.categories).join(', ')}
                 </Typography>
             </Box>
 
             <Box sx={{mb: 4, maxWidth: {xs: '95%', lg: '80%'}}}>
-                <Typography variant="h6" sx={{mb: 1}}>Opis:</Typography>
-                <Typography variant="body1" gutterBottom sx={{wordBreak: 'break-word'}}>
+                <Typography variant="h5" sx={{mb: 1}}>Opis:</Typography>
+                <Typography variant="h6" gutterBottom sx={{wordBreak: 'break-word'}}>
                     {trainingPlan.description} </Typography></Box>
 
             <Box sx={{display: 'flex', flexDirection: "column"}}>
-                <Typography variant="h6" gutterBottom sx={{textAlign: 'center'}}>
+                <Typography variant="h6" gutterBottom >
                     Ćwiczenia:
                 </Typography>
                 {trainingPlan.exercises.map((exercise, index) => (
                     <Box key={exercise.id} sx={{
-                        maxWidth: {xs: '80%', lg: '70%'},
+                        maxWidth: {xs: '80%', lg: '100%'},
                         marginBottom: "10px",
                         backgroundColor: index % 2 === 0 ? "#363636" : "#444444",
                         borderRadius: "4px",

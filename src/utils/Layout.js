@@ -13,11 +13,16 @@ import StatsPage from "../pages/StatsPage";
 import TrainingPlansPage from "../pages/TrainingPlanPage";
 import TrainingPlanDetails from "../components/trainingPlan/TrainingPlanDetails";
 import TrainingPlanForm from "../components/trainingPlan/TrainingPlanForm";
-
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
+import AdminDashboardPage from "../pages/AdminDashboardPage";
+import authService from "../service/authService";
 
 function Layout() {
     const location = useLocation();
-    const showNavbar = location.pathname !== "/auth";
+    const role = authService.getRole();
+    const isAdmin = role === "ROLE_ADMIN";
+    const showNavbar = !isAdmin && location.pathname !== "/auth";
     return (
         <Box
             sx={{
@@ -34,17 +39,35 @@ function Layout() {
                     }}
                 >
                     <Routes>
-                        <Route path="/" element={<Home />} />
+                        {/* Public route */}
+                        <Route element={<PublicRoute redirectPath="/profile" />}>
+                            <Route path="/" element={<Home />} />
+                        </Route>
                         <Route path="/auth" element={<AuthPage />} />
                         <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
-                        <Route path="/friends" element={<FriendPage />} />
-                        <Route path="/profile" element={<ProfilePage />} />
-                        <Route path="/stats" element={<StatsPage />} />
-                        <Route path="/plans" element={<TrainingPlansPage />} />
-                        <Route path="/plans/:id" element={<TrainingPlanDetails />} />
-                        <Route path="/plans/new" element={<TrainingPlanForm open={true} onClose={() => {}} isEditMode={false} />} />
+
+                        {/*admin only*/}
+                        <Route element={<PrivateRoute adminOnly={true} />}>
+                            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+                        </Route>
+
+                        {/* private routes for userss */}
+                        <Route element={<PrivateRoute />}>
+                            <Route path="/friends" element={<FriendPage />} />
+                            <Route path="/profile/:userId?" element={<ProfilePage />} />
+                            <Route path="/stats" element={<StatsPage />} />
+                            <Route path="/plans" element={<TrainingPlansPage />} />
+                            <Route path="/plans/:id" element={<TrainingPlanDetails />} />
+                            <Route
+                                path="/plans/new"
+                                element={<TrainingPlanForm open={true} onClose={() => {}} isEditMode={false} />}
+                            />
+                        </Route>
+
+                        {/* Error 404 */}
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
+
                 </Box>
                 <Footer />
             </>

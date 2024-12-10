@@ -1,4 +1,4 @@
-import {Box} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import CustomCard from "../display/CustomCard";
 import React, {useEffect, useState} from "react";
 import {getDateOfLastWorkout, getNumberOfUserWorkouts, getTotalWeightLiftedByUser} from "../../service/workoutService";
@@ -42,20 +42,21 @@ const GeneralStatsCard = ({refresh}) => {
         loadTheLastWorkout();
     }, [refresh]);
     return (
-        <Box sx={{
-            mt: 10,
-            display: 'flex',
-            gap: 8,
-            ml: 4,
-            mr: 4,
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-        }}>
-            <CustomCard value={totalWorkouts} title="Łączna liczba treningów"/>
-            <CustomCard value={liftedWeight + " t"} title="Suma podniesionych kilogramów"/>
-            <CustomCard sx={{fontSize: 10}} value={lastWorkoutDate} title="Ostatni trening"/>
-
-        </Box>
+        <Box sx={{mt:6, mb:9}}>
+            <Typography sx={{textAlign: 'center'}} variant="h4">Statystyki treningów</Typography>
+            <Box sx={{
+                mt: 4,
+                display: 'flex',
+                gap: 8,
+                ml: 4,
+                mr: 4,
+                justifyContent: 'center',
+                flexWrap: 'wrap',
+            }}>
+                <CustomCard value={totalWorkouts} title="Łączna liczba treningów"/>
+                <CustomCard value={liftedWeight + " t"} title="Suma podniesionych kilogramów"/>
+                <CustomCard sx={{fontSize: 10}} value={lastWorkoutDate} title="Ostatni trening"/>
+            </Box></Box>
     );
 };
 

@@ -30,8 +30,7 @@ function Navbar() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
     const [mobileMenuAnchorEl, setMobileMenuAnchorEl] = useState(null);
-    const { avatar, refreshAvatar } = useContext(AvatarContext);
-
+    const {avatar, refreshAvatar} = useContext(AvatarContext);
 
 
     const handleMenuOpen = (event) => {
@@ -80,6 +79,20 @@ function Navbar() {
         {label: 'Treningi', to: '/stats', type: 'navigate'}
     ];
 
+    const handleNotificationClick = (notification) => {
+        if (notification.notificationType === 'COMMENT' && notification.relatedResourceId) {
+            navigate(`/plans/${notification.relatedResourceId}`);
+        } else if (notification.notificationType === 'MESSAGE') {
+            navigate('/friends');
+        } else if (notification.notificationType === 'FRIEND_REQUEST') {
+            navigate('/friends');
+        } else {
+            console.log('Nieobsługiwany typ powiadomienia:', notification.notificationType);
+        }
+        setNotificationsAnchorEl(null);
+    };
+
+
     const unreadNotificationsCount = notifications.filter(n => !n.isRead).length;
 
 
@@ -113,22 +126,21 @@ function Navbar() {
                     sx={{
                         flexGrow: 1,
                         display: 'flex',
+                        padding:1,
                         justifyContent: {
                             md: 'left', xs: 'center'
                         },
                     }}
                 >
-                    <Link to="/">
-                        <Box
+                    <Box
                             component="img"
                             src={logo}
                             alt="App Logo"
                             sx={{
-                                width: {sm: '6vw', md: '2vw', xs: '10vw'},
+                                width: {sm: '6vw', md: '5vw', xs: '15vw'},
                                 cursor: 'pointer',
                             }}
                         />
-                    </Link>
                 </Box>
 
                 {/* Non-Authenticated Menu Items */}
@@ -197,19 +209,25 @@ function Navbar() {
                             <List sx={{width: '350px'}}>
                                 {notifications.length === 0 ? (
                                     <ListItem>
-                                        <ListItemText primary="No new notifications"/>
+                                        <ListItemText primary="Brak powiadomień"/>
                                     </ListItem>
                                 ) : (
                                     notifications.map((notification, index) => (
-                                        <ListItem key={index} divider>
+                                        <ListItem key={index}
+                                                  divider
+                                                  sx={{
+                                                      cursor: 'pointer',
+                                                      backgroundColor: notification.notificationType === 'WARN' ? 'red' : 'inherit',
+                                                  }}
+                                                  onClick={() => handleNotificationClick(notification)}>
                                             <ListItemText
                                                 primary={
                                                     notification.notificationType === 'MESSAGE' && notification.count > 1
-                                                        ? `You have ${notification.count} new messages from ${notification.senderName}`
+                                                        ? `Masz ${notification.count} nowych wiadomości od ${notification.senderName}`
                                                         : notification.notificationType === 'MESSAGE'
-                                                            ? `You have a new message from ${notification.senderName}`
+                                                            ? `Masz nową wiadomość od ${notification.senderName}`
                                                             : notification.senderEmail === null
-                                                                ? `System Notification: ${notification.content}`
+                                                                ? `System: ${notification.content}`
                                                                 : notification.content
                                                 }
                                                 secondary={new Date(notification.timestamp).toLocaleString()}
@@ -224,7 +242,7 @@ function Navbar() {
                             color="inherit"
                             onClick={handleMenuOpen}
                         >
-                            <Avatar src={avatar} />
+                            <Avatar src={avatar}/>
                         </IconButton>
                         <Menu
                             anchorEl={anchorEl}

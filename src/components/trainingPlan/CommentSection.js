@@ -69,7 +69,7 @@ const CommentsSection = ({trainingPlanId}) => {
             />
             <Typography variant="h6">Komentarze</Typography>
             {comments.map((comment) => (
-                <Box key={comment.id} sx={{marginBottom: "10px", backgroundColor:"#363636", borderRadius:'8px', padding:'2px', maxWidth:{xs:'100%', lg:"70%"}}}>
+                <Box key={comment.id} sx={{marginBottom: "10px", backgroundColor:"#363636", borderRadius:'8px', padding:'2px', maxWidth:{xs:'100%', lg:"100%"}}}>
                     <Typography variant="subtitle1">
                         {comment.authorNickname} - {dayjs(comment.dateCreated).format("DD.MM.YYYY HH:mm")}
                     </Typography>

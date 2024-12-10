@@ -1,7 +1,7 @@
 import React, {memo, useState} from "react";
 import {Field, FieldArray, useFormikContext} from "formik";
 import Autocomplete from "@mui/material/Autocomplete";
-import {Button, IconButton, TextField} from "@mui/material";
+import {Box, Button, IconButton, TextField} from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
@@ -40,7 +40,8 @@ const ExerciseFieldForm = memo(({exerciseOptions, exerciseIndex, removeExercise}
             <Field name={`exercises[${exerciseIndex}].exerciseId`}>
                 {({field, meta}) => (
                     <Autocomplete
-                        options={exerciseOptions}
+                        options={exerciseOptions.sort((a, b) =>
+                            (a.categoryName > b.categoryName ? 1 : -1))}
                         getOptionLabel={(option) => option.name}
                         groupBy={(option) => categoryMapping[option.categoryName] || option.categoryName}
                         value={
@@ -49,12 +50,12 @@ const ExerciseFieldForm = memo(({exerciseOptions, exerciseIndex, removeExercise}
                         onChange={(event, value) =>
                             setFieldValue(field.name, value ? value.id : '')
                         }
-
-                        renderOption={(props, option) => (
+                        noOptionsText={
+                            <span style={{ color: 'white' }}>Brak ćwiczenia</span>}
+                            renderOption={(props, option) => (
                             <li {...props}
                                 style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <span>{option.name}</span>
-                                {/*Informacje o cwiczeniu kompnent*/}
                                 <Tooltip title="Informacje o ćwiczeniu" placement="top">
                                     <IconButton
                                         onClick={(e) => {
@@ -83,13 +84,13 @@ const ExerciseFieldForm = memo(({exerciseOptions, exerciseIndex, removeExercise}
             <FieldArray name={`exercises[${exerciseIndex}].sets`}>
                 {({push: pushSet, remove: removeSet}) => (
                     values.exercises[exerciseIndex].sets.map((set, setIndex) => (
-                        <div key={setIndex} style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
+                        <div key={setIndex} style={{display: 'flex', alignItems: 'center', flexWrap:'wrap'}}>
                             <Field
+                                sx={{maxWidth:'100px'}}
                                 name={`exercises[${exerciseIndex}].sets[${setIndex}].reps`}
                                 as={TextField}
                                 label="Powtórzenia"
                                 type="number"
-                                fullWidth
                                 inputProps={{min: 0}}
                                 margin="normal"
                                 error={touched.exercises?.[exerciseIndex]?.sets?.[setIndex]?.reps && Boolean(errors.exercises?.[exerciseIndex]?.sets?.[setIndex]?.reps)}
@@ -100,19 +101,20 @@ const ExerciseFieldForm = memo(({exerciseOptions, exerciseIndex, removeExercise}
                                 as={TextField}
                                 label="Ciężar (kg)"
                                 type="number"
-                                fullWidth
+                                sx={{maxWidth:'100px'}}
                                 inputProps={{min: 0}}
                                 margin="normal"
                                 error={touched.exercises?.[exerciseIndex]?.sets?.[setIndex]?.weight && Boolean(errors.exercises?.[exerciseIndex]?.sets?.[setIndex]?.weight)}
                                 helperText={touched.exercises?.[exerciseIndex]?.sets?.[setIndex]?.weight && errors.exercises?.[exerciseIndex]?.sets?.[setIndex]?.weight}
                             />
-                            <IconButton onClick={() => removeSet(setIndex)}
-                                        disabled={values.exercises[exerciseIndex].sets.length === 1}>
-                                <RemoveIcon/>
-                            </IconButton>
-                            <IconButton onClick={() => pushSet({reps: '', weight: ''})}>
-                                <AddIcon/>
-                            </IconButton>
+                            <Box>
+                                <IconButton onClick={() => removeSet(setIndex)}
+                                            disabled={values.exercises[exerciseIndex].sets.length === 1}>
+                                    <RemoveIcon/>
+                                </IconButton>
+                                <IconButton onClick={() => pushSet({reps: '', weight: ''})}>
+                                    <AddIcon/>
+                                </IconButton></Box>
                         </div>
                     ))
                 )}

@@ -103,5 +103,15 @@ export const searchUsersWithRequestStatus = async (query, page = 0, size = 10) =
     }
 };
 
+export const getFriendStatus = async (userId) => {
+    try {
+        const response = await axiosInstance.get(`/friends/status/${userId}`);
+        return response.data.status;
+    } catch (error) {
+        console.error("Failed to get friend status:", error);
+        throw error;
+    }
+};
+
 
 

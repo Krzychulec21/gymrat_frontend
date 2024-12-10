@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {
+    Alert,
     Box,
     Button,
     Checkbox,
@@ -7,7 +8,7 @@ import {
     IconButton,
     InputLabel,
     MenuItem,
-    Select,
+    Select, Snackbar,
     Table,
     TableBody,
     TableCell,
@@ -16,10 +17,10 @@ import {
     TablePagination,
     TableRow,
     TableSortLabel,
-    TextField,
+    TextField, Typography,
 } from "@mui/material";
 import {getAllTrainingPlans, toggleFavorite} from "../service/trainingPlanService";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import ClearIcon from "@mui/icons-material/Clear";
 import FitnessCenterOutlinedIcon from '@mui/icons-material/FitnessCenterOutlined';
@@ -28,8 +29,12 @@ import validationSchema from "../components/trainingPlan/TrainingPlanValidationS
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import Tooltip from "@mui/material/Tooltip";
+import Slide from "@mui/material/Slide";
+import {useSnackbar} from "../context/SnackbarContext";
+
 
 const TrainingPlansPage = () => {
+    const { showSnackbar } = useSnackbar();
     const [trainingPlans, setTrainingPlans] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
     const [page, setPage] = useState(0);
@@ -146,10 +151,14 @@ const TrainingPlansPage = () => {
         try {
             await toggleFavorite(id);
             fetchTrainingPlans();
+            showSnackbar("Plan treningowy zdodany do polubionych!", "success");
+
         } catch (error) {
             console.error(error);
         }
+
     }
+
 
     return (
         <Box sx={{
@@ -160,7 +169,8 @@ const TrainingPlansPage = () => {
             width: '90%',
             margin: 'auto'
         }}>
-            <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'space-between' }}>
+            <Typography sx={{textAlign: 'center'}} variant="h4">Plany treningowe społeczności</Typography>
+            <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'space-between', mt:2 }}>
                 <Button
                     startIcon={<FilterListIcon />}
                     onClick={() => setShowFilters(!showFilters)}
@@ -328,6 +338,8 @@ const TrainingPlansPage = () => {
                 isEditMode={false}
                 validationSchema={validationSchema}
                 onUpdate={onUpdate}
+                showSnackbar={showSnackbar}
+
             />
         </Box>
     );

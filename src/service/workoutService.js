@@ -12,6 +12,7 @@ export const getAllExercises = async () => {
 export const getExerciseInfo = async (id) => {
     try {
         const response = await axiosInstance.get(`/exercise/${id}`)
+        console.log("z serwisu"+ response.data)
         return response.data;
     } catch (error) {
         console.error(error);
@@ -135,3 +136,45 @@ export const deleteWorkoutSession = async (id) => {
         throw error;
     }
 };
+
+export const getWorkoutSessionById = async (workoutId) => {
+    try {
+        const response = await axiosInstance.get(`workout/${workoutId}`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const getTrainedCategoriesCount = async () => {
+    try {
+        const response = await axiosInstance.get(`/workout/trained-categories-count`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+export const getTrainedExercisesCount = async () => {
+    try {
+        const response = await axiosInstance.get(`/workout/trained-exercises-count`);
+        console.log("cwiczenia", response.data)
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const getExerciseOneRepMaxProgress = async (exerciseId) => {
+    try {
+        const response = await axiosInstance.get(`/workout/exercise/${exerciseId}/one-rep-max`);
+        console.log("dane max rep: ", response.data)
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+
+
+

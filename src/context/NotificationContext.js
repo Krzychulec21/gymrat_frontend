@@ -71,6 +71,7 @@ export const NotificationsProvider = ({ children }) => {
                     senderName: notification.senderName,
                     senderEmail: notification.senderEmail,
                     count: 1, // Single notification
+                    relatedResourceId: notification.relatedResourceId,
                     ids: [notification.id],
                 });
             }
@@ -81,6 +82,7 @@ export const NotificationsProvider = ({ children }) => {
 
 
     const aggregateAndAddNotification = (currentNotifications, newNotification) => {
+        console.log("powiadomienie przetwarzane: ", newNotification)
         if (newNotification.notificationType === 'MESSAGE') {
             const existing = currentNotifications.find(n => n.senderEmail === newNotification.senderEmail && n.notificationType === 'MESSAGE');
             if (existing) {
@@ -119,6 +121,7 @@ export const NotificationsProvider = ({ children }) => {
                 senderName: newNotification.senderName,
                 senderEmail: newNotification.senderEmail,
                 count: 1,
+                relatedResourceId: newNotification.relatedResourceId,
                 ids: [newNotification.id],
             }];
         }
@@ -139,7 +142,7 @@ export const NotificationsProvider = ({ children }) => {
                     setAggregatedNotifications((prevNotifications) =>
                         prevNotifications.filter(n => n.id !== notification.id)
                     );
-                }, 10000); //
+                }, 10000);
             }
         });
 

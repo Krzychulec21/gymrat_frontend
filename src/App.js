@@ -7,6 +7,7 @@ import Layout from "./utils/Layout";
 import theme from "./utils/theme"
 import {CssBaseline} from "@mui/material";
 import {AvatarProvider} from "./context/AvatarContext";
+import {SnackbarProvider} from "./context/SnackbarContext";
 
 
 function App() {
@@ -14,13 +15,15 @@ function App() {
         <ThemeProvider theme={theme}>
             <CssBaseline/>
             <AuthProvider>
-                <NotificationsProvider>
-                    <AvatarProvider>
-                        <Router>
-                            <Layout/>
-                        </Router>
-                    </AvatarProvider>
-                </NotificationsProvider>
+                <SnackbarProvider>
+                    <NotificationsProvider>
+                        <AvatarProvider>
+                            <Router>
+                                <Layout/>
+                            </Router>
+                        </AvatarProvider>
+                    </NotificationsProvider>
+                </SnackbarProvider>
             </AuthProvider>
         </ThemeProvider>
 

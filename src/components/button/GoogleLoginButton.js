@@ -12,7 +12,7 @@ const GoogleLogin = () => {
     return (
         <Button variant="google" onClick={handleLogin}>
             <GoogleIcon style={{color: '#4285F4', marginRight: 8}}/>
-            Login with Google
+            Zaloguj się z Google
         </Button>
     );
 };

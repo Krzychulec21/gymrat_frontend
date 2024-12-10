@@ -10,7 +10,7 @@ const theme = createTheme({
             main: '#757575',
         },
         text: {
-            primary: '#FFFFFF',
+            primary: '#ffffff',
             secondary: '#000000',
         },
     },
@@ -22,6 +22,37 @@ const theme = createTheme({
     },
 
     components: {
+        MuiOutlinedInput: {
+            styleOverrides: {
+                root: {
+                    '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'white',
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'white',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'white',
+                    },
+                },
+            },
+        },
+        MuiPopper:{
+            styleOverrides:{
+                root: {
+                    '& .MuiTypography-root': {
+                        color: 'black',
+                    },
+                },
+            },
+        },
+        MuiCardHeader:{
+            styleOverrides:{
+                subheader: {
+                    color: '#FFFFFF'
+                }
+            }
+        },
         MuiTableSortLabel: {
             styleOverrides: {
                 icon: {
@@ -31,6 +62,9 @@ const theme = createTheme({
         },
         MuiListItemText: {
             styleOverrides: {
+                primary:{
+                  color: "white"
+                },
                 secondary:{
                     color: "white"
                 }
@@ -73,6 +107,7 @@ const theme = createTheme({
                 icon: {
                     color: "white",
                 },
+
             },
         },
         MuiButton: {

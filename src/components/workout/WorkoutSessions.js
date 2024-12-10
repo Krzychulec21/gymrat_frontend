@@ -34,6 +34,17 @@ const WorkoutSessions = ({refresh, onWorkoutChanged}) => {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [workoutIdToDelete, setWorkoutIdToDelete] = useState(null);
 
+    const categoryMapping = {
+        "NOGI": "Nogi",
+        "BARKI": "Barki",
+        "PLECY": "Plecy",
+        "BICEPS": "Biceps",
+        "TRICEPS": "Triceps",
+        "KLATKA_PIERSIOWA": "Klatka piersiowa",
+        "BRZUCH": "Brzuch"
+    };
+
+
 
     const fetchWorkouts = async () => {
         try {
@@ -103,6 +114,7 @@ const WorkoutSessions = ({refresh, onWorkoutChanged}) => {
         const { row } = props;
         const [open, setOpen] = useState(false);
 
+
         return (
             <React.Fragment>
                 <TableRow>
@@ -114,7 +126,7 @@ const WorkoutSessions = ({refresh, onWorkoutChanged}) => {
                     <TableCell>{row.date}</TableCell>
                     <TableCell>{row.note.length > 50 ? row.note.substring(0, 50) + '...' : row.note}</TableCell>
                     <TableCell>{row.numberOfExercises}</TableCell>
-                    <TableCell>{row.mainCategory}</TableCell>
+                    <TableCell>{categoryMapping[row.mainCategory]}</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
@@ -155,7 +167,8 @@ const WorkoutSessions = ({refresh, onWorkoutChanged}) => {
 
     return (
         <>
-            <TableContainer sx={{backgroundColor: '#252525', borderRadius: 3,  boxShadow: 3,}}>
+            <Typography sx={{textAlign: 'center', mt:4}} variant="h4">Historia treningów</Typography>
+            <TableContainer sx={{backgroundColor: '#252525', borderRadius: 3,  boxShadow: 3,mt:2}}>
                 <Table>
                     <TableHead>
                         <TableRow>

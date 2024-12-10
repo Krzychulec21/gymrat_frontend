@@ -15,17 +15,23 @@ const authService = {
     },
 
     login: async (credentials) => {
-        const response = await axiosInstance.post("/auth/authenticate", credentials);
-        authService.handleToken(response.data.token);
+        try {
+            const response = await axiosInstance.post("/auth/authenticate", credentials);
+            authService.handleToken(response.data.token);
+        } catch (error) {
+            throw error;
+        }
     },
+
     register: async (data) => {
-        const response = await axiosInstance.post("/auth/register", data);
-        authService.handleToken(response.data.token);
+        await axiosInstance.post("/auth/register", data);
     },
     logout: () => {
         localStorage.removeItem('token');
         localStorage.removeItem('email');
         localStorage.removeItem('id');
+
+        window.location.href = '/';
     },
     isAuthenticated: () => !!localStorage.getItem('token'),
     setToken: (token) => {
@@ -33,6 +39,22 @@ const authService = {
     },
     getToken: () => {
         return localStorage.getItem('token');
+    },
+    forgotPassword: async (email) => {
+        await axiosInstance.post('/auth/forgot-password', {email});
+    },
+
+    resetPassword: async (token, newPassword) => {
+        await axiosInstance.post(`/auth/reset-password?token=${token}`, {password: newPassword});
+    },
+
+    getRole: () => {
+        const token = localStorage.getItem('token')
+        if (token !== null) {
+            const decodedToken = jwtDecode(token);
+            return decodedToken.role;
+        }
+        return "";
     }
 };
 

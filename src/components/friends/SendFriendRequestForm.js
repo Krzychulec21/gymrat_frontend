@@ -4,8 +4,10 @@ import {searchUsersWithRequestStatus, sendFriendRequest} from '../../service/fri
 import Button from "@mui/material/Button";
 import UserListItem from "./UserListItem";
 import TextField from "@mui/material/TextField";
+import {useSnackbar} from "../../context/SnackbarContext";
 
 const SendFriendRequestForm = () => {
+    const {showSnackbar} = useSnackbar();
     const [users, setUsers] = useState([]);
     const [query, setQuery] = useState('');
     const [errorMessage, setErrorMessage] = useState("");
@@ -29,14 +31,13 @@ const SendFriendRequestForm = () => {
     const handleSendRequest = async (selectedEmail) => {
         try {
             await sendFriendRequest(selectedEmail);
-            console.log(`Zaproszenie wysłane do: ${selectedEmail}`);
-            setErrorMessage('');
+            showSnackbar("Pomyślnie wysłano zaproszenie", 'success');
             setOpenSnackbar(true);
         } catch (error) {
             if (error.response.status === 409) {
-                setErrorMessage("Zaproszenie zostało już wysłane");
+                showSnackbar("Zaproszenie zostało już wysłane", 'error');
             } else {
-                setErrorMessage("Wystąpił błąd podczas wysyłania zaproszania");
+                showSnackbar("Wystąpił błąd podczas wysyłania zaproszania", 'error');
             }
             setOpenSnackbar(true);
         }
@@ -100,13 +101,6 @@ const SendFriendRequestForm = () => {
                     page={currentPage + 1}
                     onChange={handlePageChange}
                 />)}
-            <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{
-                vertical: 'top', horizontal: 'center'
-            }}>
-                <Alert onClose={handleCloseSnackbar} severity={errorMessage ? "error" : "success"}>
-                    {errorMessage || "Zaproszenie zostało pomyślnie wysłane!"}
-                </Alert>
-            </Snackbar>
         </Box>);
 };
 

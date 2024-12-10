@@ -2,12 +2,21 @@ import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import CustomButton from "../components/button/CustomButton";
+import authService from "../service/authService";
+import {useAuth} from "../context/AuthContext";
 
 const NotFoundPage = () => {
     const navigate = useNavigate();
-
+    const role = authService.getRole();
+    const isAdmin = role === "ADMIN";
+    const isLoggedIn = useAuth();
     const handleGoHome = () => {
-        navigate('/');
+        if (isLoggedIn) {
+            if (isAdmin) {
+                navigate('/admin/dashboard')
+            }
+            else navigate('/profile')
+        }else navigate('/');
     };
 
     return (

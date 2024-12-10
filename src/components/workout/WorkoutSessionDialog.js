@@ -5,8 +5,10 @@ import {getAllExercises, saveWorkoutSession, updateWorkoutSession} from '../../s
 import workoutSessionValidationSchema from "./WorkoutSessionValidationSchema";
 import ExerciseFieldForm from "./ExerciseFieldForm";
 import dayjs from "dayjs";
+import {useSnackbar} from "../../context/SnackbarContext";
 
 const WorkoutSessionDialog = ({ open, onClose, initialValues, isEditMode, onWorkoutAdded}) => {
+    const {showSnackbar} = useSnackbar();
     const [exerciseOptions, setExerciseOptions] = useState([]);
     const today = dayjs().format('YYYY-MM-DD');
 
@@ -36,6 +38,9 @@ const WorkoutSessionDialog = ({ open, onClose, initialValues, isEditMode, onWork
         exercises: [{ exerciseId: '', sets: [{ reps: '', weight: '' }] }],
     };
 
+
+
+
     return (
         <Dialog open={open} onClose={onClose} PaperProps={{ style: { backgroundColor: '#252525' }}}>
             <Formik
@@ -46,9 +51,13 @@ const WorkoutSessionDialog = ({ open, onClose, initialValues, isEditMode, onWork
                         ? updateWorkoutSession(initialValues.id, values)
                         : saveWorkoutSession(values);
                     action
-                        .then(() => {
+                        .then((response) => {
                             setSubmitting(false);
-                            onWorkoutAdded();
+                            onWorkoutAdded(response, isEditMode);
+                            const successMessage = isEditMode
+                                ? "Sesja treningowa została pomyślnie zaktualizowana!"
+                                : "Sesja treningowa została pomyślnie dodana!";
+                            showSnackbar(successMessage);
                             onClose();
                         })
                         .catch((error) => {
@@ -104,7 +113,7 @@ const WorkoutSessionDialog = ({ open, onClose, initialValues, isEditMode, onWork
                             </FieldArray>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={onClose}>Anuluj</Button>
+                            <Button onClick={onClose} variant="secondAction">Anuluj</Button>
                             <Button type="submit" variant="contained" disabled={isSubmitting}>
                                 {isSubmitting ? 'Zapisywanie...' : 'Zapisz'}
                             </Button>

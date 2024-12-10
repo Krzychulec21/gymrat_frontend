@@ -1,18 +1,19 @@
 import React from 'react';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import authService from '../service/authService';
+import authService from '../../service/authService';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import GoogleLoginButton from "./button/GoogleLoginButton";
+import GoogleLoginButton from "../button/GoogleLoginButton";
 import Button from "@mui/material/Button";
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {IconButton} from "@mui/material";
+import {Link} from "react-router-dom";
 
 
-function SignIn() {
+function SignIn({onForgotPassword}) {
     const [showPassword, setShowPassword] = React.useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -30,15 +31,34 @@ function SignIn() {
             password: ''
         },
         validationSchema: Yup.object({
-            email: Yup.string().email('Invalid email address').required('Required'),
-            password: Yup.string().required('Required')
+            email: Yup.string()
+                .required('Wymagane')
+                .email('Nieprawidłowy adres email')
+                .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Wprowadź poprawny adres email'),
+            password: Yup.string().required('Wymagane')
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
             try {
                 await authService.login(values);
-                window.location.href = '/';
+                const role = authService.getRole();
+                if (role === 'ADMIN') {
+                    window.location.href = '/admin/dashboard';
+                } else {
+                    window.location.href = '/profile';
+                }
             } catch (error) {
-                setErrors({ password: 'Invalid email or password' });
+                if (error.response && error.response.status === 401) {
+                    if (error.response.data === "Email not verified") {
+                        setErrors({ email: "Twój email nie został zweryfikowany" });
+                    } else {
+                        setErrors({ password: "Niepoprawny email lub hasło" });
+                    }
+                } else if (error.response && error.response.status === 403) {
+                    setErrors({email: "Twoje konto zostało zablokowane. Skontaktuj się działem wsparcia."})
+                }
+                else {
+                    setErrors({ email: "An unexpected error occurred. Please try again later." });
+                }
                 setSubmitting(false);
             }
         }
@@ -70,7 +90,7 @@ function SignIn() {
             <TextField
                 fullWidth
                 size="small"
-                label="Password"
+                label="Hasło"
                 name="password"
                 type={showPassword ? 'text' : 'password'}
                 variant="outlined"
@@ -94,9 +114,12 @@ function SignIn() {
                 }}
             />
             <Button type="submit" variant="contained" color="primary">
-                Sign In
+                Zaloguj się
             </Button>
-            <text>OR</text>
+            <Button sx={{backgroundColor: '#252525'}} onClick={onForgotPassword}>
+                Nie pamiętasz hasła?
+            </Button>
+            <text>LUB</text>
             <GoogleLoginButton></GoogleLoginButton>
         </Box>
     );

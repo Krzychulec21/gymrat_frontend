@@ -6,14 +6,29 @@ import WorkoutSessionDialog from "./workout/WorkoutSessionDialog";
 import GeneralStatsCard from "./workout/GeneralStatsCard";
 import PopularExerciseChart from "./workout/PopularExerciseChart";
 import WorkoutSessions from "./workout/WorkoutSessions";
+import PostDialog from "./workout/PostDialog";
+import TrainedMuscleGroupsChart from "./workout/TrainedMuscleGroupsChart";
+import ExerciseOneRepMaxChart from "./workout/ExerciseOneRepMaxChart";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const SlideTransition = (props) => {
+    return <Slide {...props} direction="down"/>;
+};
+
+
 const MainStats = () => {
     const [refresh, setRefresh] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
+    const [openPostDialog, setOpenPostDialog] = useState(false);
+    const [lastWorkoutId, setLastWorkoutId] = useState(null);
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+
 
     const handleDialogClose = (event, reason) => {
         if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
@@ -24,10 +39,20 @@ const MainStats = () => {
 
 
     const handleAddWorkoutButton = () => {
+        setIsEditMode(false)
         setOpenDialog(true);
+
     }
 
-    const handleWorkoutAdded = () => {
+    const handleWorkoutAdded = (workoutId, isEditMode) => {
+        if (isEditMode === false) {
+            setLastWorkoutId(workoutId);
+            setOpenPostDialog(true);
+        }
+        setRefresh(!refresh);
+    };
+
+    const handlePostAdded = () => {
         setRefresh(!refresh);
     }
 
@@ -50,10 +75,20 @@ const MainStats = () => {
                 right: 10
             }} onClick={handleAddWorkoutButton}>Dodaj trening</Button>
             <WorkoutSessionDialog open={openDialog} onClose={handleDialogClose} Transition={Transition}
-                                  onWorkoutAdded={handleWorkoutAdded}/>
+                                  onWorkoutAdded={handleWorkoutAdded}
+                                  isEditMode={isEditMode}
+            />
             <GeneralStatsCard refresh={refresh}/>
             <PopularExerciseChart refresh={refresh}/>
+            <TrainedMuscleGroupsChart />
+            <ExerciseOneRepMaxChart />
             <WorkoutSessions refresh={refresh} onWorkoutChanged={handleWorkoutAdded}/>
+            <PostDialog
+                open={openPostDialog}
+                onClose={() => setOpenPostDialog(false)}
+                onPostAdded={handlePostAdded}
+                workoutId={lastWorkoutId}
+            />
         </Box>
     );
 };

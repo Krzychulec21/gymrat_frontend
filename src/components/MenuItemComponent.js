@@ -1,10 +1,13 @@
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {MenuItem} from "@mui/material";
 import { Link as ScrollLink } from 'react-scroll';
 import Button from "@mui/material/Button";
 
 const MenuItemComponent = ({ item, isMobile, handleClose, ...props }) => {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const isActive = item.type === "navigate" ? location.pathname === item.to : false;
 
     const handleClick= () => {
         if (item.type === 'navigate') {
@@ -35,8 +38,17 @@ const MenuItemComponent = ({ item, isMobile, handleClose, ...props }) => {
         ) : (
             <Button
                 variant="text"
-                color="inherit"
-                sx={{ fontSize: { md: '1rem',lg: '1.2rem', xl:'1.4rem'} }}
+                color={isActive ? "primary" : "inherit"}
+                sx={{
+                    fontSize: { md: '1rem', lg: '1.2rem', xl: '1.4rem' },
+                    '&:hover': {
+                        textDecoration: 'underline', // Add underline on hover
+                    },
+                    ...(isActive && {
+                        fontWeight: 'bold',
+                        textDecoration: 'underline',
+                    }),
+                }}
                 onClick={handleClick}
                 key={item.label}
             >

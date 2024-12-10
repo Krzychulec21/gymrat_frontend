@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     Alert,
     Avatar,
@@ -26,17 +26,25 @@ import Slide from '@mui/material/Slide';
 import * as Yup from "yup";
 import {Field, Form, Formik} from "formik";
 import {AvatarContext} from "../context/AvatarContext";
+import {getFriendStatus, removeFriend, sendFriendRequest} from "../service/friendService";
+import {useSnackbar} from "../context/SnackbarContext";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
+const SlideTransition = React.forwardRef((props, ref) => {
+    return <Slide {...props} ref={ref} direction={props.direction || "down"} />;
 });
 
-const ProfileInfo = ({user, personalInfo, avatar:initialAvatar, onDataUpdate}) => {
-    const [openSnackbar, setOpenSnackbar] = useState(false);
+
+const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, onDataUpdate}) => {
+    const isCurrentUser = currentUser && user && currentUser.id === user.id;
     const [openDialog, setOpenDialog] = useState(false);
     const {updateAvatar} = useContext(AvatarContext);
+    const [friendStatus, setFriendStatus] = useState(null);
+    const { showSnackbar } = useSnackbar();
 
-
+    const genderMapping = {
+        MALE: "mężczyzna",
+        FEMALE: "kobieta"
+    };
     const validationSchema = Yup.object().shape({
         bio: Yup.string().max(500, 'O mnie nie może przekraczać 500 znaków'),
         weight: Yup.number()
@@ -66,34 +74,64 @@ const ProfileInfo = ({user, personalInfo, avatar:initialAvatar, onDataUpdate}) =
                 if (onDataUpdate) {
                     onDataUpdate();
                 }
+                showSnackbar('Avatar został pomyślnie zaktualizowany!', 'success');
             } catch (error) {
-                setOpenSnackbar(true);
+                showSnackbar('Niepoprawny format pliku!', 'error');
                 console.error("Failed to update avatar:", error);
             }
         }
     };
-    const handleCloseSnackbar = () => {
-        setOpenSnackbar(false);
-    }
 
     const handleButtonClick = () => {
         setOpenDialog(true);
     };
-
-    const handleDialogClose = () => {
-        setOpenDialog(false);
-    };
-
-
     const handleSave = async (values, {setSubmitting}) => {
         try {
             await updatePersonalInfo(values);
             setOpenDialog(false);
             onDataUpdate();
+            showSnackbar('Dane zostały pomyślnie zmienione!', 'success');
         } catch (error) {
+            showSnackbar('Wystąpił błąd podczas zapisywania danych!', 'error');
             console.error('Error updating personal info:', error);
         }
-        setSubmitting(false);
+
+    };
+
+    useEffect(() => {
+        const fetchFriendStatus = async () => {
+            try {
+                const status = await getFriendStatus(user.id);
+                setFriendStatus(status);
+            } catch (error) {
+                console.error("Failed to fetch friend status", error);
+            }
+        };
+        if (!isCurrentUser && user) {
+            fetchFriendStatus();
+        }
+    }, [isCurrentUser, user]);
+
+    const handleAddFriend = async () => {
+        try {
+            await sendFriendRequest(user.email);
+            setFriendStatus('PENDING');
+            showSnackbar('Zaproszenie do znajomychh zostało wysłane!', 'success');
+        } catch (error) {
+            showSnackbar('Wystąpił błąd podczas wysyłania zaproszennia', 'error');
+            console.error("Failed to send friend request:", error);
+        }
+    };
+
+    const handleRemoveFriend = async () => {
+        try {
+            await removeFriend(user.email);
+            setFriendStatus('NOT_FRIEND');
+            showSnackbar('Pomyślnie usunięto znajomego', 'success');
+        } catch (error) {
+            showSnackbar('Błąd podczas usuwania znajomego', 'error');
+            console.error("Failed to remove friend:", error);
+        }
     };
 
 
@@ -103,33 +141,70 @@ const ProfileInfo = ({user, personalInfo, avatar:initialAvatar, onDataUpdate}) =
                 position: 'relative',
                 backgroundColor: '#2C2C2C',
                 borderRadius: '8px',
-                maxWidth: {xs: '90%', lg: '70%'},
                 padding: '20px',
                 margin: '0 auto',
                 color: 'white',
                 minWidth: {xs: '80%', lg: '55%'},
+                maxWidth: {xs: '90%', lg: '70%'},
+                mb: 5
             }}
         >
-            <Box
-                sx={{
-                    position: 'absolute',
-                    top: 10,
-                    right: 10,
-                    zIndex: 1
-                }}
-            >
-                <Button
-                    variant="text"
-                    color="primary.secondary"
-                    onClick={handleButtonClick}
-                    startIcon={<EditIcon/>}
+            {isCurrentUser && (
+                <Box
                     sx={{
-                        backgroundColor: '#555',
+                        position: 'absolute',
+                        top: 10,
+                        right: 10,
+                        zIndex: 1
                     }}
                 >
-                    Edytuj
-                </Button>
-            </Box>
+                    <Button
+                        variant="text"
+                        color="primary.secondary"
+                        onClick={handleButtonClick}
+                        startIcon={<EditIcon/>}
+                        sx={{
+                            backgroundColor: '#555',
+                        }}
+                    >
+                        Edytuj
+                    </Button>
+                </Box>
+            )}
+            {!isCurrentUser && (
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: 10,
+                        right: 10,
+                        zIndex: 1
+                    }}
+                >
+                    {friendStatus === 'NOT_FRIEND' && (
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleAddFriend}
+                        >
+                            Dodaj znajomego
+                        </Button>
+                    )}
+                    {friendStatus === 'FRIEND' && (
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={handleRemoveFriend}
+                        >
+                            Usuń znajomego
+                        </Button>
+                    )}
+                    {friendStatus === 'PENDING' && (
+                        <Box sx={{border: "1px solid white", padding: 1, borderRadius: "5px"}}>
+                            <Typography variant="body2">Zaproszenie wysłane</Typography>
+                        </Box>
+                    )}
+                </Box>
+            )}
 
             {/*Avatar and name*/}
             <Box
@@ -152,29 +227,31 @@ const ProfileInfo = ({user, personalInfo, avatar:initialAvatar, onDataUpdate}) =
                         sx={{width: 120, height: 120}}
                         src={initialAvatar}
                     />
-                    <IconButton
-                        component="label"
-                        sx={{
-                            position: 'absolute',
-                            backgroundColor: '#1976d2',
-                            color: '#fff',
-                            bottom: -10,
-                            right: -5,
-                            width: 35,
-                            height: 35,
-                            '&:hover': {
-                                backgroundColor: '#1565c0'
-                            },
-                        }}
-                    >
-                        <AddPhotoAlternateIcon/>
-                        <input
-                            type="file"
-                            accept="image/jpeg,image/png"
-                            onChange={handleAvatarChange}
-                            hidden
-                        />
-                    </IconButton>
+                    {isCurrentUser && (
+                        <IconButton
+                            component="label"
+                            sx={{
+                                position: 'absolute',
+                                backgroundColor: '#1976d2',
+                                color: '#fff',
+                                bottom: -10,
+                                right: -5,
+                                width: 35,
+                                height: 35,
+                                '&:hover': {
+                                    backgroundColor: '#1565c0'
+                                },
+                            }}
+                        >
+                            <AddPhotoAlternateIcon/>
+                            <input
+                                type="file"
+                                accept="image/jpeg,image/png"
+                                onChange={handleAvatarChange}
+                                hidden
+                            />
+                        </IconButton>
+                    )}
                 </Box>
 
                 {/*Name and email*/}
@@ -189,7 +266,8 @@ const ProfileInfo = ({user, personalInfo, avatar:initialAvatar, onDataUpdate}) =
                 </Box>
             </Box>
 
-            {/*user properties*/}
+            {/*user properties*/
+            }
             <Box sx={{
                 display: 'flex',
                 flexWrap: 'wrap',
@@ -199,32 +277,27 @@ const ProfileInfo = ({user, personalInfo, avatar:initialAvatar, onDataUpdate}) =
             }}>
                 {personalInfo && typeof personalInfo === 'object' && (
                     <Box>
-                        <Typography variant="body2">Waga: {personalInfo.weight}</Typography>
-                        <Typography variant="body2">Wzrost: {personalInfo.height}</Typography>
-                        <Typography variant="body2">Płeć: {personalInfo.gender}</Typography>
+                        <Typography variant="body1">Waga: {personalInfo.weight}</Typography>
+                        <Typography variant="body1">Wzrost: {personalInfo.height}</Typography>
+                        {personalInfo.gender !== null && personalInfo.gender !== "OTHER" &&
+                            <Typography variant="body1">Płeć: {genderMapping[personalInfo.gender]}</Typography>
+                        }
                     </Box>
                 )}
             </Box>
 
-            {/*bio*/}
-            <Box sx={{ml: 3}}>
-                <Typography variant="h6" sx={{mb: 2}}>
-                    O mnie:
-                </Typography>
-                <Typography sx={{maxWidth: {xs: '85%', wordBreak: 'break-word'}}}>
-                    {personalInfo.bio}
-                </Typography>
+            {/*bio*/
+            }
+            <Box sx={{ml: 3, mt: 3}}>
+                <Typography sx={{textAlign: 'center'}} variant="h5">O mnie</Typography>
+                <Box sx={{border: "1px solid white", padding: 2, borderRadius: "5px", mt: 2}}>
+                    <Typography variant="body1">{personalInfo.bio}</Typography>
+                </Box>
             </Box>
-            <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{
-                vertical: 'top', horizontal: 'center'
-            }}>
-                <Alert onClose={handleCloseSnackbar} severity="error">
-                    Niepoprawny format pliku!
-                </Alert>
-            </Snackbar>
             <Dialog
                 open={openDialog}
-                TransitionComponent={Transition}
+                TransitionComponent={SlideTransition}
+                TransitionProps={{ direction: "up" }}
                 onClose={() => setOpenDialog(false)}
             >
                 <DialogTitle>
@@ -300,7 +373,8 @@ const ProfileInfo = ({user, personalInfo, avatar:initialAvatar, onDataUpdate}) =
                                         <RadioGroup row {...field}>
                                             <FormControlLabel value="MALE" control={<Radio/>} label="Mężczyzna"/>
                                             <FormControlLabel value="FEMALE" control={<Radio/>} label="Kobieta"/>
-                                            <FormControlLabel value="OTHER" control={<Radio/>} label="Inna"/>
+                                            <FormControlLabel value="OTHER" control={<Radio/>}
+                                                              label="Nie chcę podawać"/>
                                         </RadioGroup>
                                     )}
                                 </Field>
@@ -321,10 +395,10 @@ const ProfileInfo = ({user, personalInfo, avatar:initialAvatar, onDataUpdate}) =
                     </Formik>
                 </DialogContent>
             </Dialog>
-
         </Box>
 
-    );
+    )
+        ;
 };
 
 export default ProfileInfo;

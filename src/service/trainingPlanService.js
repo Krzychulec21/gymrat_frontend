@@ -36,9 +36,9 @@ export const createTrainingPlan = async (data) => {
     }
 };
 
-export const updateTrainingPlan = async (id, data) => {
+export const updateTrainingPlan = async (id, values) => {
     try {
-        const response = await axiosInstance.put(`/plan/${id}`, data);
+        const response = await axiosInstance.put(`/plan/${id}`, values);
         return response.data;
     } catch (error) {
         console.error("Error updating training plan:", error);

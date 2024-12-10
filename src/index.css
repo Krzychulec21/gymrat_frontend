@@ -1,5 +1,6 @@
 body {
-  background: linear-gradient(180deg, #252424 0%, #434343 100%);
+  background: rgb(52,11,11);
+  background: linear-gradient(0deg, rgba(52,11,11,1) 0%, rgba(77,19,19,1) 31%, rgba(21,22,22,1) 84%);
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
