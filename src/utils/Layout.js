@@ -17,6 +17,8 @@ import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import AdminDashboardPage from "../pages/AdminDashboardPage";
 import authService from "../service/authService";
+import ChallengeDetailsPage from "../pages/ChallengeDetailsPage";
+import ChallengePage from "../pages/ChallengePage";
 
 function Layout() {
     const location = useLocation();
@@ -53,6 +55,8 @@ function Layout() {
 
                         {/* private routes for userss */}
                         <Route element={<PrivateRoute />}>
+                            <Route path="/challenges" element={<ChallengePage/>} />
+                            <Route path="/challenges/:id/details" element={<ChallengeDetailsPage/>} />
                             <Route path="/friends" element={<FriendPage />} />
                             <Route path="/profile/:userId?" element={<ProfilePage />} />
                             <Route path="/stats" element={<StatsPage />} />

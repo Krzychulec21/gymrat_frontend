@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import {createTheme} from '@mui/material/styles';
 
 const theme = createTheme({
     palette: {
@@ -22,6 +22,12 @@ const theme = createTheme({
     },
 
     components: {
+        MuiTablePagination: {
+            defaultProps: {
+                labelDisplayedRows: ({from, to, count}) =>
+                    `${from}-${to} z ${count !== -1 ? count : `więcej niż ${to}`}`,
+            },
+        },
         MuiOutlinedInput: {
             styleOverrides: {
                 root: {
@@ -37,8 +43,8 @@ const theme = createTheme({
                 },
             },
         },
-        MuiPopper:{
-            styleOverrides:{
+        MuiPopper: {
+            styleOverrides: {
                 root: {
                     '& .MuiTypography-root': {
                         color: 'black',
@@ -46,8 +52,8 @@ const theme = createTheme({
                 },
             },
         },
-        MuiCardHeader:{
-            styleOverrides:{
+        MuiCardHeader: {
+            styleOverrides: {
                 subheader: {
                     color: '#FFFFFF'
                 }
@@ -56,16 +62,16 @@ const theme = createTheme({
         MuiTableSortLabel: {
             styleOverrides: {
                 icon: {
-                    color:"white !important"
+                    color: "white !important"
                 }
             }
         },
         MuiListItemText: {
             styleOverrides: {
-                primary:{
-                  color: "white"
+                primary: {
+                    color: "white"
                 },
-                secondary:{
+                secondary: {
                     color: "white"
                 }
             }
@@ -151,7 +157,7 @@ const theme = createTheme({
                 },
 
                 {
-                    props: { variant: 'google' },
+                    props: {variant: 'google'},
                     style: {
                         textTransform: 'none',
                         color: '#757575',
@@ -192,20 +198,20 @@ const theme = createTheme({
             },
         },
         MuiPagination: {
-          styleOverrides: {
-              root:{
-              "& .MuiPaginationItem-root": {
-                  color: 'white',
-              },
-              "& .Mui-selected": {
-                  backgroundColor: 'rgba(80,80,80,0.8)',
-                  color: 'red'
-              },
-              "& .MuiPaginationItem-root:hover": {
-                  backgroundColor: 'rgba(255, 255, 255, 0.4)',
-              }
-          },
-          }
+            styleOverrides: {
+                root: {
+                    "& .MuiPaginationItem-root": {
+                        color: 'white',
+                    },
+                    "& .Mui-selected": {
+                        backgroundColor: 'rgba(80,80,80,0.8)',
+                        color: 'red'
+                    },
+                    "& .MuiPaginationItem-root:hover": {
+                        backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                },
+            }
         },
         MuiPaper: {
             styleOverrides: {
@@ -218,8 +224,8 @@ const theme = createTheme({
         MuiDialogContentText: {
             styleOverrides: {
                 root: {
-                color: 'white',
-            }
+                    color: 'white',
+                }
             }
         },
         MuiIconButton: {

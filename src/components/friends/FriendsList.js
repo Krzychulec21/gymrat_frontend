@@ -69,28 +69,10 @@ const FriendsList = ({
     };
 
 
-    const handleCommittedChange = (event, newValue) => {
-        onAgeChange(event, newValue);
-    };
-
-    const handleAgeChange = (event, newValue) => {
-        setAgeValue(newValue);
-    };
-
 
     return (
         <>
-            <Box sx={{display: 'flex', justifyContent: 'flex-end', mb: 2, gap: 2, flexWrap: 'wrap'}}>
-                <Box sx={{width: '270px'}}>
-                    <Typography>Przedział wiekowy</Typography>
-                    <Slider
-                        getAriaLabel={() => 'Age range'}
-                        value={ageValue}
-                        onChange={handleAgeChange}
-                        onChangeCommitted={handleCommittedChange}
-                        valueLabelDisplay="auto"
-                    />
-                </Box>
+            <Box sx={{display: 'flex', justifyContent: 'flex-end', mb: 2, mt:2, gap: 2, flexWrap: 'wrap'}}>
                 <FormControl size="small">
                     <Select
                         value={sortBy}
