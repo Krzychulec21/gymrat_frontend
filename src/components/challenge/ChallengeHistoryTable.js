@@ -1,17 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {getUserHistoryChallenges} from '../../service/challengeService';
-import {
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableBody,
-    Card,
-    CardContent,
-    Typography,
-    TablePagination,
-    Box
-} from '@mui/material';
+import {Box, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 
 export default function ChallengeHistoryTable() {
@@ -22,8 +11,8 @@ export default function ChallengeHistoryTable() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        getUserHistoryChallenges(page, rowsPerPage).then(data=>{
-            setHistory(data.content||[]);
+        getUserHistoryChallenges(page, rowsPerPage).then(data => {
+            setHistory(data.content || []);
             setTotal(data.totalElements);
         })
     }, [page, rowsPerPage]);
@@ -38,44 +27,50 @@ export default function ChallengeHistoryTable() {
 
 
     return (
-        <Box sx={{ padding: '20px', backgroundColor: '#2C2C2C', borderRadius: '8px', color: 'white', width: '90%', margin: 'auto', mt:5}}>
-                <Typography variant="h6" gutterBottom>Historia Wyzwań</Typography>
-                <Box sx={{ overflowX: 'auto' }}>
+        <Box sx={{
+            padding: '20px',
+            backgroundColor: '#2C2C2C',
+            borderRadius: '8px',
+            color: 'white',
+            width: '90%',
+            margin: 'auto',
+            mt: 5
+        }}>
+            <Typography variant="h6" gutterBottom>Historia wyzwań</Typography>
+            <Box sx={{overflowX: 'auto'}}>
                 <Table size="small">
                     <TableHead>
                         <TableRow>
                             <TableCell>Nazwa</TableCell>
                             <TableCell>Typ</TableCell>
-                            <TableCell>Status</TableCell>
-                            <TableCell>Data Startu</TableCell>
-                            <TableCell>Data Zakończenia</TableCell>
+                            <TableCell>Data startu</TableCell>
+                            <TableCell>Data zakończenia</TableCell>
                             <TableCell>Ćwiczenie</TableCell>
-                            <TableCell>Ukończone?</TableCell>
+                            <TableCell>Status</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {history.map((ch, index) => (
-                            <TableRow key={index} hover sx={{cursor:'pointer'}} onClick={()=>handleRowClick(ch.id)}>
+                            <TableRow key={index} hover sx={{cursor: 'pointer'}} onClick={() => handleRowClick(ch.id)}>
                                 <TableCell>{ch.name}</TableCell>
                                 <TableCell>{ch.typeName}</TableCell>
-                                <TableCell>{ch.statusName}</TableCell>
                                 <TableCell>{ch.startDate}</TableCell>
                                 <TableCell>{ch.endDate}</TableCell>
-                                <TableCell>{ch.exerciseName||'Brak'}</TableCell>
-                                <TableCell>{ch.userHasScore?'Tak':'Nie'}</TableCell>
+                                <TableCell>{ch.exerciseName || 'Brak'}</TableCell>
+                                <TableCell>{ch.userHasScore ? 'Ukończone' : 'Nieukończone'}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-                </Box>
-                <TablePagination
-                    component="div"
-                    count={total}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    rowsPerPage={rowsPerPage}
-                    rowsPerPageOptions={[10]}
-                />
-                </Box>
+            </Box>
+            <TablePagination
+                component="div"
+                count={total}
+                page={page}
+                onPageChange={handleChangePage}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[10]}
+            />
+        </Box>
     )
 }

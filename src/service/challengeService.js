@@ -26,7 +26,7 @@ export const getUserActiveChallenges = async (page=0,size=4,sortBy="startDate",s
     return response.data;
 }
 
-export const getAvailableChallenges = async (page=0,size=10,sortBy="name",sortDir="asc",publicFilter=true,typeFilter,categoryFilter) => {
+export const getAvailableChallenges = async (page=0,size=10,sortBy="name",sortDir="asc",publicFilter=null,typeFilter,categoryFilter) => {
     const params = {page, size, sortBy, sortDir, publicFilter};
     if (typeFilter) params.typeFilter = typeFilter;
     if (categoryFilter) params.categoryFilter = categoryFilter;

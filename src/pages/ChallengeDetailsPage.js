@@ -84,7 +84,6 @@ export default function ChallengeDetailsPage() {
                         <Typography variant="body1">
                             Liczba uczestników: {challenge.numberOfParticipants}
                         </Typography>
-                        <Typography variant="body1">Status: {challenge.statusName}</Typography>
                         <Typography variant="body1">
                             {challenge.isPublic ? "Publiczne" : "Prywatne"}
                         </Typography>
@@ -129,7 +128,16 @@ export default function ChallengeDetailsPage() {
                                             <TableRow key={idx}>
                                                 <TableCell>{p.username}</TableCell>
                                                 <TableCell>{p.score}</TableCell>
-                                                <TableCell>{p.lastUpdated}</TableCell>
+                                                <TableCell>
+                                                    {new Date(p.lastUpdated).toLocaleString("pl-PL", {
+                                                        year: "numeric",
+                                                        month: "long",
+                                                        day: "numeric",
+                                                        hour: "2-digit",
+                                                        minute: "2-digit",
+                                                    })}
+                                                </TableCell>
+
                                             </TableRow>
                                         ))}
                                 </TableBody>
@@ -140,10 +148,7 @@ export default function ChallengeDetailsPage() {
                                 page={page}
                                 onPageChange={(e, newPage) => setPage(newPage)}
                                 rowsPerPage={rowsPerPage}
-                                onRowsPerPageChange={(e) => {
-                                    setRowsPerPage(parseInt(e.target.value, 10));
-                                    setPage(0);
-                                }}
+                                rowsPerPageOptions={[10]}
                             />
                         </CardContent>
                     </Card>

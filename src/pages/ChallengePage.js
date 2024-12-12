@@ -1,5 +1,15 @@
 import React, {useEffect, useState} from "react";
-import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography} from "@mui/material";
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormLabel, Radio,
+    RadioGroup,
+    Typography
+} from "@mui/material";
 import UserMedals from "../components/challenge/UserMedals";
 import RankingTable from "../components/challenge/RankingTable";
 import ActiveChallenges from "../components/challenge/ActiveChallenges";
@@ -15,13 +25,27 @@ import {useSnackbar} from "../context/SnackbarContext";
 import {getAllExercises} from "../service/workoutService";
 import Autocomplete from "@mui/material/Autocomplete";
 import {useMediaQuery} from "@mui/system";
+import {addDays, isAfter, isBefore, format} from "date-fns";
+import Slide from "@mui/material/Slide";
+
+const SlideTransition = React.forwardRef((props, ref) => {
+    return <Slide {...props} ref={ref} direction={props.direction || "down"} />;
+});
+
 
 export default function ChallengePage() {
+    const [refreshKey, setRefreshKey] = useState(0);
     const [open, setOpen] = useState(false);
     const {showSnackbar} = useSnackbar();
     const [challengeTypes, setChallengeTypes] = useState([]);
     const [exercises, setExercises] = useState([]);
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
+
+    const refreshChallenges = () => {
+        setRefreshKey((prevKey) => prevKey + 1);
+    };
+
+
 
 
     useEffect(() => {
@@ -51,12 +75,19 @@ export default function ChallengePage() {
         validationSchema: Yup.object({
             name: Yup.string().required("Nazwa jest wymagana"),
             typeId: Yup.number().required("Wybierz typ wyzwania"),
-            endDate: Yup.date().required("Data zakończenia jest wymagana"),
-            isPublic: Yup.boolean(),
-            exerciseId: Yup.lazy((typeId) => {
-                return typeId !== 1
+            endDate: Yup.date()
+                .required("Data zakończenia jest wymagana")
+                .test("min-date", "Data zakończenia nie może być wcześniejsza niż 3 dni od dzisiaj",
+                    (value) => isAfter(new Date(value), addDays(new Date(), 2)))
+                .test("max-date", "Wyzwanie nie może być dłuższe niż 60 dni",
+                    (value) => isBefore(new Date(value), addDays(new Date(), 61))),
+            isPublic: Yup.boolean().required("Wymagane"),
+
+            exerciseId: Yup.lazy((typeId, context) => {
+                const challengeType = context.parent.typeId;
+                return challengeType !== 1
                     ? Yup.number().required("Wybierz ćwiczenie dla tego typu wyzwania")
-                    : Yup.number().nullable();
+                    : Yup.number().nullable().notRequired();
             }),
         }),
         onSubmit: async (values, {setSubmitting, resetForm}) => {
@@ -102,14 +133,23 @@ export default function ChallengePage() {
 
             <Box sx={{my: 2}}>
                 <Typography variant="h4" sx={{textAlign: 'center'}}>Twoje wyzwania</Typography>
-                <ActiveChallenges/>
+                <ActiveChallenges refreshKey={refreshKey}/>
             </Box>
 
-            <AvailableChallengesTable/>
+            <AvailableChallengesTable refreshChallenges={refreshChallenges}/>
             <ChallengeHistoryTable/>
 
 
-            <Dialog open={open} onClose={() => setOpen(false)} maxWidth="md" fullWidth>
+            <Dialog open={open}
+                    onClose={() => {
+                        setOpen(false)
+                        formik.resetForm();
+                    }}
+                    maxWidth="md"
+                    fullWidth
+                    TransitionComponent={SlideTransition}
+                    TransitionProps={{direction: "up"}}
+            >
                 <DialogTitle>Utwórz Wyzwanie</DialogTitle>
                 <DialogContent>
                     <form onSubmit={formik.handleSubmit}>
@@ -135,16 +175,18 @@ export default function ChallengePage() {
                             error={formik.touched.endDate && Boolean(formik.errors.endDate)}
                             helperText={formik.touched.endDate && formik.errors.endDate}
                         />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={formik.values.isPublic}
-                                    onChange={formik.handleChange}
-                                    name="isPublic"
-                                />
-                            }
-                            label="Publiczne?"
-                        />
+                        <Typography variant="subtitle1" sx={{mt: 2}}>
+                            Widoczność
+                        </Typography>
+                        <RadioGroup
+                            row
+                            name="isPublic"
+                            value={formik.values.isPublic}
+                            onChange={formik.handleChange}
+                        >
+                            <FormControlLabel value={true} control={<Radio/>} label="Globalne"/>
+                            <FormControlLabel value={false} control={<Radio/>} label="Prywatne"/>
+                        </RadioGroup>
                         <Autocomplete
                             options={challengeTypes}
                             getOptionLabel={(option) => option.name}
@@ -161,23 +203,28 @@ export default function ChallengePage() {
                             )}
                         />
 
-                        <Autocomplete
-                            options={exercises}
-                            getOptionLabel={(option) => option.name}
-                            value={exercises.find((option) => option.id === formik.values.exerciseId) || null}
-                            onChange={(event, value) => formik.setFieldValue("exerciseId", value ? value.id : "")}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="Wybierz ćwiczenie (jeśli wymagane)"
-                                    margin="normal"
-                                    error={formik.touched.exerciseId && Boolean(formik.errors.exerciseId)}
-                                    helperText={formik.touched.exerciseId && formik.errors.exerciseId}
-                                />
-                            )}
-                        />
+                        {formik.values.typeId && formik.values.typeId !== 1 && (
+                            <Autocomplete
+                                options={exercises}
+                                getOptionLabel={(option) => option.name}
+                                value={exercises.find((option) => option.id === formik.values.exerciseId) || null}
+                                onChange={(event, value) => formik.setFieldValue("exerciseId", value ? value.id : "")}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Wybierz ćwiczenie"
+                                        margin="normal"
+                                        error={formik.touched.exerciseId && Boolean(formik.errors.exerciseId)}
+                                        helperText={formik.touched.exerciseId && formik.errors.exerciseId}
+                                    />
+                                )}
+                            />
+                        )}
                         <DialogActions>
-                            <Button onClick={() => setOpen(false)}>Anuluj</Button>
+                            <Button onClick={(resetForm) => {
+                                setOpen(false);
+                                formik.resetForm();
+                            }}>Anuluj</Button>
                             <Button type="submit" variant="contained" disabled={formik.isSubmitting}>
                                 {formik.isSubmitting ? "Zapisywanie..." : "Zapisz"}
                             </Button>
