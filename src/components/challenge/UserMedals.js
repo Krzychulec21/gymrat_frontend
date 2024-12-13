@@ -5,7 +5,13 @@ import {getUserMedals} from "../../service/challengeService";
 
 function MedalCard({color, count}) {
     return (
-        <Card sx={{width: 100, height: 100, textAlign: 'center', mx: 1}}>
+        <Card sx={{
+            width: 100, height: 100, textAlign: 'center', mx: 1,  boxShadow: 3,
+            transition: 'transform 0.3s',
+            '&:hover': {
+                transform: 'scale(1.10)',
+                boxShadow: 6,
+            },}}>
             <CardContent>
                 <EmojiEventsIcon sx={{fontSize: 40, color}}/>
                 <Typography variant="h5">{count}</Typography>

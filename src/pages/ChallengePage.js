@@ -96,6 +96,8 @@ export default function ChallengePage() {
                 showSnackbar("Wyzwanie zostało utworzone!", "success");
                 setOpen(false);
                 resetForm();
+                refreshChallenges();
+
             } catch (error) {
                 showSnackbar("Wystąpił błąd podczas tworzenia wyzwania!", "error");
             } finally {
@@ -131,9 +133,19 @@ export default function ChallengePage() {
             </Box>
 
 
-            <Box sx={{my: 2}}>
+            <Box
+                sx={{
+                    my: 2,
+                    maxWidth: '80%',
+                    mx: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
                 <Typography variant="h4" sx={{textAlign: 'center'}}>Twoje wyzwania</Typography>
-                <ActiveChallenges refreshKey={refreshKey}/>
+                <ActiveChallenges refreshKey={refreshKey} />
             </Box>
 
             <AvailableChallengesTable refreshChallenges={refreshChallenges}/>
