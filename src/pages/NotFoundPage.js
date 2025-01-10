@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import {Box, Typography} from '@mui/material';
+import {useNavigate} from 'react-router-dom';
 import CustomButton from "../components/button/CustomButton";
 import authService from "../service/authService";
 import {useAuth} from "../context/AuthContext";
@@ -14,9 +14,8 @@ const NotFoundPage = () => {
         if (isLoggedIn) {
             if (isAdmin) {
                 navigate('/admin/dashboard')
-            }
-            else navigate('/profile')
-        }else navigate('/');
+            } else navigate('/profile')
+        } else navigate('/');
     };
 
     return (

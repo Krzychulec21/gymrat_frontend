@@ -8,27 +8,41 @@ import images from '../assets/mainPage';
 import FeatureSection from "../components/FeatureSection";
 import {motion} from 'framer-motion';
 
-
 function Home() {
     const [user, setUser] = useState(null);
     const {isAuthenticated} = useAuth();
     const navigate = useNavigate();
 
     const homeContent = [
-        {id: 'plans', title: 'Plans', content: 'Discover tailor-made workout plans designed to fit your individual' +
-                ' fitness goals. Whether you aim to build muscle, lose weight, or improve endurance, our comprehensive plans will guide you every step of the way.', image: images.plans, reverse: false},
-        {id: 'community', title: 'Community', content: 'Discover tailor-made workout plans designed to fit your' +
-                ' individual fitness goals. Whether you aim to build muscle, lose weight, or improve endurance, our' +
-                ' comprehensive plans will guide you every step of the way.', image: images.social, reverse: true},
-        {id: 'stats', title: 'Stats', content: 'Discover tailor-made workout plans designed to fit your individual' +
-                ' fitness goals. Whether you aim to build muscle, lose weight, or improve endurance, our' +
-                ' comprehensive plans will guide you every step of the way.', image: images.stats, reverse: false},
-        {id: 'challenges', title: 'Challenges', content: 'Discover tailor-made workout plans designed to fit your' +
-                ' individual fitness goals. Whether you aim to build muscle, lose weight, or improve endurance, our' +
-                ' comprehensive plans will guide you every step of the way.', image: images.challenges, reverse: true},
+        {
+            id: 'plans',
+            title: 'Plany',
+            content: 'Odkryj dopasowane plany treningowe stworzone, aby osiągnąć Twoje indywidualne cele fitness. Niezależnie od tego, czy chcesz budować mięśnie, schudnąć czy poprawić wytrzymałość, nasze kompleksowe plany poprowadzą Cię na każdym kroku.',
+            image: images.plans,
+            reverse: false
+        },
+        {
+            id: 'community',
+            title: 'Społeczność',
+            content: 'Dołącz do społeczności osób, które dzielą Twoją pasję do fitnessu. Wspieraj innych, inspiruj się i osiągaj swoje cele razem z innymi entuzjastami.',
+            image: images.social,
+            reverse: true
+        },
+        {
+            id: 'stats',
+            title: 'Statystyki',
+            content: 'Śledź swoje postępy, analizuj wyniki i motywuj się do dalszego działania. Nasze narzędzia statystyczne pomogą Ci w pełni kontrolować swoją drogę do sukcesu.',
+            image: images.stats,
+            reverse: false
+        },
+        {
+            id: 'challenges',
+            title: 'Wyzwania',
+            content: 'Rzuć sobie wyzwanie i sprawdź swoje możliwości w rywalizacji z innymi. Uczestnicz w wyzwaniach i zdobywaj nagrody za swoje osiągnięcia.',
+            image: images.challenges,
+            reverse: true
+        },
     ];
-
-
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -45,7 +59,7 @@ function Home() {
                     setUser(null);
                 }
             } catch (error) {
-                console.error("Error fetching user data:", error);
+                console.error("Błąd podczas pobierania danych użytkownika:", error);
                 setUser(null);
             }
         };
@@ -82,11 +96,11 @@ function Home() {
 
             }}>
                 <Container id="home">
-                    <Box >
+                    <Box>
                         <motion.div
-                            initial={{ y: -200, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ duration: 2 }}
+                            initial={{y: -200, opacity: 0}}
+                            animate={{y: 0, opacity: 1}}
+                            transition={{duration: 2}}
                         >
                             <Typography
                                 variant="h4"
@@ -101,14 +115,14 @@ function Home() {
                                     mb: 3,
                                 }}
                             >
-                                {user ? `Hello, ${user.firstName}!` : 'Train, compete, inspire — push your limits!'}
+                                {user ? `Witaj, ${user.firstName}!` : 'Trenuj, rywalizuj, inspiruj — przekraczaj swoje granice!'}
                             </Typography>
 
-                        {!user && (
-                            <CustomButton onClick={handleJoinClick}>
-                                JOIN NOW
-                            </CustomButton>
-                        )}
+                            {!user && (
+                                <CustomButton onClick={handleJoinClick}>
+                                    DOŁĄCZ TERAZ
+                                </CustomButton>
+                            )}
                         </motion.div>
                     </Box>
                 </Container>
@@ -117,7 +131,7 @@ function Home() {
             {!isAuthenticated && (
                 <>
                     {homeContent.map((item) => (
-                        <Box id={item.id}>
+                        <Box id={item.id} key={item.id}>
                             <FeatureSection
                                 title={item.title}
                                 description={item.content}
@@ -126,7 +140,7 @@ function Home() {
                             />
                         </Box>
                     ))}
-            </>
+                </>
             )}
         </>
     );

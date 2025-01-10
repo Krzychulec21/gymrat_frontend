@@ -1,15 +1,14 @@
-import ProfileInfo from "../components/ProfileInfo";
+import ProfileInfo from "../components/profile/ProfileInfo";
 import {Box, CircularProgress} from "@mui/material";
-import {useCallback, useContext, useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {getCurrentUser, getUser, getUserAvatar, getUserPersonalInfo} from "../service/userService";
-import {AvatarContext} from "../context/AvatarContext";
-import Post from "../components/Post";
+import Post from "../components/profile/Post";
 import {addReaction, getUserPosts, removeReaction} from "../service/postService";
 import {useParams} from "react-router-dom";
 
 
 const ProfilePage = () => {
-    const { userId } = useParams();
+    const {userId} = useParams();
     const [user, setUser] = useState(null);
     const [personalInfo, setPersonalInfo] = useState(null);
     const [posts, setPosts] = useState([]);
@@ -43,7 +42,6 @@ const ProfilePage = () => {
     }, [fetchData]);
 
 
-
     useEffect(() => {
         const fetchCurrentUser = async () => {
             const currentUserData = await getCurrentUser();
@@ -59,7 +57,6 @@ const ProfilePage = () => {
             } else {
                 await removeReaction(postId);
             }
-            // Update the posts state
             const updatedPosts = posts.map((post) => {
                 if (post.id === postId) {
                     return {
@@ -88,7 +85,7 @@ const ProfilePage = () => {
         );
     }
     return (
-        <Box sx={{display: 'flex', flexDirection:'column'}}>
+        <Box sx={{display: 'flex', flexDirection: 'column'}}>
             <ProfileInfo
                 user={user}
                 currentUser={currentUser}
@@ -98,7 +95,7 @@ const ProfilePage = () => {
             />
 
             {posts.slice().reverse().map((post) => (
-                <Post key={post.id} post={post} onReaction={handleReaction} />
+                <Post key={post.id} post={post} onReaction={handleReaction}/>
             ))}
         </Box>
     );

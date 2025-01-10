@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
-import Sidebar from '../components/Sidebar';
+import React, {useEffect, useState} from 'react';
+import {Box} from '@mui/material';
+import Sidebar from '../components/friends/Sidebar';
 import FriendsList from '../components/friends/FriendsList';
 import PendingRequestsList from '../components/friends/PendingRequestsList';
 import SendFriendRequestForm from '../components/friends/SendFriendRequestForm';
@@ -12,7 +12,7 @@ import {
     respondToFriendRequest,
     sendFriendRequest,
 } from '../service/friendService';
-import { getChatRoomId } from '../service/chatService';
+import {getChatRoomId} from '../service/chatService';
 import {useMediaQuery, useTheme} from "@mui/system";
 import Button from "@mui/material/Button";
 
@@ -34,7 +34,6 @@ const FriendsPage = () => {
     const [maxAge, setMaxAge] = useState(50);
 
 
-
     const theme = useTheme();
     const isMdUp = useMediaQuery(theme.breakpoints.up('md'));
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -43,7 +42,7 @@ const FriendsPage = () => {
     useEffect(() => {
         loadFriends();
         loadPendingRequests();
-    }, [currentPage, sortBy, sortDir,minAge,maxAge]);
+    }, [currentPage, sortBy, sortDir, minAge, maxAge]);
 
     const loadFriends = async () => {
         const friendsData = await getFriends(currentPage, pageSize, sortBy, sortDir, minAge, maxAge);
@@ -82,7 +81,7 @@ const FriendsPage = () => {
         const roomId = await getChatRoomId(currentUserId, friendId);
         setSelectedFriendId(friendId);
         setChatRoomId(roomId);
-        setSelectedFriendName(firstName + ' '+ lastName);
+        setSelectedFriendName(firstName + ' ' + lastName);
         console.log("wybrane friendName", friendId);
         setSelectedTab('chat');
     };
@@ -122,7 +121,7 @@ const FriendsPage = () => {
                     />
                 );
             case 'add':
-                return <SendFriendRequestForm onSendRequest={handleSendRequest} />;
+                return <SendFriendRequestForm onSendRequest={handleSendRequest}/>;
             case 'chat':
                 return (
                     <ChatRoom
@@ -143,12 +142,12 @@ const FriendsPage = () => {
                 width: '90%',
                 margin: 'auto',
                 display: 'flex',
-                flexDirection: { xs: 'column', md: 'row' },
+                flexDirection: {xs: 'column', md: 'row'},
                 justifyContent: 'center',
-                my:'auto',
+                my: 'auto',
                 borderRadius: '8px',
-                backgroundColor:'#2C2C2C',
-                mb:3
+                backgroundColor: '#2C2C2C',
+                mb: 3
             }}
         >
             {!isMdUp && (
@@ -165,8 +164,7 @@ const FriendsPage = () => {
                     pendingCount={pendingRequests.length}
                 />
             )}
-   
-            {/* Main xontent */}
+
             <Box
                 sx={{
                     flexGrow: 1,

@@ -251,7 +251,6 @@ const theme = createTheme({
         },
         MuiCssBaseline: {
             styleOverrides: {
-                // Custom scrollbar styles
                 '::-webkit-scrollbar': {
                     width: '8px',
                 },

@@ -1,5 +1,4 @@
-
-import { Client } from '@stomp/stompjs';
+import {Client} from '@stomp/stompjs';
 import authService from './authService';
 
 let stompClient = null;

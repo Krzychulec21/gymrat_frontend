@@ -10,7 +10,7 @@ export const getUserAvatar = async (userId) => {
 
         const base64Image = btoa(
             new Uint8Array(response.data).reduce(
-                (data, byte) => data + String.fromCharCode(byte),''
+                (data, byte) => data + String.fromCharCode(byte), ''
             )
         );
         return `data:image/jpeg;base64,${base64Image}`;
@@ -84,9 +84,9 @@ export const blockUser = async (userId) => {
 export const warnUser = async (userId, values) => {
     try {
         console.log("wyslane descriptin" + values)
-         await axiosInstance.post(`/user/${userId}/warn`, {
-             description: values.warningMessage
-         });
+        await axiosInstance.post(`/user/${userId}/warn`, {
+            description: values.warningMessage
+        });
     } catch (error) {
         console.error("Failed to warn user", error);
     }

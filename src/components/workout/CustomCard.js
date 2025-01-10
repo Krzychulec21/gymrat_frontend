@@ -13,15 +13,16 @@ const CustomCard = ({value, title}) => {
                     transform: 'scale(1.10)',
                     boxShadow: 6,
                 },
-                backgroundColor:'#252525'
+                backgroundColor: '#252525'
             }}
         >
-            <CardContent >
-                <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{gap:1}}>
-                    <Typography variant="h4" component="span" color="text.secondary" sx={{fontWeight: 'bold', color:'white'}}>
+            <CardContent>
+                <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{gap: 1}}>
+                    <Typography variant="h4" component="span" color="text.secondary"
+                                sx={{fontWeight: 'bold', color: 'white'}}>
                         {value}
                     </Typography>
-                    <Typography variant="subtitle1" color="text.main" sx={{mt:'auto'}} >
+                    <Typography variant="subtitle1" color="text.main" sx={{mt: 'auto'}}>
                         {title}
                     </Typography>
                 </Box>

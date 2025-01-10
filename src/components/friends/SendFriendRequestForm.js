@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, Box, List, Pagination, Snackbar} from '@mui/material';
+import {Box, List, Pagination} from '@mui/material';
 import {searchUsersWithRequestStatus, sendFriendRequest} from '../../service/friendService';
 import Button from "@mui/material/Button";
 import UserListItem from "./UserListItem";
@@ -60,48 +60,48 @@ const SendFriendRequestForm = () => {
     };
 
     return (<Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-            alignItems: 'center',
-            mt: '20px',
-            mb: '20px',
-            height: '80vh'
-        }}>
-            <Box sx={{display: 'flex', gap: 1}}>
-                <TextField
-                    size="small"
-                    label="Wpisz frazę"
-                    value={query}
-                    onKeyPress={handleKeyPress}
-                    onChange={(e) => setQuery(e.target.value)}
-                />
-                <Button size="small" variant="contained" onClick={() => handleSearch(0)}>
-                    Szukaj
-                </Button>
-            </Box>
-            <Box
-                sx={{
-                    overflowY: "auto", height: "100%",
-                }}
-            >
-                <List>
-                    {users.map((user) => (<UserListItem
-                            key={user.id}
-                            user={user}
-                            primaryActionIcon={user.friendRequestSent ? (
-                                <Button size="small" disabled>Zaproszenie wysłane</Button>) : (
-                                <Button size="small">Dodaj znajomego</Button>)}
-                            onPrimaryAction={() => handleSendRequest(user.email)}
-                        />))}
-                </List>
-            </Box>
-            {totalPages > 1 && (<Pagination
-                    count={totalPages}
-                    page={currentPage + 1}
-                    onChange={handlePageChange}
-                />)}
-        </Box>);
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        alignItems: 'center',
+        mt: '20px',
+        mb: '20px',
+        height: '80vh'
+    }}>
+        <Box sx={{display: 'flex', gap: 1}}>
+            <TextField
+                size="small"
+                label="Wpisz frazę"
+                value={query}
+                onKeyPress={handleKeyPress}
+                onChange={(e) => setQuery(e.target.value)}
+            />
+            <Button size="small" variant="contained" onClick={() => handleSearch(0)}>
+                Szukaj
+            </Button>
+        </Box>
+        <Box
+            sx={{
+                overflowY: "auto", height: "100%",
+            }}
+        >
+            <List>
+                {users.map((user) => (<UserListItem
+                    key={user.id}
+                    user={user}
+                    primaryActionIcon={user.friendRequestSent ? (
+                        <Button size="small" disabled>Zaproszenie wysłane</Button>) : (
+                        <Button size="small">Dodaj znajomego</Button>)}
+                    onPrimaryAction={() => handleSendRequest(user.email)}
+                />))}
+            </List>
+        </Box>
+        {totalPages > 1 && (<Pagination
+            count={totalPages}
+            page={currentPage + 1}
+            onChange={handlePageChange}
+        />)}
+    </Box>);
 };
 
 export default SendFriendRequestForm;

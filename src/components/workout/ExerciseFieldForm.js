@@ -51,8 +51,8 @@ const ExerciseFieldForm = memo(({exerciseOptions, exerciseIndex, removeExercise}
                             setFieldValue(field.name, value ? value.id : '')
                         }
                         noOptionsText={
-                            <span style={{ color: 'white' }}>Brak ćwiczenia</span>}
-                            renderOption={(props, option) => (
+                            <span style={{color: 'white'}}>Brak ćwiczenia</span>}
+                        renderOption={(props, option) => (
                             <li {...props}
                                 style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <span>{option.name}</span>
@@ -84,9 +84,9 @@ const ExerciseFieldForm = memo(({exerciseOptions, exerciseIndex, removeExercise}
             <FieldArray name={`exercises[${exerciseIndex}].sets`}>
                 {({push: pushSet, remove: removeSet}) => (
                     values.exercises[exerciseIndex].sets.map((set, setIndex) => (
-                        <div key={setIndex} style={{display: 'flex', alignItems: 'center', flexWrap:'wrap'}}>
+                        <div key={setIndex} style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
                             <Field
-                                sx={{maxWidth:'100px'}}
+                                sx={{maxWidth: '100px'}}
                                 name={`exercises[${exerciseIndex}].sets[${setIndex}].reps`}
                                 as={TextField}
                                 label="Powtórzenia"
@@ -100,9 +100,12 @@ const ExerciseFieldForm = memo(({exerciseOptions, exerciseIndex, removeExercise}
                                 name={`exercises[${exerciseIndex}].sets[${setIndex}].weight`}
                                 as={TextField}
                                 label="Ciężar (kg)"
-                                type="number"
-                                sx={{maxWidth:'100px'}}
-                                inputProps={{min: 0}}
+                                inputProps={{
+                                    min: 0,
+                                    step: "0.1",
+                                    pattern: "^[0-9]*[.,]?[0-9]*$"
+                                }}
+                                sx={{maxWidth: '100px'}}
                                 margin="normal"
                                 error={touched.exercises?.[exerciseIndex]?.sets?.[setIndex]?.weight && Boolean(errors.exercises?.[exerciseIndex]?.sets?.[setIndex]?.weight)}
                                 helperText={touched.exercises?.[exerciseIndex]?.sets?.[setIndex]?.weight && errors.exercises?.[exerciseIndex]?.sets?.[setIndex]?.weight}

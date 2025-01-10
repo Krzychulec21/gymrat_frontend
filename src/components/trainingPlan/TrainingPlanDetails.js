@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {
-    Alert,
     Box,
     Button,
     Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
-    IconButton, Snackbar,
+    IconButton,
     Typography,
 } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -26,12 +25,11 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import AboutExerciseDialog from "../workout/AboutExerciseDialog";
 import {getExerciseInfo} from "../../service/workoutService";
 import {Stack} from "@mui/system";
-import Slide from "@mui/material/Slide";
 import {useSnackbar} from "../../context/SnackbarContext";
 
 
 const TrainingPlanDetails = () => {
-    const { showSnackbar } = useSnackbar();
+    const {showSnackbar} = useSnackbar();
     const {id} = useParams();
     const [trainingPlan, setTrainingPlan] = useState(null);
     const [likeCount, setLikeCount] = useState(0);
@@ -132,10 +130,10 @@ const TrainingPlanDetails = () => {
             color: "white",
             margin: "auto",
             maxWidth: '80%',
-            mb:5,
+            mb: 5,
         }}>
-            <Box >
-                <Typography variant="h4" sx={{textAlign:'center'}}>{trainingPlan.name}</Typography>
+            <Box>
+                <Typography variant="h4" sx={{textAlign: 'center'}}>{trainingPlan.name}</Typography>
                 <Box display="flex" alignItems="center" justifyContent="right">
                     <Typography variant="h6" sx={{marginRight: "10px"}}>
                         {likeCount}
@@ -181,7 +179,7 @@ const TrainingPlanDetails = () => {
                     {trainingPlan.description} </Typography></Box>
 
             <Box sx={{display: 'flex', flexDirection: "column"}}>
-                <Typography variant="h6" gutterBottom >
+                <Typography variant="h6" gutterBottom>
                     Ćwiczenia:
                 </Typography>
                 {trainingPlan.exercises.map((exercise, index) => (
@@ -192,7 +190,8 @@ const TrainingPlanDetails = () => {
                         borderRadius: "4px",
                         padding: '5px',
                     }}>
-                        <Stack direction="row" alignItems="center" spacing={1} ><Typography variant="h6">{exercise.exerciseName}</Typography>
+                        <Stack direction="row" alignItems="center" spacing={1}><Typography
+                            variant="h6">{exercise.exerciseName}</Typography>
                             <Tooltip title="Informacje o ćwiczeniu" placement="top">
                                 <IconButton
                                     onClick={(e) => {
@@ -222,7 +221,6 @@ const TrainingPlanDetails = () => {
                 </Box>
             )}
             <CommentsSection trainingPlanId={id}/>
-            {/* Edit Form Dialog */}
             {openEditForm && (
                 <TrainingPlanForm
                     open={openEditForm}
@@ -234,7 +232,6 @@ const TrainingPlanDetails = () => {
                     isEditMode={true}
                 />
             )}
-            {/* Delete Confirmation Dialog */}
             <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
                 <DialogContent>
                     <DialogContentText>

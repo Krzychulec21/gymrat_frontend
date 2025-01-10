@@ -1,5 +1,5 @@
 import {Box, Typography} from "@mui/material";
-import CustomCard from "../display/CustomCard";
+import CustomCard from "./CustomCard";
 import React, {useEffect, useState} from "react";
 import {getDateOfLastWorkout, getNumberOfUserWorkouts, getTotalWeightLiftedByUser} from "../../service/workoutService";
 

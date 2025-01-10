@@ -12,7 +12,7 @@ export const getAllExercises = async () => {
 export const getExerciseInfo = async (id) => {
     try {
         const response = await axiosInstance.get(`/exercise/${id}`)
-        console.log("z serwisu"+ response.data)
+        console.log("z serwisu" + response.data)
         return response.data;
     } catch (error) {
         console.error(error);

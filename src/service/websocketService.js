@@ -1,4 +1,4 @@
-import { Client } from '@stomp/stompjs';
+import {Client} from '@stomp/stompjs';
 import authService from "./authService";
 
 class WebsocketService {
@@ -11,7 +11,7 @@ class WebsocketService {
 
     connect() {
         const token = encodeURIComponent(authService.getToken());
-        if(!token || token === "null") {
+        if (!token || token === "null") {
             console.warn("No token found");
             return;
         }
@@ -103,8 +103,7 @@ class WebsocketService {
                 body: JSON.stringify(message)
             });
             console.log(`Sent message to ${destination}: `, message);
-        }
-        else {
+        } else {
             console.error("WebSocket is not connected. Cannot send message.");
         }
     }

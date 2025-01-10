@@ -45,7 +45,6 @@ const WorkoutSessions = ({refresh, onWorkoutChanged}) => {
     };
 
 
-
     const fetchWorkouts = async () => {
         try {
             const data = await getUserWorkouts(page, rowsPerPage, orderBy, order);
@@ -111,7 +110,7 @@ const WorkoutSessions = ({refresh, onWorkoutChanged}) => {
     }
 
     const Row = (props) => {
-        const { row } = props;
+        const {row} = props;
         const [open, setOpen] = useState(false);
 
 
@@ -120,7 +119,7 @@ const WorkoutSessions = ({refresh, onWorkoutChanged}) => {
                 <TableRow>
                     <TableCell>
                         <IconButton size="small" onClick={() => setOpen(!open)}>
-                            {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+                            {open ? <KeyboardArrowUp/> : <KeyboardArrowDown/>}
                         </IconButton>
                     </TableCell>
                     <TableCell>{row.date}</TableCell>
@@ -129,7 +128,7 @@ const WorkoutSessions = ({refresh, onWorkoutChanged}) => {
                     <TableCell>{categoryMapping[row.mainCategory]}</TableCell>
                 </TableRow>
                 <TableRow>
-                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
+                    <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={5}>
                         <Collapse in={open} timeout="auto" unmountOnExit>
                             <Box margin={1}>
                                 <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -138,10 +137,10 @@ const WorkoutSessions = ({refresh, onWorkoutChanged}) => {
                                     </Typography>
                                     <Box>
                                         <IconButton onClick={() => handleEdit(row)} color="primary">
-                                            <Edit />
+                                            <Edit/>
                                         </IconButton>
                                         <IconButton onClick={() => handleDeleteClick(row.id)} color="secondary">
-                                            <Delete />
+                                            <Delete/>
                                         </IconButton>
                                     </Box>
                                 </Box>
@@ -167,12 +166,12 @@ const WorkoutSessions = ({refresh, onWorkoutChanged}) => {
 
     return (
         <>
-            <Typography sx={{textAlign: 'center', mt:4}} variant="h4">Historia treningów</Typography>
-            <TableContainer sx={{backgroundColor: '#252525', borderRadius: 3,  boxShadow: 3,mt:2}}>
+            <Typography sx={{textAlign: 'center', mt: 4}} variant="h4">Historia treningów</Typography>
+            <TableContainer sx={{backgroundColor: '#252525', borderRadius: 3, boxShadow: 3, mt: 2}}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell />
+                            <TableCell/>
                             <TableCell sortDirection={orderBy === 'date' ? order : false}>
                                 <TableSortLabel
                                     active={orderBy === 'date'}
@@ -189,7 +188,7 @@ const WorkoutSessions = ({refresh, onWorkoutChanged}) => {
                     </TableHead>
                     <TableBody>
                         {workouts.map((workout) => (
-                            <Row key={workout.id} row={workout} />
+                            <Row key={workout.id} row={workout}/>
                         ))}
                     </TableBody>
                 </Table>
@@ -211,9 +210,9 @@ const WorkoutSessions = ({refresh, onWorkoutChanged}) => {
                     onWorkoutAdded={handleWorkoutChanged}
                 />
             )}
-            <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog} >
+            <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
                 <DialogContent>
-                    <DialogContentText >
+                    <DialogContentText>
                         Czy na pewno chcesz usunąć trening? Wszystkie postępy z tego treningu zostaną wymazane.
                     </DialogContentText>
                 </DialogContent>

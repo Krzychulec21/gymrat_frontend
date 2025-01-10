@@ -6,7 +6,7 @@ export const getAllTrainingPlans = async (params) => {
         const response = await axiosInstance.get('/plan', {
             params,
             paramsSerializer: (params) => {
-                return qs.stringify(params, { arrayFormat: 'repeat' });
+                return qs.stringify(params, {arrayFormat: 'repeat'});
             },
         });
         return response.data;
@@ -58,7 +58,7 @@ export const deleteTrainingPlan = async (id) => {
 
 export const addLike = async (id, isLike) => {
     try {
-        const response = await axiosInstance.post(`/likes/${id}`, { isLike });
+        const response = await axiosInstance.post(`/likes/${id}`, {isLike});
         return response.data;
     } catch (error) {
         console.error("Error adding like:", error);
@@ -78,7 +78,7 @@ export const getLikeCount = async (id) => {
 
 export const getComments = async (id, params) => {
     try {
-        const response = await axiosInstance.get(`/comments/${id}`, { params });
+        const response = await axiosInstance.get(`/comments/${id}`, {params});
         return response.data;
     } catch (error) {
         console.error("Error fetching comments:", error);
@@ -88,7 +88,7 @@ export const getComments = async (id, params) => {
 
 export const addComment = async (id, content) => {
     try {
-        const response = await axiosInstance.post(`/comments/${id}`, { content });
+        const response = await axiosInstance.post(`/comments/${id}`, {content});
         return response.data;
     } catch (error) {
         console.error("Error adding comment:", error);
@@ -108,7 +108,7 @@ export const deleteComment = async (trainingPlanId, commentId) => {
 
 export const updateComment = async (trainingPlanId, commentId, content) => {
     try {
-        const response = await axiosInstance.put(`/comments/${trainingPlanId}/${commentId}`, { content });
+        const response = await axiosInstance.put(`/comments/${trainingPlanId}/${commentId}`, {content});
         return response.data;
     } catch (error) {
         console.error("Error updating comment:", error);

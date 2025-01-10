@@ -1,10 +1,10 @@
-import { Route, Routes, useLocation } from "react-router-dom";
-import { Box } from "@mui/material";
+import {Route, Routes, useLocation} from "react-router-dom";
+import {Box} from "@mui/material";
 import React from "react";
 import Navbar from "../components/Navbar";
 import Home from "../pages/Home";
 import AuthPage from "../pages/AuthPage";
-import OAuth2RedirectHandler from "../components/OAuth2RedirectHandler";
+import OAuth2RedirectHandler from "../components/authentication/OAuth2RedirectHandler";
 import FriendPage from "../pages/FriendPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import ProfilePage from "../pages/ProfilePage";
@@ -34,7 +34,7 @@ function Layout() {
             }}
         >
             <>
-                {showNavbar && <Navbar />}
+                {showNavbar && <Navbar/>}
                 <Box
                     sx={{
                         flex: "1 0 auto",
@@ -42,38 +42,39 @@ function Layout() {
                 >
                     <Routes>
                         {/* Public route */}
-                        <Route element={<PublicRoute redirectPath="/profile" />}>
-                            <Route path="/" element={<Home />} />
+                        <Route element={<PublicRoute redirectPath="/profile"/>}>
+                            <Route path="/" element={<Home/>}/>
                         </Route>
-                        <Route path="/auth" element={<AuthPage />} />
-                        <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
+                        <Route path="/auth" element={<AuthPage/>}/>
+                        <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler/>}/>
 
                         {/*admin only*/}
-                        <Route element={<PrivateRoute adminOnly={true} />}>
-                            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+                        <Route element={<PrivateRoute adminOnly={true}/>}>
+                            <Route path="/admin/dashboard" element={<AdminDashboardPage/>}/>
                         </Route>
 
                         {/* private routes for userss */}
-                        <Route element={<PrivateRoute />}>
-                            <Route path="/challenges" element={<ChallengePage/>} />
-                            <Route path="/challenges/:id/details" element={<ChallengeDetailsPage/>} />
-                            <Route path="/friends" element={<FriendPage />} />
-                            <Route path="/profile/:userId?" element={<ProfilePage />} />
-                            <Route path="/stats" element={<StatsPage />} />
-                            <Route path="/plans" element={<TrainingPlansPage />} />
-                            <Route path="/plans/:id" element={<TrainingPlanDetails />} />
+                        <Route element={<PrivateRoute/>}>
+                            <Route path="/challenges" element={<ChallengePage/>}/>
+                            <Route path="/challenges/:id/details" element={<ChallengeDetailsPage/>}/>
+                            <Route path="/friends" element={<FriendPage/>}/>
+                            <Route path="/profile/:userId?" element={<ProfilePage/>}/>
+                            <Route path="/stats" element={<StatsPage/>}/>
+                            <Route path="/plans" element={<TrainingPlansPage/>}/>
+                            <Route path="/plans/:id" element={<TrainingPlanDetails/>}/>
                             <Route
                                 path="/plans/new"
-                                element={<TrainingPlanForm open={true} onClose={() => {}} isEditMode={false} />}
+                                element={<TrainingPlanForm open={true} onClose={() => {
+                                }} isEditMode={false}/>}
                             />
                         </Route>
 
                         {/* Error 404 */}
-                        <Route path="*" element={<NotFoundPage />} />
+                        <Route path="*" element={<NotFoundPage/>}/>
                     </Routes>
 
                 </Box>
-                <Footer />
+                <Footer/>
             </>
         </Box>
     );

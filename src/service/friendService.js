@@ -30,7 +30,7 @@ export const getFriends = async (
             return friend;
         });
 
-        return { ...response.data, content: friendsWithAvatars };
+        return {...response.data, content: friendsWithAvatars};
     } catch (error) {
         console.error('Error fetching friends', error);
         throw error;

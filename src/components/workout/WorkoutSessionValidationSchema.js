@@ -13,9 +13,17 @@ const workoutSessionValidationSchema = Yup.object({
                             reps: Yup.number()
                                 .required('Podaj liczbę powtórzeń')
                                 .min(1, 'Liczba powtórzeń musi być większa niż 0'),
-                            weight: Yup.number()
+                            weight: Yup.mixed()
+                                .transform((value, originalValue) => {
+                                    if (!originalValue) return undefined;
+                                    const converted = String(originalValue).replace(',', '.');
+                                    const number = parseFloat(converted);
+                                    return isNaN(number) ? undefined : number;
+                                })
+                                .test('is-number', 'Podaj prawidłową wartość', value => !isNaN(value))
                                 .required('Podaj ciężar')
-                                .min(0, 'Ciężar musi być większy lub równy 0'),
+                                .test('min', 'Ciężar musi być większy lub równy 0', value => value >= 0)
+                                .test('max', 'Ciężar nie może być większy niż 1000kg', value => value <= 1000)
                         })
                     )
                     .min(1, 'Przynajmniej jeden zestaw jest wymagany'),

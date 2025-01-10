@@ -1,13 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {
-    Box,
-    Typography,
-    TextField,
-    Button,
-    TablePagination,
-
-} from "@mui/material";
-import {getComments, addComment} from "../../service/trainingPlanService";
+import {Box, Button, TablePagination, TextField, Typography,} from "@mui/material";
+import {addComment, getComments} from "../../service/trainingPlanService";
 import dayjs from "dayjs";
 import {Field, Form, Formik} from "formik";
 import * as Yup from "yup";
@@ -64,12 +57,18 @@ const CommentsSection = ({trainingPlanId}) => {
             <Box
                 sx={{
                     borderBottom: "2px solid white",
-                    marginY: "20px", // odstęp 10px nad i pod linią
+                    marginY: "20px",
                 }}
             />
             <Typography variant="h6">Komentarze</Typography>
             {comments.map((comment) => (
-                <Box key={comment.id} sx={{marginBottom: "10px", backgroundColor:"#363636", borderRadius:'8px', padding:'2px', maxWidth:{xs:'100%', lg:"100%"}}}>
+                <Box key={comment.id} sx={{
+                    marginBottom: "10px",
+                    backgroundColor: "#363636",
+                    borderRadius: '8px',
+                    padding: '2px',
+                    maxWidth: {xs: '100%', lg: "100%"}
+                }}>
                     <Typography variant="subtitle1">
                         {comment.authorNickname} - {dayjs(comment.dateCreated).format("DD.MM.YYYY HH:mm")}
                     </Typography>

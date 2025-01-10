@@ -1,4 +1,5 @@
 import axiosInstance from "../utils/axiosInstance";
+
 export const addPost = async (workoutId, description, photo) => {
     const formData = new FormData();
     formData.append('workoutId', workoutId.toString());

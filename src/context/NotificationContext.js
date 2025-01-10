@@ -1,14 +1,14 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import axiosInstance from '../utils/axiosInstance';
-import { connectToNotifications } from "../service/notificationService";
+import {connectToNotifications} from "../service/notificationService";
 import {useAuth} from "./AuthContext";
 import websocketService from "../service/websocketService";
 
 const NotificationsContext = createContext();
 
-export const NotificationsProvider = ({ children }) => {
+export const NotificationsProvider = ({children}) => {
     const [aggregatedNotifications, setAggregatedNotifications] = useState([]);
-    const { isAuthenticated } = useAuth();
+    const {isAuthenticated} = useAuth();
 
     useEffect(() => {
         if (!isAuthenticated) return;
@@ -32,7 +32,6 @@ export const NotificationsProvider = ({ children }) => {
     }, [isAuthenticated]);
 
 
-
     const aggregateNotifications = (notificationsList) => {
         const aggregated = [];
 
@@ -42,7 +41,6 @@ export const NotificationsProvider = ({ children }) => {
                 if (existing) {
                     existing.count += 1;
                     existing.ids.push(notification.id);
-                    // Optionally update lastMessage and timestamp
                     if (new Date(notification.timestamp) > new Date(existing.lastTimestamp)) {
                         existing.lastMessage = notification.content;
                         existing.lastTimestamp = notification.timestamp;
@@ -61,7 +59,6 @@ export const NotificationsProvider = ({ children }) => {
                     });
                 }
             } else {
-                // Non-Message type notifications are added as-is
                 aggregated.push({
                     id: notification.id,
                     content: notification.content,
@@ -142,7 +139,7 @@ export const NotificationsProvider = ({ children }) => {
                     setAggregatedNotifications((prevNotifications) =>
                         prevNotifications.filter(n => n.id !== notification.id)
                     );
-                }, 10000);
+                }, 100000);
             }
         });
 
@@ -155,7 +152,7 @@ export const NotificationsProvider = ({ children }) => {
     };
 
     return (
-        <NotificationsContext.Provider value={{ notifications: aggregatedNotifications, markNotificationsAsRead }}>
+        <NotificationsContext.Provider value={{notifications: aggregatedNotifications, markNotificationsAsRead}}>
             {children}
         </NotificationsContext.Provider>
     );

@@ -1,10 +1,10 @@
-import { Box, Typography, Card, CardMedia } from '@mui/material';
+import {Box, Card, CardMedia, Typography} from '@mui/material';
 import CustomButton from "../components/button/CustomButton";
 import {useNavigate} from "react-router-dom";
 
-const FeatureSection = ({title, description, image, reverse}) =>  {
-  const navigate = useNavigate();
-   const handleButtonClick = () => {
+const FeatureSection = ({title, description, image, reverse}) => {
+    const navigate = useNavigate();
+    const handleButtonClick = () => {
         navigate('/auth');
     };
     return (
@@ -12,15 +12,14 @@ const FeatureSection = ({title, description, image, reverse}) =>  {
             sx={{
                 my: 20,
                 display: 'flex',
-                flexDirection: { xs: 'column', md: reverse ? 'row-reverse' : 'row' },
+                flexDirection: {xs: 'column', md: reverse ? 'row-reverse' : 'row'},
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 4,
-                maxWidth: { xs: '100%', md: '100%', xl: '80%' },
+                maxWidth: {xs: '100%', md: '100%', xl: '80%'},
                 mx: 'auto',
             }}
         >
-            {/* Text section*/}
             <Box
                 sx={{
                     flex: 1,
@@ -31,19 +30,17 @@ const FeatureSection = ({title, description, image, reverse}) =>  {
                     textAlign: 'center',
                 }}
             >
-                <Typography variant="h3" sx={{ color: '#C50000', mb: 2, fontWeight: 'bold' }}>
+                <Typography variant="h3" sx={{color: '#C50000', mb: 2, fontWeight: 'bold'}}>
                     {title}
                 </Typography>
-                <Typography variant="h6" sx={{ mb: 2, maxWidth:'80%' }}>
+                <Typography variant="h6" sx={{mb: 2, maxWidth: '80%'}}>
                     {description}
                 </Typography>
-                <CustomButton variant="contained" color="primary" onClick={handleButtonClick} >
-                    Try it now
+                <CustomButton variant="contained" color="primary" onClick={handleButtonClick}>
+                    Dołącz teraz
                 </CustomButton>
             </Box>
 
-
-            {/* Image section */}
             <Box
                 sx={{
                     flex: 1,
@@ -51,7 +48,7 @@ const FeatureSection = ({title, description, image, reverse}) =>  {
                     justifyContent: 'center',
                 }}
             >
-                <Card sx={{ boxShadow: 'none', backgroundColor: 'transparent', maxWidth: '80%' }}>
+                <Card sx={{boxShadow: 'none', backgroundColor: 'transparent', maxWidth: '80%'}}>
                     <CardMedia
                         component="img"
                         image={image}

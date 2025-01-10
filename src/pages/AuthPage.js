@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, useLocation} from 'react-router-dom';
 import SignIn from '../components/authentication/SignIn';
 import SignUp from '../components/authentication/SignUp';
 import ForgotPassword from '../components/authentication/ForgotPassword';
 import ResetPassword from '../components/authentication/ResetPassword';
-import { Box, Button } from '@mui/material';
+import {Box, Button} from '@mui/material';
 import logo from '../assets/logo.svg';
 
 function AuthPage() {
@@ -22,15 +22,15 @@ function AuthPage() {
     const renderActiveView = () => {
         switch (activeView) {
             case 'signin':
-                return <SignIn onForgotPassword={() => setActiveView('forgot')} />;
+                return <SignIn onForgotPassword={() => setActiveView('forgot')}/>;
             case 'signup':
-                return <SignUp />;
+                return <SignUp/>;
             case 'forgot':
-                return <ForgotPassword onBackToSignIn={() => setActiveView('signin')} />;
+                return <ForgotPassword onBackToSignIn={() => setActiveView('signin')}/>;
             case 'resetPassword':
-                return <ResetPassword onBackToSignIn={() => setActiveView('signin')} />;
+                return <ResetPassword onBackToSignIn={() => setActiveView('signin')}/>;
             default:
-                return <SignIn onForgotPassword={() => setActiveView('forgot')} />;
+                return <SignIn onForgotPassword={() => setActiveView('forgot')}/>;
         }
     };
 
@@ -52,7 +52,7 @@ function AuthPage() {
                 <img src={logo} alt="App Logo" style={{width: '8vw', marginBottom: '20px'}}/>
             </Link>
             {activeView !== 'resetPassword' && (
-                <Box sx={{ display: 'flex', gap: 5, mb: 2, marginBottom: '20px' }}>
+                <Box sx={{display: 'flex', gap: 5, mb: 2, marginBottom: '20px'}}>
                     <Button
                         onClick={() => setActiveView('signin')}
                         variant="text"
@@ -85,12 +85,12 @@ function AuthPage() {
             )}
             {renderActiveView()}
             <Link to="/" style={{textDecoration: 'none'}}>
-            <Button variant="contained" sx={{
-                backgroundColor: 'inherit',
-                border: '2px solid red',
-                mt:2,
-                alignSelf: 'flex-start'
-            }}>Wróc do strony głównej</Button>
+                <Button variant="contained" sx={{
+                    backgroundColor: 'inherit',
+                    border: '2px solid red',
+                    mt: 2,
+                    alignSelf: 'flex-start'
+                }}>Wróc do strony głównej</Button>
             </Link>
 
         </Box>

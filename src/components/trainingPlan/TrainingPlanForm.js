@@ -1,16 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    DialogActions,
-    Button,
-    TextField,
-    IconButton,
-    Alert,
-    Snackbar
-} from "@mui/material";
-import {Formik, Form, Field, FieldArray} from "formik";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField} from "@mui/material";
+import {Field, FieldArray, Form, Formik} from "formik";
 import {getAllExercises} from "../../service/exerciseService";
 import {createTrainingPlan, updateTrainingPlan} from "../../service/trainingPlanService";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -18,13 +8,11 @@ import {getExerciseInfo} from "../../service/workoutService";
 import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import AboutExerciseDialog from "../workout/AboutExerciseDialog";
-import Slide from "@mui/material/Slide";
 import {useSnackbar} from "../../context/SnackbarContext";
 
 
 const TrainingPlanForm = ({open, onClose, initialValues, isEditMode, validationSchema, onUpdate}) => {
-    const { showSnackbar } = useSnackbar();
-    console.log(showSnackbar); // Powinno zwrócić funkcję
+    const {showSnackbar} = useSnackbar();
     const [exerciseOptions, setExerciseOptions] = useState([]);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [exerciseInfo, setExerciseInfo] = useState(null);
@@ -42,7 +30,6 @@ const TrainingPlanForm = ({open, onClose, initialValues, isEditMode, validationS
     useEffect(() => {
         fetchExercises();
     }, []);
-
 
 
     const fetchExercises = async () => {
@@ -207,7 +194,10 @@ const TrainingPlanForm = ({open, onClose, initialValues, isEditMode, validationS
                                                     </Button>
                                                 </div>
                                             ))}
-                                            <Button onClick={() => push({exerciseId: "", customInstructions: ""})}>
+                                            <Button sx={{
+                                                mt: 1
+                                            }}
+                                                    onClick={() => push({exerciseId: "", customInstructions: ""})}>
                                                 Dodaj ćwiczenie
                                             </Button>
                                         </>

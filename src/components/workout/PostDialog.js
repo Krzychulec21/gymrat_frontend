@@ -1,9 +1,9 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useDropzone } from 'react-dropzone';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography, Box } from '@mui/material';
+import {ErrorMessage, Field, Form, Formik} from 'formik';
+import {useDropzone} from 'react-dropzone';
+import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography} from '@mui/material';
 import * as Yup from 'yup';
-import { addPost } from "../../service/postService";
+import {addPost} from "../../service/postService";
 import {useSnackbar} from "../../context/SnackbarContext";
 
 const postValidationSchema = Yup.object().shape({
@@ -13,7 +13,7 @@ const postValidationSchema = Yup.object().shape({
     photo: Yup.mixed().notRequired(),
 });
 
-const PostDialog = ({ open, onClose, onPostAdded, workoutId }) => {
+const PostDialog = ({open, onClose, onPostAdded, workoutId}) => {
     const {showSnackbar} = useSnackbar();
     const onDrop = (acceptedFiles, setFieldValue) => {
         if (acceptedFiles.length > 0) {
@@ -21,8 +21,8 @@ const PostDialog = ({ open, onClose, onPostAdded, workoutId }) => {
         }
     };
 
-    const Dropzone = ({ setFieldValue, values }) => {
-        const { getRootProps, getInputProps } = useDropzone({
+    const Dropzone = ({setFieldValue, values}) => {
+        const {getRootProps, getInputProps} = useDropzone({
             onDrop: (files) => onDrop(files, setFieldValue),
             accept: 'image/*',
             multiple: false,
@@ -55,11 +55,11 @@ const PostDialog = ({ open, onClose, onPostAdded, workoutId }) => {
     };
 
     return (
-        <Dialog open={open} onClose={onClose} PaperProps={{ style: { backgroundColor: '#252525' } }}>
+        <Dialog open={open} onClose={onClose} PaperProps={{style: {backgroundColor: '#252525'}}}>
             <Formik
-                initialValues={{ description: '', photo: null }}
+                initialValues={{description: '', photo: null}}
                 validationSchema={postValidationSchema}
-                onSubmit={async (values, { setSubmitting }) => {
+                onSubmit={async (values, {setSubmitting}) => {
                     try {
                         await addPost(workoutId, values.description, values.photo);
                         setSubmitting(false);
@@ -73,7 +73,7 @@ const PostDialog = ({ open, onClose, onPostAdded, workoutId }) => {
                     }
                 }}
             >
-                {({ setFieldValue, values, isSubmitting, errors, touched }) => (
+                {({setFieldValue, values, isSubmitting, errors, touched}) => (
                     <Form>
                         <DialogTitle>Chcesz pochwalić się swoim treningiem?</DialogTitle>
                         <DialogContent>
@@ -85,15 +85,15 @@ const PostDialog = ({ open, onClose, onPostAdded, workoutId }) => {
                                 multiline
                                 rows={4}
                                 margin="normal"
-                                InputProps={{ style: { color: 'white' } }}
+                                InputProps={{style: {color: 'white'}}}
                                 error={touched.description && Boolean(errors.description)}
-                                helperText={<ErrorMessage name="description" />}
+                                helperText={<ErrorMessage name="description"/>}
                             />
 
-                            <Typography variant="subtitle1" style={{ color: 'white', margin: '16px 0' }}>
+                            <Typography variant="subtitle1" style={{color: 'white', margin: '16px 0'}}>
                                 Dodaj zdjęcie (opcjonalnie)
                             </Typography>
-                            <Dropzone setFieldValue={setFieldValue} values={values} />
+                            <Dropzone setFieldValue={setFieldValue} values={values}/>
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={onClose} variant="secondAction">Nie tym razem</Button>

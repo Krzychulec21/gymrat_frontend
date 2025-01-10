@@ -2,7 +2,12 @@ import {useEffect, useState} from "react";
 import {useSnackbar} from "../../context/SnackbarContext";
 import {blockUser, getAllUsers, warnUser} from "../../service/userService";
 import {
-    Box, Dialog, DialogActions, DialogContent, DialogTitle, IconButton,
+    Box,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
     Table,
     TableBody,
     TableCell,
@@ -17,7 +22,7 @@ import Button from "@mui/material/Button";
 import WarningIcon from '@mui/icons-material/Warning';
 import BlockIcon from '@mui/icons-material/Block';
 import TextField from "@mui/material/TextField";
-import {ErrorMessage, Field, Form, Formik} from "formik";
+import {Formik} from "formik";
 
 const UsersManagement = () => {
     const [users, setUsers] = useState([]);

@@ -1,7 +1,5 @@
-import MainStats from "../components/MainStats";
-import Button from "@mui/material/Button";
+import MainStats from "../components/workout/MainStats";
 import {getNumberOfUserWorkouts} from "../service/workoutService";
-import {Box, Card, CardContent, Typography} from "@mui/material";
 
 const StatsPage = () => {
     const handleClick = () => {
@@ -14,9 +12,9 @@ const StatsPage = () => {
     }
     return (
         <>
-        <MainStats></MainStats>
+            <MainStats></MainStats>
 
-            </>
+        </>
     );
 };
 

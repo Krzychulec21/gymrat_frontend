@@ -14,7 +14,7 @@ import {
     Tooltip,
 } from '@mui/material';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import { getWorkoutSessionById } from '../service/workoutService';
+import { getWorkoutSessionById } from '../../service/workoutService';
 
 const Post = ({ post, onReaction }) => {
     const [openDialog, setOpenDialog] = useState(false);
@@ -109,7 +109,6 @@ const Post = ({ post, onReaction }) => {
                 <Typography variant="body1">{post.reactionCount}</Typography>
             </Box>
 
-            {/* Dialog for workout details */}
             <Dialog open={openDialog} onClose={handleDialogClose}>
                 <DialogTitle>Szczegóły treningu</DialogTitle>
                 <DialogContent>
@@ -151,7 +150,6 @@ const Post = ({ post, onReaction }) => {
                 </DialogContent>
             </Dialog>
 
-            {/* Dialog for full image */}
             <Dialog open={openImageDialog} onClose={handleImageDialogClose} maxWidth="lg">
                 <DialogContent>
                     <CardMedia

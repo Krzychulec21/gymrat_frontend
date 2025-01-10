@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
     AppBar,
     Avatar,
@@ -15,12 +15,11 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import {useAuth} from '../context/AuthContext';
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import {useNotifications} from "../context/NotificationContext";
 import MenuItemComponent from "./MenuItemComponent";
 import Button from "@mui/material/Button";
-import {getUserAvatar} from "../service/userService";
 import {AvatarContext} from "../context/AvatarContext";
 
 function Navbar() {
@@ -65,18 +64,18 @@ function Navbar() {
     };
 
     const nonAuthMenuItems = [
-        {label: 'Home', to: 'home', type: 'scroll'},
-        {label: 'Plans', to: 'plans', type: 'scroll'},
-        {label: 'Community', to: 'community', type: 'scroll'},
-        {label: 'Stats', to: 'stats', type: 'scroll'},
-        {label: 'Challenges', to: 'challenges', type: 'scroll'},
+        {label: 'Strona główna', to: 'home', type: 'scroll'},
+        {label: 'Plany treningowe', to: 'plans', type: 'scroll'},
+        {label: 'Społeczność', to: 'community', type: 'scroll'},
+        {label: 'Statystyki', to: 'stats', type: 'scroll'},
+        {label: 'Wyzwania', to: 'challenges', type: 'scroll'},
     ];
 
     const authMenuItems = [
         {label: 'Znajomi', to: '/friends', type: 'navigate'},
         {label: 'Plany', to: '/plans', type: 'navigate'},
         {label: 'Wyzwania', to: '/challenges', type: 'navigate'},
-        {label: 'Treningi', to: '/stats', type: 'navigate'}
+        {label: 'Statystyki', to: '/stats', type: 'navigate'}
     ];
 
     const handleNotificationClick = (notification) => {
@@ -110,7 +109,7 @@ function Navbar() {
                     paddingRight: {xs: 1, md: 2},
                 }}
             >
-                {/* Mobile Menu Icon */}
+
                 <IconButton
                     edge="start"
                     color="inherit"
@@ -121,29 +120,27 @@ function Navbar() {
                     <MenuIcon/>
                 </IconButton>
 
-                {/* Logo */}
                 <Box
                     sx={{
                         flexGrow: 1,
                         display: 'flex',
-                        padding:1,
+                        padding: 1,
                         justifyContent: {
                             md: 'left', xs: 'center'
                         },
                     }}
                 >
                     <Box
-                            component="img"
-                            src={logo}
-                            alt="App Logo"
-                            sx={{
-                                width: {sm: '6vw', md: '5vw', xs: '15vw'},
-                                cursor: 'pointer',
-                            }}
-                        />
+                        component="img"
+                        src={logo}
+                        alt="App Logo"
+                        sx={{
+                            width: {sm: '6vw', md: '5vw', xs: '15vw'},
+                            cursor: 'pointer',
+                        }}
+                    />
                 </Box>
 
-                {/* Non-Authenticated Menu Items */}
                 {!isAuthenticated && (
                     <>
                         <Button
@@ -155,7 +152,7 @@ function Navbar() {
                                 fontSize: {xs: '0.75rem', md: '1rem'},
                             }}
                         >
-                            Join Us
+                            Zaloguj się
                         </Button>
                         <Box
                             sx={{
@@ -269,7 +266,6 @@ function Navbar() {
                     </>
                 )}
 
-                {/*Mobile menu*/}
                 <Menu
                     anchorEl={mobileMenuAnchorEl}
                     open={Boolean(mobileMenuAnchorEl)}

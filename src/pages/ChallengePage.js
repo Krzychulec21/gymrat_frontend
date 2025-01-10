@@ -6,7 +6,7 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    FormLabel, Radio,
+    Radio,
     RadioGroup,
     Typography
 } from "@mui/material";
@@ -19,17 +19,16 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import {createChallenge, getAllChallengeTypes} from "../service/challengeService";
 import TextField from "@mui/material/TextField";
-import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {useSnackbar} from "../context/SnackbarContext";
 import {getAllExercises} from "../service/workoutService";
 import Autocomplete from "@mui/material/Autocomplete";
 import {useMediaQuery} from "@mui/system";
-import {addDays, isAfter, isBefore, format} from "date-fns";
+import {addDays, isAfter, isBefore} from "date-fns";
 import Slide from "@mui/material/Slide";
 
 const SlideTransition = React.forwardRef((props, ref) => {
-    return <Slide {...props} ref={ref} direction={props.direction || "down"} />;
+    return <Slide {...props} ref={ref} direction={props.direction || "down"}/>;
 });
 
 
@@ -44,8 +43,6 @@ export default function ChallengePage() {
     const refreshChallenges = () => {
         setRefreshKey((prevKey) => prevKey + 1);
     };
-
-
 
 
     useEffect(() => {
@@ -145,7 +142,7 @@ export default function ChallengePage() {
                 }}
             >
                 <Typography variant="h4" sx={{textAlign: 'center'}}>Twoje wyzwania</Typography>
-                <ActiveChallenges refreshKey={refreshKey} />
+                <ActiveChallenges refreshKey={refreshKey}/>
             </Box>
 
             <AvailableChallengesTable refreshChallenges={refreshChallenges}/>

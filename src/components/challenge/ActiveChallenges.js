@@ -18,7 +18,7 @@ export default function ActiveChallenges({refreshKey}) {
             setChallenges(data.content || []);
             setTotal(data.totalElements);
         });
-    }, [page, rowsPerPage,refreshKey]);
+    }, [page, rowsPerPage, refreshKey]);
 
     const handleClick = (id) => {
         navigate(`/challenges/${id}/details`);
@@ -36,7 +36,6 @@ export default function ActiveChallenges({refreshKey}) {
     };
 
 
-
     return (
         <>
             <Grid container spacing={2} sx={{my: 2}}>
@@ -52,10 +51,10 @@ export default function ActiveChallenges({refreshKey}) {
                                     transform: 'scale(1.10)',
                                     boxShadow: 6,
                                 },
-                                backgroundColor:'#252525',
+                                backgroundColor: '#252525',
                                 width: 300,
                                 height: 170,
-                        }}>
+                            }}>
                             <CardContent>
                                 <Typography variant="h6"> {truncateText(ch.challengeName, 40)}</Typography>
                                 <Typography>Dni do końca: {ch.daysLeft}</Typography>

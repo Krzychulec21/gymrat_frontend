@@ -72,8 +72,41 @@ export default function ChallengeDetailsPage() {
             <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
                     <Card sx={{p: 2}}>
-                        <Typography variant="h5">{challenge.name}</Typography>
-                        <Typography variant="body1">Autor: {challenge.authorNickname}</Typography>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            <Typography
+                                variant="h5"
+                                sx={{
+                                    textAlign: 'center',
+                                    flexGrow: 1,
+                                }}
+                            >
+                                {challenge.name}
+                            </Typography>
+                            {isAuthor && (
+                                <>
+                                    <IconButton onClick={() => setOpenConfirm(true)}>
+                                        <DeleteIcon/>
+                                    </IconButton>
+                                    <Dialog open={openConfirm} onClose={() => setOpenConfirm(false)}>
+                                        <DialogTitle>Czy na pewno chcesz usunąć to wyzwanie?</DialogTitle>
+                                        <DialogActions>
+                                            <Button onClick={() => setOpenConfirm(false)}>Anuluj</Button>
+                                            <Button onClick={handleDelete} color="error">
+                                                Usuń
+                                            </Button>
+                                        </DialogActions>
+                                    </Dialog>
+                                </>
+                            )}
+                        </Box>
+
+                        <Typography variant="body1">Autor: {challenge.author}</Typography>
                         <Typography variant="body1">Typ wyzwania: {challenge.typeName}</Typography>
                         <Typography variant="body1">Data startu: {challenge.startDate}</Typography>
                         <Typography variant="body1">Data końca: {challenge.endDate}</Typography>
@@ -87,23 +120,6 @@ export default function ChallengeDetailsPage() {
                         <Typography variant="body1">
                             {challenge.isPublic ? "Publiczne" : "Prywatne"}
                         </Typography>
-
-                        {isAuthor && (
-                            <>
-                                <IconButton onClick={() => setOpenConfirm(true)}>
-                                    <DeleteIcon/>
-                                </IconButton>
-                                <Dialog open={openConfirm} onClose={() => setOpenConfirm(false)}>
-                                    <DialogTitle>Czy na pewno chcesz usunąć to wyzwanie?</DialogTitle>
-                                    <DialogActions>
-                                        <Button onClick={() => setOpenConfirm(false)}>Anuluj</Button>
-                                        <Button onClick={handleDelete} color="error">
-                                            Usuń
-                                        </Button>
-                                    </DialogActions>
-                                </Dialog>
-                            </>
-                        )}
                     </Card>
                 </Grid>
 

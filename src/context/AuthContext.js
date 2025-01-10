@@ -1,11 +1,11 @@
-import React, {createContext, useContext, useState, useEffect, useRef} from 'react';
+import React, {createContext, useContext, useEffect, useRef, useState} from 'react';
 import authService from '../service/authService';
 import {jwtDecode} from "jwt-decode";
 import webSocketService from "../service/websocketService";
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(authService.isAuthenticated());
     const logoutTimeRef = useRef(null);
 
@@ -19,8 +19,7 @@ export const AuthProvider = ({ children }) => {
 
                 if (expirationTime < currentTime) {
                     logout();
-                }
-                else {
+                } else {
                     setIsAuthenticated(true);
                     webSocketService.connect(token);
 
@@ -52,7 +51,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, logout }}>
+        <AuthContext.Provider value={{isAuthenticated, logout}}>
             {children}
         </AuthContext.Provider>
     );

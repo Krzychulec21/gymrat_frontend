@@ -10,7 +10,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {IconButton} from "@mui/material";
-import {Link} from "react-router-dom";
 
 
 function SignIn({onForgotPassword}) {
@@ -37,7 +36,7 @@ function SignIn({onForgotPassword}) {
                 .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Wprowadź poprawny adres email'),
             password: Yup.string().required('Wymagane')
         }),
-        onSubmit: async (values, { setSubmitting, setErrors }) => {
+        onSubmit: async (values, {setSubmitting, setErrors}) => {
             try {
                 await authService.login(values);
                 const role = authService.getRole();
@@ -49,15 +48,14 @@ function SignIn({onForgotPassword}) {
             } catch (error) {
                 if (error.response && error.response.status === 401) {
                     if (error.response.data === "Email not verified") {
-                        setErrors({ email: "Twój email nie został zweryfikowany" });
+                        setErrors({email: "Twój email nie został zweryfikowany"});
                     } else {
-                        setErrors({ password: "Niepoprawny email lub hasło" });
+                        setErrors({password: "Niepoprawny email lub hasło"});
                     }
                 } else if (error.response && error.response.status === 403) {
                     setErrors({email: "Twoje konto zostało zablokowane. Skontaktuj się działem wsparcia."})
-                }
-                else {
-                    setErrors({ email: "An unexpected error occurred. Please try again later." });
+                } else {
+                    setErrors({email: "An unexpected error occurred. Please try again later."});
                 }
                 setSubmitting(false);
             }
@@ -107,7 +105,7 @@ function SignIn({onForgotPassword}) {
                                 onClick={handleClickShowPassword}
                                 onMouseDown={handleMouseDownPassword}
                             >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                {showPassword ? <VisibilityOff/> : <Visibility/>}
                             </IconButton>
                         </InputAdornment>
                     )

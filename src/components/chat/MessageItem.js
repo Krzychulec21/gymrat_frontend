@@ -1,9 +1,7 @@
-// MessageItem.js
-
 import React from 'react';
-import { ListItem, ListItemText, Box } from '@mui/material';
+import {Box, ListItem, ListItemText} from '@mui/material';
 
-const MessageItem = ({ message, currentUserId }) => {
+const MessageItem = ({message, currentUserId}) => {
     const isCurrentUser = String(message.senderId) === String(currentUserId);
     return (
         <ListItem
@@ -22,7 +20,7 @@ const MessageItem = ({ message, currentUserId }) => {
                     wordBreak: 'break-word',
                 }}
             >
-                <ListItemText primary={message.content} />
+                <ListItemText primary={message.content}/>
             </Box>
         </ListItem>
     );

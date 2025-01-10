@@ -6,10 +6,10 @@ const PublicRoute = () => {
     const role = authService.getRole();
 
     if (isAuthenticated) {
-        return <Navigate to={role === "ROLE_ADMIN" ? "/admin/dashboard" : "/profile"} replace />;
+        return <Navigate to={role === "ROLE_ADMIN" ? "/admin/dashboard" : "/profile"} replace/>;
     }
 
-    return <Outlet />;
+    return <Outlet/>;
 };
 
 

@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
-    Alert,
     Avatar,
     Box,
     Button,
@@ -12,7 +11,6 @@ import {
     IconButton,
     Radio,
     RadioGroup,
-    Snackbar,
     TextField,
     Typography,
 } from '@mui/material';
@@ -20,17 +18,17 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import EditIcon from '@mui/icons-material/Edit';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import {getUserAvatar, updatePersonalInfo} from "../service/userService";
-import axiosInstance from "../utils/axiosInstance";
+import {getUserAvatar, updatePersonalInfo} from "../../service/userService";
+import axiosInstance from "../../utils/axiosInstance";
 import Slide from '@mui/material/Slide';
 import * as Yup from "yup";
 import {Field, Form, Formik} from "formik";
-import {AvatarContext} from "../context/AvatarContext";
-import {getFriendStatus, removeFriend, sendFriendRequest} from "../service/friendService";
-import {useSnackbar} from "../context/SnackbarContext";
+import {AvatarContext} from "../../context/AvatarContext";
+import {getFriendStatus, removeFriend, sendFriendRequest} from "../../service/friendService";
+import {useSnackbar} from "../../context/SnackbarContext";
 
 const SlideTransition = React.forwardRef((props, ref) => {
-    return <Slide {...props} ref={ref} direction={props.direction || "down"} />;
+    return <Slide {...props} ref={ref} direction={props.direction || "down"}/>;
 });
 
 
@@ -39,7 +37,7 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
     const [openDialog, setOpenDialog] = useState(false);
     const {updateAvatar} = useContext(AvatarContext);
     const [friendStatus, setFriendStatus] = useState(null);
-    const { showSnackbar } = useSnackbar();
+    const {showSnackbar} = useSnackbar();
 
     const genderMapping = {
         MALE: "mężczyzna",
@@ -206,7 +204,6 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                 </Box>
             )}
 
-            {/*Avatar and name*/}
             <Box
                 sx={{
                     display: 'flex',
@@ -217,7 +214,6 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                     position: 'relative',
                 }}
             >
-                {/*Avatar with upload photo icon*/}
                 <Box sx={{
                     position: 'relative',
                     mb: 2
@@ -254,7 +250,6 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                     )}
                 </Box>
 
-                {/*Name and email*/}
                 <Box sx={{textAlign: {xs: 'center', sm: 'left'}}}>
                     < Typography variant="h5" sx={{fontWeight: 'bold'}}>
                         {user.firstName} {user.lastName}
@@ -266,8 +261,6 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                 </Box>
             </Box>
 
-            {/*user properties*/
-            }
             <Box sx={{
                 display: 'flex',
                 flexWrap: 'wrap',
@@ -277,8 +270,12 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
             }}>
                 {personalInfo && typeof personalInfo === 'object' && (
                     <Box>
-                        <Typography variant="body1">Waga: {personalInfo.weight}</Typography>
-                        <Typography variant="body1">Wzrost: {personalInfo.height}</Typography>
+                        {personalInfo.weight && (
+                            <Typography variant="body1">Waga: {personalInfo.weight}</Typography>
+                        )}
+                        {personalInfo.height && (
+                            <Typography variant="body1">Waga: {personalInfo.height}</Typography>
+                        )}
                         {personalInfo.gender !== null && personalInfo.gender !== "OTHER" &&
                             <Typography variant="body1">Płeć: {genderMapping[personalInfo.gender]}</Typography>
                         }
@@ -286,18 +283,18 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                 )}
             </Box>
 
-            {/*bio*/
-            }
             <Box sx={{ml: 3, mt: 3}}>
                 <Typography sx={{textAlign: 'center'}} variant="h5">O mnie</Typography>
-                <Box sx={{border: "1px solid white", padding: 2, borderRadius: "5px", mt: 2}}>
-                    <Typography variant="body1">{personalInfo.bio}</Typography>
-                </Box>
+                {personalInfo.bio && (
+                    <Box sx={{border: "1px solid white", padding: 2, borderRadius: "5px", mt: 2}}>
+                        <Typography variant="body1">{personalInfo.bio}</Typography>
+                    </Box>
+                )}
             </Box>
             <Dialog
                 open={openDialog}
                 TransitionComponent={SlideTransition}
-                TransitionProps={{ direction: "up" }}
+                TransitionProps={{direction: "up"}}
                 onClose={() => setOpenDialog(false)}
             >
                 <DialogTitle>
@@ -327,7 +324,6 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                     >
                         {({errors, touched, isSubmitting}) => (
                             <Form>
-                                {/* Bio */}
                                 <Field
                                     as={TextField}
                                     name="bio"
@@ -340,7 +336,6 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                                     helperText={touched.bio && errors.bio}
                                 />
 
-                                {/* Weight */}
                                 <Field
                                     as={TextField}
                                     name="weight"
@@ -352,7 +347,6 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                                     helperText={touched.weight && errors.weight}
                                 />
 
-                                {/* Height */}
                                 <Field
                                     as={TextField}
                                     name="height"
@@ -364,7 +358,6 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                                     helperText={touched.height && errors.height}
                                 />
 
-                                {/* Gender */}
                                 <Typography variant="subtitle1" sx={{mt: 2}}>
                                     Płeć
                                 </Typography>

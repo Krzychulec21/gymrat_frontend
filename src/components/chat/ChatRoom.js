@@ -1,11 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Box, List, Typography} from '@mui/material';
 import {connectToChatRoom, getChatHistory, sendMessage} from '../../service/chatService';
-import CustomTextField from '../input/CustomTextField';
 import MessageItem from './MessageItem';
 import websocketService from '../../service/websocketService';
 import {useAuth} from '../../context/AuthContext';
-import CustomButton from "../button/CustomButton";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
@@ -105,7 +103,6 @@ const ChatRoom = ({currentUserId, friendId, chatRoomId, friendName}) => {
                 </List>
             </Box>
 
-            {/* Message Input */}
             <Box
                 sx={{
                     padding: 2,
@@ -118,10 +115,10 @@ const ChatRoom = ({currentUserId, friendId, chatRoomId, friendName}) => {
                         value={messageContent}
                         onChange={(e) => setMessageContent(e.target.value)}
                         onKeyPress={handleKeyPress}
-                        placeholder="Type a message..."
+                        placeholder="Wprowadź wiadomość..."
                     />
                     <Button variant="contained" onClick={handleSendMessage}>
-                        Send
+                        Wyślij
                     </Button>
                 </Box>
             </Box>

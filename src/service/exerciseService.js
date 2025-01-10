@@ -11,7 +11,6 @@ export const getAllExercises = async () => {
 };
 
 
-
 export const getExercisesTrainedByUser = async () => {
     try {
         const response = await axiosInstance.get('/exercise/trained');

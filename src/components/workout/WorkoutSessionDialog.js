@@ -7,7 +7,7 @@ import ExerciseFieldForm from "./ExerciseFieldForm";
 import dayjs from "dayjs";
 import {useSnackbar} from "../../context/SnackbarContext";
 
-const WorkoutSessionDialog = ({ open, onClose, initialValues, isEditMode, onWorkoutAdded}) => {
+const WorkoutSessionDialog = ({open, onClose, initialValues, isEditMode, onWorkoutAdded}) => {
     const {showSnackbar} = useSnackbar();
     const [exerciseOptions, setExerciseOptions] = useState([]);
     const today = dayjs().format('YYYY-MM-DD');
@@ -35,18 +35,16 @@ const WorkoutSessionDialog = ({ open, onClose, initialValues, isEditMode, onWork
     } : {
         date: new Date().toISOString().split('T')[0],
         note: '',
-        exercises: [{ exerciseId: '', sets: [{ reps: '', weight: '' }] }],
+        exercises: [{exerciseId: '', sets: [{reps: '', weight: ''}]}],
     };
 
 
-
-
     return (
-        <Dialog open={open} onClose={onClose} PaperProps={{ style: { backgroundColor: '#252525' }}}>
+        <Dialog open={open} onClose={onClose} PaperProps={{style: {backgroundColor: '#252525'}}}>
             <Formik
                 initialValues={defaultInitialValues}
                 validationSchema={workoutSessionValidationSchema}
-                onSubmit={(values, { setSubmitting }) => {
+                onSubmit={(values, {setSubmitting}) => {
                     const action = isEditMode
                         ? updateWorkoutSession(initialValues.id, values)
                         : saveWorkoutSession(values);
@@ -66,7 +64,7 @@ const WorkoutSessionDialog = ({ open, onClose, initialValues, isEditMode, onWork
                         });
                 }}
             >
-                {({ values, isSubmitting }) => (
+                {({values, isSubmitting}) => (
                     <Form>
                         <DialogContent>
                             <DialogTitle>{isEditMode ? 'Edytuj sesję treningową' : 'Nowa sesja treningowa'}</DialogTitle>
@@ -76,7 +74,7 @@ const WorkoutSessionDialog = ({ open, onClose, initialValues, isEditMode, onWork
                                 label="Data"
                                 type="date"
                                 fullWidth
-                                InputLabelProps={{ shrink: true }}
+                                InputLabelProps={{shrink: true}}
                                 inputProps={{max: today}}
                                 margin="normal"
                                 InputProps={{
@@ -95,7 +93,7 @@ const WorkoutSessionDialog = ({ open, onClose, initialValues, isEditMode, onWork
                                 margin="normal"
                             />
                             <FieldArray name="exercises">
-                                {({ push, remove }) => (
+                                {({push, remove}) => (
                                     <>
                                         {values.exercises.map((_, exerciseIndex) => (
                                             <ExerciseFieldForm
@@ -105,7 +103,7 @@ const WorkoutSessionDialog = ({ open, onClose, initialValues, isEditMode, onWork
                                                 removeExercise={remove}
                                             />
                                         ))}
-                                        <Button onClick={() => push({ exerciseId: '', sets: [{ reps: '', weight: '' }] })}>
+                                        <Button onClick={() => push({exerciseId: '', sets: [{reps: '', weight: ''}]})}>
                                             Dodaj kolejne ćwiczenie
                                         </Button>
                                     </>

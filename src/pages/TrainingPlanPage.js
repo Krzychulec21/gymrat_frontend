@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {
-    Alert,
     Box,
     Button,
     Checkbox,
-    FormControl, FormControlLabel,
+    FormControl,
+    FormControlLabel,
     IconButton,
     InputLabel,
     MenuItem,
-    Select, Snackbar,
+    Select,
     Table,
     TableBody,
     TableCell,
@@ -17,10 +17,11 @@ import {
     TablePagination,
     TableRow,
     TableSortLabel,
-    TextField, Typography,
+    TextField,
+    Typography,
 } from "@mui/material";
 import {getAllTrainingPlans, toggleFavorite} from "../service/trainingPlanService";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import ClearIcon from "@mui/icons-material/Clear";
 import FitnessCenterOutlinedIcon from '@mui/icons-material/FitnessCenterOutlined';
@@ -29,16 +30,15 @@ import validationSchema from "../components/trainingPlan/TrainingPlanValidationS
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import Tooltip from "@mui/material/Tooltip";
-import Slide from "@mui/material/Slide";
 import {useSnackbar} from "../context/SnackbarContext";
 
 
 const TrainingPlansPage = () => {
-    const { showSnackbar } = useSnackbar();
+    const {showSnackbar} = useSnackbar();
     const [trainingPlans, setTrainingPlans] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
     const [page, setPage] = useState(0);
-    const [size] = useState(3);
+    const [size] = useState(6);
     const [order, setOrder] = useState("desc");
     const [orderBy, setOrderBy] = useState("likeCount");
     const [filters, setFilters] = useState({
@@ -151,7 +151,7 @@ const TrainingPlansPage = () => {
         try {
             await toggleFavorite(id);
             fetchTrainingPlans();
-            showSnackbar("Plan treningowy zdodany do polubionych!", "success");
+            showSnackbar("Plan treningowy został dodany do polubionych!", "success");
 
         } catch (error) {
             console.error(error);
@@ -170,11 +170,11 @@ const TrainingPlansPage = () => {
             margin: 'auto'
         }}>
             <Typography sx={{textAlign: 'center'}} variant="h4">Plany treningowe społeczności</Typography>
-            <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'space-between', mt:2 }}>
+            <Box sx={{position: 'relative', display: 'flex', justifyContent: 'space-between', mt: 2}}>
                 <Button
-                    startIcon={<FilterListIcon />}
+                    startIcon={<FilterListIcon/>}
                     onClick={() => setShowFilters(!showFilters)}
-                    sx={{ marginBottom: '10px' }}
+                    sx={{marginBottom: '10px'}}
                 >
                     {showFilters ? "Ukryj filtry" : "Pokaż filtry"}
                 </Button>
@@ -211,7 +211,6 @@ const TrainingPlansPage = () => {
                             ))}
                         </Select>
                     </FormControl>
-                    {/* Difficulty Level Filter */}
                     <FormControl>
                         <InputLabel style={{color: "white"}}>Poziom trudności</InputLabel>
                         <Select
@@ -230,7 +229,6 @@ const TrainingPlansPage = () => {
                             ))}
                         </Select>
                     </FormControl>
-                    {/* Author Filter */}
                     <TextField
                         label="Użytkownik"
                         name="authorNickname"
@@ -244,7 +242,10 @@ const TrainingPlansPage = () => {
                         control={
                             <Checkbox
                                 checked={filters.onlyFavorites || false}
-                                onChange={(event) => setFilters(prev => ({ ...prev, onlyFavorites: event.target.checked }))}
+                                onChange={(event) => setFilters(prev => ({
+                                    ...prev,
+                                    onlyFavorites: event.target.checked
+                                }))}
                             />
                         }
                         label="Tylko ulubione"
@@ -256,73 +257,73 @@ const TrainingPlansPage = () => {
             )}
             <TableContainer>
                 <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell sortDirection={orderBy === "name" ? order : false}>
-                            <TableSortLabel
-                                active={orderBy === "name"}
-                                direction={orderBy === "name" ? order : "asc"}
-                                onClick={() => handleRequestSort("name")}
-                            >
-                                Nazwa
-                            </TableSortLabel>
-                        </TableCell>
-                        <TableCell>Autor</TableCell>
-                        <TableCell>Kategorie</TableCell>
-                        <TableCell sortDirection={orderBy === "difficultyLevel" ? order : false}>
-                            <TableSortLabel
-                                active={orderBy === "difficultyLevel"}
-                                direction={orderBy === "difficultyLevel" ? order : "asc"}
-                                onClick={() => handleRequestSort("difficultyLevel")}
-                            >
-                                Trudność
-                            </TableSortLabel>
-                        </TableCell>
-                        <TableCell sortDirection={orderBy === "likeCount" ? order : false}>
-                            <TableSortLabel
-                                active={orderBy === "likeCount"}
-                                direction={orderBy === "likeCount" ? order : "asc"}
-                                onClick={() => handleRequestSort("likeCount")}
-                            >
-                                Polubienia
-                            </TableSortLabel>
-                        </TableCell>
-                        <TableCell>
-                            Ulubione
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {trainingPlans.map((plan) => (
-                        <TableRow key={plan.id} hover onClick={() => handleRowClick(plan.id)}
-                                  style={{cursor: "pointer"}}>
-                            <TableCell>{plan.name}</TableCell>
-                            <TableCell>{plan.authorNickname}</TableCell>
-                            <TableCell>{translateCategories(plan.categories).join(", ")}</TableCell>
-                            <TableCell>
-                                {[...Array(plan.difficultyLevel)].map((_, index) => (
-                                    <FitnessCenterOutlinedIcon fontSize="small" key={index}/>
-                                ))}
-                            </TableCell>
-                            <TableCell>{plan.likeCount}</TableCell>
-                            <TableCell>
-                                <IconButton
-                                    onClick={(event) => {
-                                        event.stopPropagation();
-                                        handleToggleFavorite(plan.id, plan.isFavorite);
-                                    }}
+                    <TableHead>
+                        <TableRow>
+                            <TableCell sortDirection={orderBy === "name" ? order : false}>
+                                <TableSortLabel
+                                    active={orderBy === "name"}
+                                    direction={orderBy === "name" ? order : "asc"}
+                                    onClick={() => handleRequestSort("name")}
                                 >
-                                    {plan.isFavorite ? (
-                                        <StarIcon style={{ color: "gold" }} />
-                                    ) : (
-                                        <StarBorderIcon style={{ color: "gray" }} />
-                                    )}
-                                </IconButton>
+                                    Nazwa
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell>Autor</TableCell>
+                            <TableCell>Kategorie</TableCell>
+                            <TableCell sortDirection={orderBy === "difficultyLevel" ? order : false}>
+                                <TableSortLabel
+                                    active={orderBy === "difficultyLevel"}
+                                    direction={orderBy === "difficultyLevel" ? order : "asc"}
+                                    onClick={() => handleRequestSort("difficultyLevel")}
+                                >
+                                    Trudność
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell sortDirection={orderBy === "likeCount" ? order : false}>
+                                <TableSortLabel
+                                    active={orderBy === "likeCount"}
+                                    direction={orderBy === "likeCount" ? order : "asc"}
+                                    onClick={() => handleRequestSort("likeCount")}
+                                >
+                                    Polubienia
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell>
+                                Ulubione
                             </TableCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table></TableContainer>
+                    </TableHead>
+                    <TableBody>
+                        {trainingPlans.map((plan) => (
+                            <TableRow key={plan.id} hover onClick={() => handleRowClick(plan.id)}
+                                      style={{cursor: "pointer"}}>
+                                <TableCell>{plan.name}</TableCell>
+                                <TableCell>{plan.authorNickname}</TableCell>
+                                <TableCell>{translateCategories(plan.categories).join(", ")}</TableCell>
+                                <TableCell>
+                                    {[...Array(plan.difficultyLevel)].map((_, index) => (
+                                        <FitnessCenterOutlinedIcon fontSize="small" key={index}/>
+                                    ))}
+                                </TableCell>
+                                <TableCell>{plan.likeCount}</TableCell>
+                                <TableCell>
+                                    <IconButton
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            handleToggleFavorite(plan.id, plan.isFavorite);
+                                        }}
+                                    >
+                                        {plan.isFavorite ? (
+                                            <StarIcon style={{color: "gold"}}/>
+                                        ) : (
+                                            <StarBorderIcon style={{color: "gray"}}/>
+                                        )}
+                                    </IconButton>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table></TableContainer>
             <TablePagination
                 component="div"
                 count={totalElements}

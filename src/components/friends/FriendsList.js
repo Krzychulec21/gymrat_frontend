@@ -11,8 +11,6 @@ import {
     MenuItem,
     Pagination,
     Select,
-    Slider,
-    Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
@@ -69,10 +67,9 @@ const FriendsList = ({
     };
 
 
-
     return (
         <>
-            <Box sx={{display: 'flex', justifyContent: 'flex-end', mb: 2, mt:2, gap: 2, flexWrap: 'wrap'}}>
+            <Box sx={{display: 'flex', justifyContent: 'flex-end', mb: 2, mt: 2, gap: 2, flexWrap: 'wrap'}}>
                 <FormControl size="small">
                     <Select
                         value={sortBy}
@@ -147,7 +144,7 @@ const FriendsList = ({
                             <UserListItem
                                 key={friend.id}
                                 user={friend}
-                                primaryActionIcon={<Button size="small">Chat</Button>}
+                                primaryActionIcon={<Button size="small">Czat</Button>}
                                 secondaryActionIcon={<DeleteIcon sx={{color: 'red'}}/>}
                                 onPrimaryAction={() => onChatStart(friend.id, friend.firstName, friend.lastName)}
                                 onSecondaryAction={() => handleDeleteClick(friend)}

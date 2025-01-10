@@ -2,13 +2,13 @@ import {Box} from "@mui/material";
 import Button from "@mui/material/Button";
 import React, {useState} from "react";
 import Slide from "@mui/material/Slide";
-import WorkoutSessionDialog from "./workout/WorkoutSessionDialog";
-import GeneralStatsCard from "./workout/GeneralStatsCard";
-import PopularExerciseChart from "./workout/PopularExerciseChart";
-import WorkoutSessions from "./workout/WorkoutSessions";
-import PostDialog from "./workout/PostDialog";
-import TrainedMuscleGroupsChart from "./workout/TrainedMuscleGroupsChart";
-import ExerciseOneRepMaxChart from "./workout/ExerciseOneRepMaxChart";
+import WorkoutSessionDialog from "./WorkoutSessionDialog";
+import GeneralStatsCard from "./GeneralStatsCard";
+import PopularExerciseChart from "./PopularExerciseChart";
+import WorkoutSessions from "./WorkoutSessions";
+import PostDialog from "./PostDialog";
+import TrainedMuscleGroupsChart from "./TrainedMuscleGroupsChart";
+import ExerciseOneRepMaxChart from "./ExerciseOneRepMaxChart";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -80,8 +80,8 @@ const MainStats = () => {
             />
             <GeneralStatsCard refresh={refresh}/>
             <PopularExerciseChart refresh={refresh}/>
-            <TrainedMuscleGroupsChart />
-            <ExerciseOneRepMaxChart />
+            <TrainedMuscleGroupsChart/>
+            <ExerciseOneRepMaxChart/>
             <WorkoutSessions refresh={refresh} onWorkoutChanged={handleWorkoutAdded}/>
             <PostDialog
                 open={openPostDialog}
