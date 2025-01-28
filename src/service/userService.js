@@ -83,7 +83,6 @@ export const blockUser = async (userId) => {
 
 export const warnUser = async (userId, values) => {
     try {
-        console.log("wyslane descriptin" + values)
         await axiosInstance.post(`/user/${userId}/warn`, {
             description: values.warningMessage
         });

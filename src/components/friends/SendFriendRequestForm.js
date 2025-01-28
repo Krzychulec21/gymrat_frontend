@@ -23,7 +23,6 @@ const SendFriendRequestForm = () => {
                 setCurrentPage(page);
                 setTotalPages(data.totalPages);
             } catch (error) {
-                console.log(error);
             }
         }
     };

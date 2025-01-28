@@ -12,12 +12,9 @@ const OAuth2RedirectHandler = () => {
 
         const token = new URLSearchParams(window.location.search).get('token');
         if (token) {
-            console.log("Setting token in localStorage:", token);
             authService.setToken(token);
-            console.log("Token set in localStorage");
             navigate('/');
         } else {
-            console.log("No token found, redirecting to auth");
             navigate('/auth');
         }
     }, [navigate]);

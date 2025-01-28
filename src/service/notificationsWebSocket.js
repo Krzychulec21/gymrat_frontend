@@ -11,15 +11,12 @@ export const connectToNotificationsWebSocket = (onMessageReceived) => {
         brokerURL: wsUrl,
         reconnectDelay: 5000,
         onConnect: () => {
-            console.log('Connected to notifications WebSocket');
 
             stompClient.subscribe('/user/queue/notifications', (message) => {
-                console.log("Received notification: ", message.body);
                 onMessageReceived(message);
             });
         },
         debug: (str) => {
-            console.log(new Date(), str);
         }
     });
 

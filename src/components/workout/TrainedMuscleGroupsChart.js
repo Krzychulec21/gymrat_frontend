@@ -18,7 +18,6 @@ const TrainedMuscleGroupsChart = () => {
     };
 
     useEffect(() => {
-        console.log(`[useEffect] Mode changed to: ${mode}`);
         if (mode === 'categories') {
             getTrainedCategoriesCount()
                 .then(categories => {
@@ -44,7 +43,6 @@ const TrainedMuscleGroupsChart = () => {
     }, [mode]);
 
     const toggleMode = () => {
-        console.log('[toggleMode] Toggling mode');
         setMode(prevMode => (prevMode === 'categories' ? 'exercises' : 'categories'));
     };
 
@@ -54,7 +52,6 @@ const TrainedMuscleGroupsChart = () => {
             count: item.count,
             id: index,
         };
-        console.log('[dataset] Mapped item:', mappedItem);
         return mappedItem;
     });
 

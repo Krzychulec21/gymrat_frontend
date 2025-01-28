@@ -30,7 +30,6 @@ export const connectToChatRoom = (chatRoomId, onMessageReceived) => {
     const destination = `/user/queue/chat/${chatRoomId}`;
     websocketService.subscribe(destination, (message) => {
         const parsedMessage = JSON.parse(message.body);
-        console.log("Received message: ", message.body);
         onMessageReceived(parsedMessage);
     });
 };

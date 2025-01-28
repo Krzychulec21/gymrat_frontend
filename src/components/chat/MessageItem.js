@@ -12,7 +12,7 @@ const MessageItem = ({message, currentUserId}) => {
         >
             <Box
                 sx={{
-                    backgroundColor: isCurrentUser ? '#100f0f' : 'rgba(70,40,20,0.94)',
+                    backgroundColor: isCurrentUser ? '#b62828' : 'rgba(84,37,37,0.94)',
                     padding: '10px',
                     borderRadius: '10px',
                     maxWidth: '60%',

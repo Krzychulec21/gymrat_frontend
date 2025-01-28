@@ -82,7 +82,6 @@ const FriendsPage = () => {
         setSelectedFriendId(friendId);
         setChatRoomId(roomId);
         setSelectedFriendName(firstName + ' ' + lastName);
-        console.log("wybrane friendName", friendId);
         setSelectedTab('chat');
     };
 

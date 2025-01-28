@@ -1,5 +1,6 @@
 import React from 'react';
-import {ListItem, ListItemAvatar, ListItemText, Avatar, Box, IconButton} from '@mui/material';
+import {ListItem, ListItemAvatar, ListItemText, Avatar, Box, IconButton, Link} from '@mui/material';
+import {useNavigate} from "react-router-dom";
 
 const UserListItem = ({
                           user,
@@ -8,6 +9,10 @@ const UserListItem = ({
                           onPrimaryAction,
                           onSecondaryAction,
                       }) => {
+
+    const handleUserClick = (userId) => navigate(`/profile/${userId}`);
+    
+    const navigate = useNavigate();
     return (
         <ListItem sx={{display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
             <Box sx={{display: 'flex', alignItems: 'center', flexGrow: 1}}>
@@ -15,7 +20,16 @@ const UserListItem = ({
                     <Avatar alt={`${user.firstName} ${user.lastName}`} src={user.avatar}/>
                 </ListItemAvatar>
                 <ListItemText
-                    primary={`${user.firstName} ${user.lastName} (${user.email})`}
+                    primary={
+                        <Link
+                            component="button"
+                            onClick={() => handleUserClick(user.userId)}
+                            underline="hover"
+                            color="white"
+                        >
+                            {`${user.firstName} ${user.lastName} (${user.email})`}
+                        </Link>
+                    }
                     secondary={`${
                         user.latestMessageTimestamp
                             ? new Date(user.latestMessageTimestamp).toLocaleString('pl-PL', {

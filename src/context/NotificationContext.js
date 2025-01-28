@@ -79,7 +79,6 @@ export const NotificationsProvider = ({children}) => {
 
 
     const aggregateAndAddNotification = (currentNotifications, newNotification) => {
-        console.log("powiadomienie przetwarzane: ", newNotification)
         if (newNotification.notificationType === 'MESSAGE') {
             const existing = currentNotifications.find(n => n.senderEmail === newNotification.senderEmail && n.notificationType === 'MESSAGE');
             if (existing) {

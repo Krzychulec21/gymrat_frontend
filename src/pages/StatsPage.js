@@ -8,7 +8,6 @@ const StatsPage = () => {
 
     const load = async () => {
         const number = await getNumberOfUserWorkouts();
-        console.log("liczba treningow", number);
     }
     return (
         <>

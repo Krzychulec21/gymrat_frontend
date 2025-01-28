@@ -36,7 +36,6 @@ export default function AvailableChallengesTable({refreshChallenges}) {
     const loadData = () => {
         getAvailableChallenges(page, rowsPerPage, sortBy, sortDir, publicFilter, typeFilter, categoryFilter).then((data) => {
             setChallenges(data.content || []);
-            console.log("ladowanie danych" + data.content);
             setTotal(data.totalElements);
         });
     };

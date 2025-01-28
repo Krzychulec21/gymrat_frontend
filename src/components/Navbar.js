@@ -86,7 +86,6 @@ function Navbar() {
         } else if (notification.notificationType === 'FRIEND_REQUEST') {
             navigate('/friends');
         } else {
-            console.log('Nieobsługiwany typ powiadomienia:', notification.notificationType);
         }
         setNotificationsAnchorEl(null);
     };

@@ -6,7 +6,7 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    IconButton,
+    IconButton, Link,
     Typography,
 } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -54,6 +54,8 @@ const TrainingPlanDetails = () => {
         getCurrentUser();
     }, [id]);
 
+    const handleUserClick = (userId) => navigate(`/profile/${userId}`);
+
     const translateCategory = (category) => {
         return categoryMapping[category] || category;
     };
@@ -84,8 +86,6 @@ const TrainingPlanDetails = () => {
         try {
             await addLike(id, isLike);
             fetchTrainingPlan();
-            console.log("dane z training plan", trainingPlan)
-            console.log("user obiekt", currentUser)
         } catch (error) {
             console.error("Error adding like:", error);
         }
@@ -150,9 +150,18 @@ const TrainingPlanDetails = () => {
                     </IconButton>
                 </Box>
             </Box>
-            <Box sx={{mb: 5}}><Typography variant="subtitle1" gutterBottom>
-                Autor: {trainingPlan.authorNickname}
-            </Typography>
+            <Box sx={{mb: 5}}>
+                <Typography variant="subtitle1" gutterBottom>
+                    Autor:{" "}
+                    <Link
+                        component="button"
+                        onClick={() => handleUserClick(trainingPlan.authorId)}
+                        underline="hover"
+                        color="white"
+                    >
+                        {trainingPlan.authorNickname}
+                    </Link>
+                </Typography>
                 <Typography variant="h6" gutterBottom display="inline-flex" alignItems="center">
                     Poziom trudności:
                     <Box display="inline-flex" alignItems="center" sx={{marginLeft: "8px"}}>
