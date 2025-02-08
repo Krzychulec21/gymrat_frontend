@@ -57,7 +57,7 @@ const AdminExercise = () => {
         difficultyLevel: Yup.string().required("Poziom trudności jest wymagany"),
         categoryName: Yup.string().required("Kategoria jest wymagana"),
         description: Yup.string().required("Opis jest wymagany"),
-        videoLink: Yup.string().url("Wprowadź poprawny URL").nullable(),
+        videoId: Yup.string().nullable(),
     });
 
     const formik = useFormik({
@@ -66,7 +66,7 @@ const AdminExercise = () => {
             difficultyLevel: "",
             categoryName: "",
             description: "",
-            videoLink: "",
+            videoId: "",
         },
         validationSchema,
         onSubmit: async (values, {resetForm}) => {
@@ -76,7 +76,7 @@ const AdminExercise = () => {
                         name: values.name,
                         categoryName: values.categoryName,
                         description: values.description,
-                        videoId: values.videoLink || null,
+                        videoId: values.videoId || null,
                         difficultyLevel: parseInt(values.difficultyLevel, 10),
                     });
                     showSnackbar("Pomyślnie zaktualizowano ćwiczenie")
@@ -85,7 +85,7 @@ const AdminExercise = () => {
                     name: values.name,
                     categoryName: values.categoryName,
                     description: values.description,
-                    videoId: values.videoLink || null,
+                    videoId: values.videoId || null,
                     difficultyLevel: parseInt(values.difficultyLevel, 10),
                 });
                 showSnackbar("Pomyślnie dodano ćwiczenie");
@@ -129,12 +129,13 @@ const AdminExercise = () => {
     const handleEditExercise = async (exercise) => {
         try {
             const data = await getExerciseInfo(exercise.id);
+            console.log("dane" + data.videoId)
             formik.setValues({
                 name: exercise.name,
                 difficultyLevel: exercise.difficultyLevel.toString(),
                 description: data.description.join("\n"),
                 categoryName: exercise.categoryName,
-                videoLink: exercise.videoId || "",
+                videoId: data.videoId || "",
             });
             setEditingExercise(exercise);
             setOpenDialog(true);
@@ -292,14 +293,14 @@ const AdminExercise = () => {
                             helperText={formik.touched.description && formik.errors.description}
                         />
                         <TextField
-                            label="Link do filmu"
-                            name="videoLink"
-                            value={formik.values.videoLink}
+                            label="ID filmu YouTube"
+                            name="videoId"
+                            value={formik.values.videoId}
                             onChange={formik.handleChange}
                             fullWidth
                             margin="normal"
-                            error={formik.touched.videoLink && Boolean(formik.errors.videoLink)}
-                            helperText={formik.touched.videoLink && formik.errors.videoLink}
+                            error={formik.touched.videoId && Boolean(formik.errors.videoId)}
+                            helperText={formik.touched.videoId && formik.errors.videoId}
                         />
                         <DialogActions>
                             <Button onClick={() => setOpenDialog(false)}>Anuluj</Button>
