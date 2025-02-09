@@ -271,10 +271,10 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                 {personalInfo && typeof personalInfo === 'object' && (
                     <Box>
                         {personalInfo.weight && (
-                            <Typography variant="body1">Waga: {personalInfo.weight}</Typography>
+                            <Typography variant="body1">Waga: {personalInfo.weight} kg</Typography>
                         )}
                         {personalInfo.height && (
-                            <Typography variant="body1">Waga: {personalInfo.height}</Typography>
+                            <Typography variant="body1">Wzrost: {personalInfo.height} cm</Typography>
                         )}
                         {personalInfo.gender !== null && personalInfo.gender !== "OTHER" &&
                             <Typography variant="body1">Płeć: {genderMapping[personalInfo.gender]}</Typography>
