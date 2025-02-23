@@ -1,12 +1,14 @@
 import {Box, Card, CardMedia, Typography} from '@mui/material';
 import CustomButton from "../components/button/CustomButton";
 import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 const FeatureSection = ({title, description, image, reverse}) => {
     const navigate = useNavigate();
     const handleButtonClick = () => {
         navigate('/auth');
     };
+    const {t} = useTranslation('home');
     return (
         <Box
             sx={{
@@ -37,7 +39,7 @@ const FeatureSection = ({title, description, image, reverse}) => {
                     {description}
                 </Typography>
                 <CustomButton variant="contained" color="primary" onClick={handleButtonClick}>
-                    Dołącz teraz
+                    {t('joinButton')}
                 </CustomButton>
             </Box>
 

@@ -7,42 +7,26 @@ import CustomButton from "../components/button/CustomButton";
 import images from '../assets/mainPage';
 import FeatureSection from "../components/FeatureSection";
 import {motion} from 'framer-motion';
+import {useTranslation} from 'react-i18next';
+
 
 function Home() {
     const [user, setUser] = useState(null);
     const {isAuthenticated} = useAuth();
     const navigate = useNavigate();
+    const {t} = useTranslation('home');
 
-    const homeContent = [
-        {
-            id: 'plans',
-            title: 'Plany',
-            content: 'Odkryj dopasowane plany treningowe stworzone, aby osiągnąć Twoje indywidualne cele fitness. Niezależnie od tego, czy chcesz budować mięśnie, schudnąć czy poprawić wytrzymałość, nasze kompleksowe plany poprowadzą Cię na każdym kroku.',
-            image: images.plans,
-            reverse: false
-        },
-        {
-            id: 'community',
-            title: 'Społeczność',
-            content: 'Dołącz do społeczności osób, które dzielą Twoją pasję do fitnessu. Wspieraj innych, inspiruj się i osiągaj swoje cele razem z innymi entuzjastami.',
-            image: images.social,
-            reverse: true
-        },
-        {
-            id: 'stats',
-            title: 'Statystyki',
-            content: 'Śledź swoje postępy, analizuj wyniki i motywuj się do dalszego działania. Nasze narzędzia statystyczne pomogą Ci w pełni kontrolować swoją drogę do sukcesu.',
-            image: images.stats,
-            reverse: false
-        },
-        {
-            id: 'challenges',
-            title: 'Wyzwania',
-            content: 'Rzuć sobie wyzwanie i sprawdź swoje możliwości w rywalizacji z innymi. Uczestnicz w wyzwaniach i zdobywaj nagrody za swoje osiągnięcia.',
-            image: images.challenges,
-            reverse: true
-        },
-    ];
+
+    const sectionIds = ['plans', 'community', 'stats', 'challenges'];
+
+    const homeContent = sectionIds.map((id, index) => ({
+        id,
+        title : t(`sections.${id}.title`),
+        content : t(`sections.${id}.content`),
+        image : images[id],
+        reverse: index % 2 === 1
+
+    }));
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -115,12 +99,12 @@ function Home() {
                                     mb: 3,
                                 }}
                             >
-                                {user ? `Witaj, ${user.firstName}!` : 'Trenuj, rywalizuj, inspiruj — przekraczaj swoje granice!'}
+                                {user ? `Witaj, ${user.firstName}!` : t('welcomeMessage')}
                             </Typography>
 
                             {!user && (
                                 <CustomButton onClick={handleJoinClick}>
-                                    DOŁĄCZ TERAZ
+                                    {t('joinButtonUpper')}
                                 </CustomButton>
                             )}
                         </motion.div>

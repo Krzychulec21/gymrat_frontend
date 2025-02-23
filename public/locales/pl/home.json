@@ -1,0 +1,24 @@
+{
+  "welcomeMessage": "Trenuj, rywalizuj, inspiruj — przekraczaj swoje granice!",
+  "joinButton": "Dołącz teraz",
+  "joinButtonUpper": "DOŁĄCZ TERAZ",
+
+  "sections": {
+    "plans": {
+      "title": "Plany",
+      "content": "Odkryj dopasowane plany treningowe stworzone, aby osiągnąć Twoje indywidualne cele fitness. Niezależnie od tego, czy chcesz budować mięśnie, schudnąć czy poprawić wytrzymałość, nasze kompleksowe plany poprowadzą Cię na każdym kroku."
+    },
+    "community": {
+      "title": "Społeczność",
+      "content": "Dołącz do społeczności osób, które dzielą Twoją pasję do fitnessu. Wspieraj innych, inspiruj się i osiągaj swoje cele razem z innymi entuzjastami."
+    },
+    "stats": {
+      "title": "Statystyki",
+      "content": "Śledź swoje postępy, analizuj wyniki i motywuj się do dalszego działania. Nasze narzędzia statystyczne pomogą Ci w pełni kontrolować swoją drogę do sukcesu."
+    },
+    "challenges": {
+      "title": "Wyzwania",
+      "content": "Rzuć sobie wyzwanie i sprawdź swoje możliwości w rywalizacji z innymi. Uczestnicz w wyzwaniach i zdobywaj nagrody za swoje osiągnięcia."
+    }
+  }
+}

@@ -3,6 +3,7 @@ import {createRoot} from 'react-dom/client';
 import App from './App';
 import './index.css';
 import {AuthProvider} from "./context/AuthContext";
+import './i18n';
 
 if (window.TrustedTypes) {
     window.TrustedTypes.createPolicy('default', {

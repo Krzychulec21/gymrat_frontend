@@ -1,0 +1,25 @@
+{
+  "welcomeMessage": "Train, compete, inspire - push your limits!",
+  "joinButton": "Join now",
+  "joinButtonUpper": "JOIN NOW",
+
+  "sections": {
+    "plans": {
+      "title": "Plans",
+      "content": "Discover personalized training plans designed to help you achieve your individual fitness goals. Whether you want to build muscle, lose weight, or improve endurance, our comprehensive plans will guide you every step of the way."
+    },
+    "community": {
+      "title": "Community",
+      "content": "Join a community of people who share your passion for fitness. Support others, get inspired, and achieve your goals together with fellow enthusiasts."
+    },
+    "stats": {
+      "title": "Stats",
+      "content": "Track your progress, analyze results, and stay motivated to keep going. Our statistical tools will help you take full control of your journey to success."
+    },
+    "challenges": {
+      "title": "Challenges",
+      "content": "Challenge yourself and test your limits by competing with others. Take part in challenges and earn rewards for your achievements."
+    }
+  }
+
+}
