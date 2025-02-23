@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import UserListItem from "./UserListItem";
 import TextField from "@mui/material/TextField";
 import {useSnackbar} from "../../context/SnackbarContext";
+import {useTranslation} from "react-i18next";
 
 const SendFriendRequestForm = () => {
     const {showSnackbar} = useSnackbar();
@@ -14,6 +15,7 @@ const SendFriendRequestForm = () => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const {t} = useTranslation('friendsPage');
 
     const handleSearch = async (page = 0) => {
         if (query.length > 0) {
@@ -70,13 +72,13 @@ const SendFriendRequestForm = () => {
         <Box sx={{display: 'flex', gap: 1}}>
             <TextField
                 size="small"
-                label="Wpisz frazę"
+                label={t('searchLabel')}
                 value={query}
                 onKeyPress={handleKeyPress}
                 onChange={(e) => setQuery(e.target.value)}
             />
             <Button size="small" variant="contained" onClick={() => handleSearch(0)}>
-                Szukaj
+                {t('buttons.search')}
             </Button>
         </Box>
         <Box
@@ -90,7 +92,7 @@ const SendFriendRequestForm = () => {
                     user={user}
                     primaryActionIcon={user.friendRequestSent ? (
                         <Button size="small" disabled>Zaproszenie wysłane</Button>) : (
-                        <Button size="small">Dodaj znajomego</Button>)}
+                        <Button size="small">{t('buttons.addFriend')}</Button>)}
                     onPrimaryAction={() => handleSendRequest(user.email)}
                 />))}
             </List>

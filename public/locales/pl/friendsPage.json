@@ -1,0 +1,28 @@
+{
+  "showMenu": "Pokaż menu",
+  "hideMenu": "Ukryj menu",
+
+  "lastMessage" : "Ostatnia wiadomość",
+  "firstName": "Imię",
+  "lastName": "Nazwisko",
+  "ascending": "Rosnąco",
+  "descending": "Malejąco",
+
+  "dialog": {
+    "deleteConfirmation": {
+      "title": "Potwierdzenie usunięcia",
+      "message": "Czy na pewno chcesz usunąć {{name}} z listy znajomych?"
+    }
+  },
+
+  "buttons" : {
+    "chat": "Czat",
+    "friends": "Znajomi",
+    "requests": "Zaproszenia",
+    "addFriend": "Dodaj znajomego",
+    "search": "Szukaj"
+  },
+
+  "searchLabel": "Wpisz frazę"
+
+}

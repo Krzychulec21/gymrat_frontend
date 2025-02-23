@@ -15,6 +15,7 @@ import {
 import {getChatRoomId} from '../service/chatService';
 import {useMediaQuery, useTheme} from "@mui/system";
 import Button from "@mui/material/Button";
+import {useTranslation} from "react-i18next";
 
 const FriendsPage = () => {
     const [selectedTab, setSelectedTab] = useState('friends');
@@ -32,6 +33,7 @@ const FriendsPage = () => {
     const [totalFriends, setTotalFriends] = useState(0);
     const [minAge, setMinAge] = useState(18);
     const [maxAge, setMaxAge] = useState(50);
+    const {t } = useTranslation('friendsPage');
 
 
     const theme = useTheme();
@@ -151,7 +153,7 @@ const FriendsPage = () => {
         >
             {!isMdUp && (
                 <Button size="small" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-                    {isSidebarOpen ? 'Hide Menu' : 'Show Menu'}
+                    {isSidebarOpen ? t('hideMenu') : t('showMenu')}
                 </Button>
             )}
 

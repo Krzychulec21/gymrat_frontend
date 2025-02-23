@@ -15,6 +15,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import UserListItem from "./UserListItem";
+import {useTranslation} from "react-i18next";
 
 const FriendsList = ({
                          friends,
@@ -33,7 +34,7 @@ const FriendsList = ({
                      }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedFriend, setSelectedFriend] = useState(null);
-    const [ageValue, setAgeValue] = React.useState([minAge, maxAge]);
+    const {t} = useTranslation(['friendsPage','common']);
 
     const menuProps = {
         PaperProps: {
@@ -92,9 +93,9 @@ const FriendsList = ({
                             }
                         }}
                     >
-                        <MenuItem value="latestMessage">Ostatnia wiadomość</MenuItem>
-                        <MenuItem value="firstName">Imię</MenuItem>
-                        <MenuItem value="lastName">Nazwisko</MenuItem>
+                        <MenuItem value="latestMessage">{t('lastMessage')}</MenuItem>
+                        <MenuItem value="firstName">{t('firstName')}</MenuItem>
+                        <MenuItem value="lastName">{t('lastName')}</MenuItem>
                     </Select>
                 </FormControl>
                 <FormControl size="small">
@@ -119,8 +120,8 @@ const FriendsList = ({
                         }}
                         MenuProps={menuProps}
                     >
-                        <MenuItem value="asc">Rosnąco</MenuItem>
-                        <MenuItem value="desc">Malejąco</MenuItem>
+                        <MenuItem value="asc">{t('ascending')}</MenuItem>
+                        <MenuItem value="desc">{t('descending')}</MenuItem>
                     </Select>
                 </FormControl>
             </Box>
@@ -144,7 +145,7 @@ const FriendsList = ({
                             <UserListItem
                                 key={friend.id}
                                 user={friend}
-                                primaryActionIcon={<Button size="small">Czat</Button>}
+                                primaryActionIcon={<Button size="small">{t('buttons.chat')}</Button>}
                                 secondaryActionIcon={<DeleteIcon sx={{color: 'red'}}/>}
                                 onPrimaryAction={() => onChatStart(friend.id, friend.firstName, friend.lastName)}
                                 onSecondaryAction={() => handleDeleteClick(friend)}
@@ -167,20 +168,20 @@ const FriendsList = ({
             </Box>
 
             <Dialog open={openDialog} onClose={handleCloseDialog}>
-                <DialogTitle>Potwierdzenie usunięcia</DialogTitle>
+                <DialogTitle>{t('dialog.deleteConfirmation.title')}</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Czy na pewno chcesz usunąć{' '}
-                        {selectedFriend ? `${selectedFriend.firstName} ${selectedFriend.lastName}` : ''} z listy
-                        znajomych?
+                        {t('dialog.deleteConfirmation.message', {
+                            name: selectedFriend ? `${selectedFriend.firstName} ${selectedFriend.lastName}` : ''
+                        })}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseDialog} variant="secondAction">
-                        Anuluj
+                        {t('button.cancelButton', {ns: 'common'})}
                     </Button>
                     <Button onClick={handleConfirmDelete}>
-                        Usuń
+                        {t('button.confirmButton', {ns: 'common'})}
                     </Button>
                 </DialogActions>
             </Dialog>

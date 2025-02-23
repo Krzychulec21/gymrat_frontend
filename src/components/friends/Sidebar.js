@@ -1,13 +1,16 @@
 import React from 'react';
 import {Box} from '@mui/material';
 import Button from "@mui/material/Button";
+import {useTranslation} from 'react-i18next';
 
 
 const Sidebar = ({selectedTab, setSelectedTab, friendsCount, pendingCount}) => {
+    const {t } = useTranslation('friendsPage');
+
     const tabs = [
-        {label: `Znajomi (${friendsCount})`, value: 'friends'},
-        {label: `Oczekujące (${pendingCount})`, value: 'pending'},
-        {label: 'Dodaj znajomego', value: 'add'},
+        {label: `${t('buttons.friends')} (${friendsCount})`, value: 'friends'},
+        {label: `${t('buttons.requests')} (${pendingCount})`, value: 'pending'},
+        {label: t('buttons.addFriend'), value: 'add'},
     ];
 
     return (

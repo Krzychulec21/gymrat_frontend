@@ -35,6 +35,7 @@ export default function AvailableChallengesTable({refreshChallenges}) {
 
     const loadData = () => {
         getAvailableChallenges(page, rowsPerPage, sortBy, sortDir, publicFilter, typeFilter, categoryFilter).then((data) => {
+            console.log("Odpowiedź z backendu:", data);
             setChallenges(data.content || []);
             setTotal(data.totalElements);
         });

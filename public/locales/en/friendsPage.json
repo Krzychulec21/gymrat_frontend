@@ -1,0 +1,28 @@
+{
+  "showMenu": "Show menu",
+  "hideMenu": "Hide menu",
+
+  "lastMessage" : "Last message",
+  "firstName": "First name",
+  "lastName": "Last name",
+  "ascending": "Ascending",
+  "descending": "Descending",
+
+  "dialog": {
+    "deleteConfirmation": {
+      "title": "Delete Confirmation",
+      "message": "Are you sure you want to delete {{name}} from your friends list?"
+    }
+  },
+
+  "buttons" : {
+    "chat": "Chat",
+    "friends": "Friends",
+    "requests": "Requests",
+    "addFriend": "Add friend",
+    "search": "Search"
+  },
+
+  "searchLabel": "Enter a phrase"
+
+}
