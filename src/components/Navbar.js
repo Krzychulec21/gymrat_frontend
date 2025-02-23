@@ -21,6 +21,7 @@ import {useNotifications} from "../context/NotificationContext";
 import MenuItemComponent from "./MenuItemComponent";
 import Button from "@mui/material/Button";
 import {AvatarContext} from "../context/AvatarContext";
+import {useTranslation} from "react-i18next";
 
 function Navbar() {
     const {isAuthenticated, logout} = useAuth();
@@ -30,6 +31,7 @@ function Navbar() {
     const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
     const [mobileMenuAnchorEl, setMobileMenuAnchorEl] = useState(null);
     const {avatar, refreshAvatar} = useContext(AvatarContext);
+    const {t} = useTranslation('navbar');
 
 
     const handleMenuOpen = (event) => {
@@ -64,18 +66,18 @@ function Navbar() {
     };
 
     const nonAuthMenuItems = [
-        {label: 'Strona główna', to: 'home', type: 'scroll'},
-        {label: 'Plany treningowe', to: 'plans', type: 'scroll'},
-        {label: 'Społeczność', to: 'community', type: 'scroll'},
-        {label: 'Statystyki', to: 'stats', type: 'scroll'},
-        {label: 'Wyzwania', to: 'challenges', type: 'scroll'},
+        {label: t("homePage"), to: 'home', type: 'scroll'},
+        {label: t("plans"), to: 'plans', type: 'scroll'},
+        {label: t("community"), to: 'community', type: 'scroll'},
+        {label: t("stats"), to: 'stats', type: 'scroll'},
+        {label: t("challenges"), to: 'challenges', type: 'scroll'},
     ];
 
     const authMenuItems = [
-        {label: 'Znajomi', to: '/friends', type: 'navigate'},
-        {label: 'Plany', to: '/plans', type: 'navigate'},
-        {label: 'Wyzwania', to: '/challenges', type: 'navigate'},
-        {label: 'Statystyki', to: '/stats', type: 'navigate'}
+        {label: t("friends"), to: '/friends', type: 'navigate'},
+        {label: t("plans"), to: '/plans', type: 'navigate'},
+        {label: t("challenges"), to: '/challenges', type: 'navigate'},
+        {label: t("stats"), to: '/stats', type: 'navigate'}
     ];
 
     const handleNotificationClick = (notification) => {
@@ -151,7 +153,7 @@ function Navbar() {
                                 fontSize: {xs: '0.75rem', md: '1rem'},
                             }}
                         >
-                            Zaloguj się
+                            {t("signIn")}
                         </Button>
                         <Box
                             sx={{
@@ -258,9 +260,9 @@ function Navbar() {
                                 onClick={() => {
                                     navigate('/profile');
                                     handleMenuClose();
-                                }}>Profil</MenuItem>
+                                }}>{t("profile")}</MenuItem>
                             <MenuItem
-                                onClick={handleLogout}>Wyloguj</MenuItem>
+                                onClick={handleLogout}>{t("signOut")}</MenuItem>
                         </Menu>
                     </>
                 )}

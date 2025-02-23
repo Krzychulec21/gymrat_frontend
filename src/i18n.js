@@ -10,7 +10,6 @@ i18n
     .init({
         fallbackLng: 'pl',
         debug: true,
-        ns: ['home'],
         interpolation: {
             escapeValue: false,
         },
@@ -23,7 +22,7 @@ i18n
         }
     });
 
-window.i18next = i18n;
+// window.i18next = i18n;
 
 export default i18n;
 
