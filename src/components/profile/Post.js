@@ -15,12 +15,14 @@ import {
 } from '@mui/material';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { getWorkoutSessionById } from '../../service/workoutService';
+import {useTranslation} from 'react-i18next';
 
 const Post = ({ post, onReaction }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [openImageDialog, setOpenImageDialog] = useState(false);
     const [workoutDetails, setWorkoutDetails] = useState(null);
     const [loadingDetails, setLoadingDetails] = useState(false);
+    const {t} = useTranslation('profilePage');
 
     const handleDialogOpen = async () => {
         setOpenDialog(true);
@@ -62,7 +64,7 @@ const Post = ({ post, onReaction }) => {
             }}
         >
             <CardHeader
-                title="Mój trening"
+                title={t('post.title')}
                 subheader={new Date(post.timestamp).toLocaleDateString()}
             />
             <CardContent>
@@ -76,7 +78,7 @@ const Post = ({ post, onReaction }) => {
                     }}
                     onClick={handleDialogOpen}
                 >
-                    Zobacz szczegóły treningu
+                    {t('post.workoutDetails')}
                 </Typography>
             </CardContent>
             {post.imageUrl && (
@@ -96,7 +98,7 @@ const Post = ({ post, onReaction }) => {
                 </Box>
             )}
             <Box sx={{ display: 'flex', alignItems: 'center', paddingLeft: 2 }}>
-                <Tooltip title="Podoba mi się to!" placement="top">
+                <Tooltip title={t('post.postReaction')} placement="top">
                     <IconButton onClick={handleReaction}>
                         <FitnessCenterIcon
                             style={{
@@ -110,7 +112,7 @@ const Post = ({ post, onReaction }) => {
             </Box>
 
             <Dialog open={openDialog} onClose={handleDialogClose}>
-                <DialogTitle>Szczegóły treningu</DialogTitle>
+                <DialogTitle>{t('postDetails.title')}</DialogTitle>
                 <DialogContent>
                     {loadingDetails ? (
                         <Box
@@ -121,14 +123,14 @@ const Post = ({ post, onReaction }) => {
                     ) : workoutDetails ? (
                         <>
                             <Typography variant="subtitle1">
-                                Data: {workoutDetails.date}
+                                {t('postDetails.date')} {workoutDetails.date}
                             </Typography>
                             {workoutDetails.note &&
                             <Typography variant="subtitle1">
-                                Notatka: {workoutDetails.note}
+                                {t('postDetails.note')} {workoutDetails.note}
                             </Typography>
                             }
-                            <Typography variant="subtitle1">Ćwiczenia:</Typography>
+                            <Typography variant="subtitle1">{t('postDetails.exercises')}</Typography>
                             {workoutDetails.exerciseSessions.map((session, index) => (
                                 <Box key={index} marginBottom={2}>
                                     <Typography variant="body2">{session.exerciseName}</Typography>

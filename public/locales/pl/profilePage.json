@@ -16,5 +16,21 @@
     "title": "Mój trening",
     "workoutDetails": "Zobacz szczegóły treningu",
     "postReaction": "Podoba mi się to!"
+  },
+  "postDetails": {
+    "title": "Szczegóły treningu",
+    "date": "Data:",
+    "note": "Notatka:",
+    "exercises": "Ćwiczenia:"
+  },
+  "snackbar": {
+    "uploadAvatarSuccess": "Avatar został pomyślnie zaktualizowany!",
+    "uploadAvatarError": "Niepoprawny format pliku!",
+    "updatePersonalInfoSuccess": "Dane zostały pomyślnie zmienione!",
+    "updatePersonalInfoError": "Wystąpił błąd podczas zapisywania danych!",
+    "friendRequestSent": "Zaproszenie do znajomych zostało wysłane!",
+    "friendRequestError": "Wystąpił błąd podczas wysyłania zaproszenia!",
+    "removeFriendSuccess": "Pomyślnie usunięto znajomego!",
+    "removeFriendError": "Błąd podczas usuwania znajomego!"
   }
 }

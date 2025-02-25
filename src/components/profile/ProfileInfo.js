@@ -74,9 +74,9 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                 if (onDataUpdate) {
                     onDataUpdate();
                 }
-                showSnackbar('Avatar został pomyślnie zaktualizowany!', 'success');
+                showSnackbar(t('snackbar.uploadAvatarSuccess'), 'success');
             } catch (error) {
-                showSnackbar('Niepoprawny format pliku!', 'error');
+                showSnackbar(t('snackbar.uploadAvatarError'), 'error');
                 console.error("Failed to update avatar:", error);
             }
         }
@@ -90,9 +90,9 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
             await updatePersonalInfo(values);
             setOpenDialog(false);
             onDataUpdate();
-            showSnackbar('Dane zostały pomyślnie zmienione!', 'success');
+            showSnackbar(t('snackbar.updatePersonalInfoSuccess'), 'success');
         } catch (error) {
-            showSnackbar('Wystąpił błąd podczas zapisywania danych!', 'error');
+            showSnackbar(t('snackbar.updatePersonalInfoError'), 'error');
             console.error('Error updating personal info:', error);
         }
 
@@ -116,9 +116,9 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
         try {
             await sendFriendRequest(user.email);
             setFriendStatus('PENDING');
-            showSnackbar('Zaproszenie do znajomychh zostało wysłane!', 'success');
+            showSnackbar(t('friendRequestSent'), 'success');
         } catch (error) {
-            showSnackbar('Wystąpił błąd podczas wysyłania zaproszennia', 'error');
+            showSnackbar(t('friendRequestError'), 'error');
             console.error("Failed to send friend request:", error);
         }
     };

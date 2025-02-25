@@ -5,12 +5,32 @@
   "about": "About me",
   "male": "Male",
   "female": "Female",
-  "editButton": "Edit",
-
   "dialog": {
     "title": "Edit info",
+    "editButton": "Edit",
     "cancelButton": "Cancel",
     "saveButton": "Save",
     "other": "Other"
+  },
+  "post": {
+    "title": "My workout",
+    "workoutDetails": "Show workout details",
+    "postReaction": "I like it!"
+  },
+  "postDetails": {
+    "title": "Workout details",
+    "date": "Date:",
+    "note": "Note:",
+    "exercises": "Exercises:"
+  },
+  "snackbar": {
+    "uploadAvatarSuccess": "Avatar has been successfully updated!",
+    "uploadAvatarError": "Invalid file format!",
+    "updatePersonalInfoSuccess": "Data has been successfully updated!",
+    "updatePersonalInfoError": "An error occurred while saving the data!",
+    "friendRequestSent": "Friend request has been sent!",
+    "friendRequestError": "An error occurred while sending the friend request!",
+    "removeFriendSuccess": "Friend has been successfully removed!",
+    "removeFriendError": "An error occurred while removing the friend!"
   }
 }
