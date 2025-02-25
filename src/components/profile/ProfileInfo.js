@@ -26,6 +26,7 @@ import {Field, Form, Formik} from "formik";
 import {AvatarContext} from "../../context/AvatarContext";
 import {getFriendStatus, removeFriend, sendFriendRequest} from "../../service/friendService";
 import {useSnackbar} from "../../context/SnackbarContext";
+import {useTranslation} from 'react-i18next';
 
 const SlideTransition = React.forwardRef((props, ref) => {
     return <Slide {...props} ref={ref} direction={props.direction || "down"}/>;
@@ -38,10 +39,11 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
     const {updateAvatar} = useContext(AvatarContext);
     const [friendStatus, setFriendStatus] = useState(null);
     const {showSnackbar} = useSnackbar();
+    const {t} = useTranslation('profilePage')
 
     const genderMapping = {
-        MALE: "mężczyzna",
-        FEMALE: "kobieta"
+        MALE: t('male'),
+        FEMALE: t('female')
     };
     const validationSchema = Yup.object().shape({
         bio: Yup.string().max(500, 'O mnie nie może przekraczać 500 znaków'),
@@ -165,7 +167,7 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                             backgroundColor: '#555',
                         }}
                     >
-                        Edytuj
+                        {t('dialog.editButton')}
                     </Button>
                 </Box>
             )}
@@ -271,20 +273,20 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                 {personalInfo && typeof personalInfo === 'object' && (
                     <Box>
                         {personalInfo.weight && (
-                            <Typography variant="body1">Waga: {personalInfo.weight} kg</Typography>
+                            <Typography variant="body1">{t('weight')}: {personalInfo.weight} kg</Typography>
                         )}
                         {personalInfo.height && (
-                            <Typography variant="body1">Wzrost: {personalInfo.height} cm</Typography>
+                            <Typography variant="body1">{t('height')}: {personalInfo.height} cm</Typography>
                         )}
                         {personalInfo.gender !== null && personalInfo.gender !== "OTHER" &&
-                            <Typography variant="body1">Płeć: {genderMapping[personalInfo.gender]}</Typography>
+                            <Typography variant="body1">{t('gender')}: {genderMapping[personalInfo.gender]}</Typography>
                         }
                     </Box>
                 )}
             </Box>
 
             <Box sx={{ml: 3, mt: 3}}>
-                <Typography sx={{textAlign: 'center'}} variant="h5">O mnie</Typography>
+                <Typography sx={{textAlign: 'center'}} variant="h5">{t('about')}</Typography>
                 {personalInfo.bio && (
                     <Box sx={{border: "1px solid white", padding: 2, borderRadius: "5px", mt: 2}}>
                         <Typography variant="body1">{personalInfo.bio}</Typography>
@@ -298,7 +300,7 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                 onClose={() => setOpenDialog(false)}
             >
                 <DialogTitle>
-                    Edytuj Informacje
+                    {t('dialog.title')}
                     <IconButton
                         aria-label="close"
                         onClick={() => setOpenDialog(false)}
@@ -327,7 +329,7 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                                 <Field
                                     as={TextField}
                                     name="bio"
-                                    label="O mnie"
+                                    label={t('about')}
                                     multiline
                                     rows={4}
                                     fullWidth
@@ -339,7 +341,7 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                                 <Field
                                     as={TextField}
                                     name="weight"
-                                    label="Waga (kg)"
+                                    label={`${t('weight')} (kg)`}
                                     type="number"
                                     fullWidth
                                     margin="normal"
@@ -350,7 +352,7 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                                 <Field
                                     as={TextField}
                                     name="height"
-                                    label="Wzrost (cm)"
+                                    label={`${t('height')} (cm)`}
                                     type="number"
                                     fullWidth
                                     margin="normal"
@@ -359,15 +361,15 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
                                 />
 
                                 <Typography variant="subtitle1" sx={{mt: 2}}>
-                                    Płeć
+                                    {t('gender')}
                                 </Typography>
                                 <Field name="gender">
                                     {({field}) => (
                                         <RadioGroup row {...field}>
-                                            <FormControlLabel value="MALE" control={<Radio/>} label="Mężczyzna"/>
-                                            <FormControlLabel value="FEMALE" control={<Radio/>} label="Kobieta"/>
+                                            <FormControlLabel value="MALE" control={<Radio/>} label={t('male')}/>
+                                            <FormControlLabel value="FEMALE" control={<Radio/>} label={t('female')}/>
                                             <FormControlLabel value="OTHER" control={<Radio/>}
-                                                              label="Nie chcę podawać"/>
+                                                              label={t('dialog.other')}/>
                                         </RadioGroup>
                                     )}
                                 </Field>
@@ -377,10 +379,10 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
 
                                 <DialogActions>
                                     <Button onClick={() => setOpenDialog(false)} color="primary">
-                                        Anuluj
+                                        {t('dialog.cancelButton')}
                                     </Button>
                                     <Button type="submit" color="primary" variant="contained" disabled={isSubmitting}>
-                                        Zapisz
+                                        {t('dialog.saveButton')}
                                     </Button>
                                 </DialogActions>
                             </Form>

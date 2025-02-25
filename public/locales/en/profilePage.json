@@ -1,0 +1,16 @@
+{
+  "height": "Height",
+  "weight": "Weight",
+  "gender": "Gender",
+  "about": "About me",
+  "male": "Male",
+  "female": "Female",
+  "editButton": "Edit",
+
+  "dialog": {
+    "title": "Edit info",
+    "cancelButton": "Cancel",
+    "saveButton": "Save",
+    "other": "Other"
+  }
+}

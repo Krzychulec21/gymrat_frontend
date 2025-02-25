@@ -1,0 +1,20 @@
+{
+  "height": "Wzrost",
+  "weight": "Waga",
+  "gender": "Płeć",
+  "about": "O mnie",
+  "male": "Mężczyzna",
+  "female": "Kobieta",
+  "dialog": {
+    "title": "Edytuj informacje",
+    "editButton": "Edytuj",
+    "cancelButton": "Anuluj",
+    "saveButton": "Zapisz",
+    "other": "Inna"
+  },
+  "post": {
+    "title": "Mój trening",
+    "workoutDetails": "Zobacz szczegóły treningu",
+    "postReaction": "Podoba mi się to!"
+  }
+}
