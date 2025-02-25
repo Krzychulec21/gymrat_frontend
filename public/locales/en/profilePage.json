@@ -32,5 +32,15 @@
     "friendRequestError": "An error occurred while sending the friend request!",
     "removeFriendSuccess": "Friend has been successfully removed!",
     "removeFriendError": "An error occurred while removing the friend!"
+  },
+  "validation": {
+    "bioMaxLength": "About me cannot exceed 500 characters",
+    "weightMin": "Weight must be at least 30 kg",
+    "weightMax": "Weight cannot exceed 400 kg",
+    "weightRequired": "Weight is required",
+    "heightMin": "Height must be at least 50 cm",
+    "heightMax": "Height cannot exceed 300 cm",
+    "heightRequired": "Height is required",
+    "genderRequired": "Gender is required"
   }
 }

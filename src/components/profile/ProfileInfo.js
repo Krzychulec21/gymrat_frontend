@@ -46,16 +46,16 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
         FEMALE: t('female')
     };
     const validationSchema = Yup.object().shape({
-        bio: Yup.string().max(500, 'O mnie nie może przekraczać 500 znaków'),
+        bio: Yup.string().max(500, t('validation.bioMaxLength')),
         weight: Yup.number()
-            .min(30, 'Waga musi wynosić co najmniej 30 kg')
-            .max(400, 'Waga nie może przekraczać 400 kg')
-            .required('Waga jest wymagana'),
+            .min(30, t('validation.weightMin'))
+            .max(400, t('validation.weightMax'))
+            .required(t('validation.weightRequired')),
         height: Yup.number()
-            .min(50, 'Wzrost musi wynosić co najmniej 50 cm')
-            .max(300, 'Wzrost nie może przekraczać 300 cm')
-            .required('Wzrost jest wymagany'),
-        gender: Yup.string().required('Płeć jest wymagana'),
+            .min(50, t('validation.heightMin'))
+            .max(300, t('validation.heightMax'))
+            .required(t('validation.heightRequired')),
+        gender: Yup.string().required(t('validation.genderRequired')),
     });
 
 
@@ -116,20 +116,21 @@ const ProfileInfo = ({user, currentUser, personalInfo, avatar: initialAvatar, on
         try {
             await sendFriendRequest(user.email);
             setFriendStatus('PENDING');
-            showSnackbar(t('friendRequestSent'), 'success');
+            showSnackbar(t('snackbar.friendRequestSent'), 'success');
         } catch (error) {
-            showSnackbar(t('friendRequestError'), 'error');
+            showSnackbar(t('snackbar.friendRequestError'), 'error');
             console.error("Failed to send friend request:", error);
         }
     };
+
 
     const handleRemoveFriend = async () => {
         try {
             await removeFriend(user.email);
             setFriendStatus('NOT_FRIEND');
-            showSnackbar('Pomyślnie usunięto znajomego', 'success');
+            showSnackbar(t('snackbar.removeFriendSuccess'), 'success');
         } catch (error) {
-            showSnackbar('Błąd podczas usuwania znajomego', 'error');
+            showSnackbar(t('snackbar.removeFriendError'), 'error');
             console.error("Failed to remove friend:", error);
         }
     };

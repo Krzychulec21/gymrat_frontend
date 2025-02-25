@@ -32,5 +32,15 @@
     "friendRequestError": "Wystąpił błąd podczas wysyłania zaproszenia!",
     "removeFriendSuccess": "Pomyślnie usunięto znajomego!",
     "removeFriendError": "Błąd podczas usuwania znajomego!"
+  },
+  "validation": {
+    "bioMaxLength": "O mnie nie może przekraczać 500 znaków",
+    "weightMin": "Waga musi wynosić co najmniej 30 kg",
+    "weightMax": "Waga nie może przekraczać 400 kg",
+    "weightRequired": "Waga jest wymagana",
+    "heightMin": "Wzrost musi wynosić co najmniej 50 cm",
+    "heightMax": "Wzrost nie może przekraczać 300 cm",
+    "heightRequired": "Wzrost jest wymagany",
+    "genderRequired": "Płeć jest wymagana"
   }
 }
