@@ -21,7 +21,8 @@
     "title": "Szczegóły treningu",
     "date": "Data:",
     "note": "Notatka:",
-    "exercises": "Ćwiczenia:"
+    "exercises": "Ćwiczenia:",
+    "sets": "{count, plural, one {# powtórzenie} few {# powtórzenia} many {# powtórzeń} other {# powtórzenia}} / {weight} kg"
   },
   "snackbar": {
     "uploadAvatarSuccess": "Avatar został pomyślnie zaktualizowany!",
