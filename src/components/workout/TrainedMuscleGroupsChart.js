@@ -3,6 +3,7 @@ import {BarChart} from '@mui/x-charts/BarChart';
 import {Box, Button, Typography} from '@mui/material';
 import {getTrainedCategoriesCount, getTrainedExercisesCount} from '../../service/workoutService';
 import {axisClasses} from "@mui/x-charts";
+import {useTranslation} from "react-i18next";
 
 const TrainedMuscleGroupsChart = () => {
     const [data, setData] = useState([]);
@@ -16,6 +17,7 @@ const TrainedMuscleGroupsChart = () => {
         "KLATKA_PIERSIOWA": "Klatka piersiowa",
         "BRZUCH": "Brzuch"
     };
+    const {t} = useTranslation('statsPage')
 
     useEffect(() => {
         if (mode === 'categories') {
@@ -66,11 +68,10 @@ const TrainedMuscleGroupsChart = () => {
             padding: '10px'
         }}>
             <Typography variant="h4" align="center">
-                {mode === 'categories' ? 'Liczba dni przetrenowanych partii mięśniowych' : 'Liczba dni' +
-                    ' przetrenowanych ćwiczeń (najpopularniejszych)'}
+                {mode === 'categories' ? t('chart.trainedMuscleGroups') : t('chart.trainedExercises')}
             </Typography>
             <Button onClick={toggleMode} variant="contained" sx={{mt: 2}}>
-                Pokaż {mode === 'categories' ? 'ćwiczenia' : 'kategorie'}
+                {mode === 'categories' ? t('button.showExercises') : t('button.showCategories')}
             </Button>
             {data.length > 0 ? (
                 <BarChart
@@ -85,7 +86,7 @@ const TrainedMuscleGroupsChart = () => {
                     ]}
                     yAxis={[
                         {
-                            label: 'Liczba dni',
+                            label: t('chart.numberOfDays'),
                             min: 0,
                             tickMinStep: 1,
                         },
@@ -93,12 +94,12 @@ const TrainedMuscleGroupsChart = () => {
                     series={[
                         {
                             color: '#d96e6e',
-                            label: 'Liczba dni',
+                            label: t('chart.numberOfDays'),
                             dataKey: 'count',
                             valueFormatter: (value, {dataIndex}) => {
                                 const item = dataset[dataIndex];
-                                if (!item) return `${value} dni`;
-                                const daysText = value === 1 ? 'dzień' : 'dni';
+                                if (!item) return `${value} ${t('labels.days')}`;
+                                const daysText = value === 1 ? t('labels.day') : t('labels.days');
                                 return `${value} ${daysText}`;
                             },
                             tooltip: true,
@@ -117,7 +118,7 @@ const TrainedMuscleGroupsChart = () => {
 
             ) : (
                 <Typography variant="body1" align="center" sx={{mt: 2}}>
-                    Brak danych do wyświetlenia
+                    {t('labels.noData')}
                 </Typography>
             )}
         </Box>
