@@ -28,9 +28,7 @@ const FriendsList = ({
                          setSortDir,
                          sortBy,
                          sortDir,
-                         minAge,
-                         maxAge,
-                         onAgeChange
+             
                      }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedFriend, setSelectedFriend] = useState(null);

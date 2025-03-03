@@ -22,6 +22,7 @@ import MenuItemComponent from "./MenuItemComponent";
 import Button from "@mui/material/Button";
 import {AvatarContext} from "../context/AvatarContext";
 import {useTranslation} from "react-i18next";
+import LanguageSwitcher from "./LangugeSwitcher";
 
 function Navbar() {
     const {isAuthenticated, logout} = useAuth();
@@ -144,6 +145,7 @@ function Navbar() {
 
                 {!isAuthenticated && (
                     <>
+                        <LanguageSwitcher/>
                         <Button
                             variant="contained"
                             color="primary"
@@ -235,6 +237,7 @@ function Navbar() {
                                 )}
                             </List>
                         </Menu>
+                    <LanguageSwitcher/>
                         <IconButton
                             edge="end"
                             color="inherit"
