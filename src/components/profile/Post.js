@@ -137,7 +137,7 @@ const Post = ({ post, onReaction }) => {
                                     <ul>
                                         {session.sets.map((set, idx) => (
                                             <li key={idx}>
-                                                {set.reps} powtórzeń / {set.weight} kg
+                                                {t('postDetails.sets', {count:set.reps, weight: set.weight})}
                                             </li>
                                         ))}
                                     </ul>

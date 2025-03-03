@@ -21,7 +21,8 @@
     "title": "Workout details",
     "date": "Date:",
     "note": "Note:",
-    "exercises": "Exercises:"
+    "exercises": "Exercises:",
+    "sets": "{count, plural, one {# repetition} other {# repetitions}} / {weight} kg"
   },
   "snackbar": {
     "uploadAvatarSuccess": "Avatar has been successfully updated!",
