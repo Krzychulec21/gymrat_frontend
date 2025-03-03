@@ -1,0 +1,39 @@
+{
+  "card": {
+    "title": "Statystyki treningów",
+    "totalWorkouts": "Łączna liczba treningów",
+    "totalWeight": "Suma podniesionych kilogramów",
+    "lastWorkout": "Ostatni trening"
+  },
+  "button": {
+    "addWorkout": "Dodaj trening",
+    "removeExercise": "Usuń ćwiczenie",
+    "showExercises": "Pokaż ćwiczenia",
+    "showCategories": "Pokaż kategorie"
+  },
+  "chart": {
+    "popularExercises": "Trenowane partie mięśniowe",
+    "oneRepMax": "Progres szacowanego 1RM",
+    "trainedMuscleGroups": "Liczba dni przetrenowanych partii mięśniowych",
+    "trainedExercises": "Liczba dni przetrenowanych ćwiczeń (najpopularniejszych)",
+    "numberOfDays": "Liczba dni"
+  },
+  "dialog": {
+    "workoutAdded": "Chcesz pochwalić się swoim treningiem?",
+    "addPost": "Dodaj post",
+    "notThisTime": "Nie tym razem",
+    "description": "Opis",
+    "optionalPhoto": "Dodaj zdjęcie (opcjonalnie)",
+    "exerciseChartInfo": "Wykres przedstawia szacowany maksymalny ciężar, jaki możesz podnieść na jedno powtórzenie (1RM) dla wybranego ćwiczenia, obliczony za pomocą formuły Epleya:"
+  },
+  "labels": {
+    "exerciseName": "Wybierz ćwiczenie",
+    "repetitions": "Powtórzenia",
+    "weight": "Ciężar (kg)",
+    "noData": "Brak danych do wyświetlenia",
+    "exerciseInfo": "Informacje o ćwiczeniu",
+    "days": "dni",
+    "day": "dzień"
+
+  }
+}

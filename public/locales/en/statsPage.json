@@ -1,0 +1,38 @@
+{
+  "card": {
+    "title": "Workout Statistics",
+    "totalWorkouts": "Total Number of Workouts",
+    "totalWeight": "Total Lifted Weight",
+    "lastWorkout": "Last Workout"
+  },
+  "button": {
+    "addWorkout": "Add Workout",
+    "removeExercise": "Remove Exercise",
+    "showExercises": "Show Exercises",
+    "showCategories": "Show Categories"
+  },
+  "chart": {
+    "popularExercises": "Trained Muscle Groups",
+    "oneRepMax": "Estimated 1RM Progress",
+    "trainedMuscleGroups": "Number of Days with Trained Muscle Groups",
+    "trainedExercises": "Number of Days with Trained Exercises (Most Popular)",
+    "numberOfDays": "Number of days"
+  },
+  "dialog": {
+    "workoutAdded": "Do you want to share your workout?",
+    "addPost": "Add Post",
+    "notThisTime": "Not this time",
+    "description": "Description",
+    "optionalPhoto": "Add a photo (optional)",
+    "exerciseChartInfo": "The chart shows the estimated maximum weight you can lift for one repetition (1RM) for the selected exercise, calculated using the Epley formula:"
+  },
+  "labels": {
+    "exerciseName": "Select an Exercise",
+    "repetitions": "Repetitions",
+    "weight": "Weight (kg)",
+    "noData": "No data to display",
+    "exerciseInfo": "Exercise Information",
+    "days": "days",
+    "day": "day"
+  }
+}

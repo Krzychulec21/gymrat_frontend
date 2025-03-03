@@ -2,9 +2,11 @@ import React, {useEffect, useState} from "react";
 import {getTopCategoriesForUser} from "../../service/workoutService";
 import {Box, Typography} from "@mui/material";
 import {PieChart} from '@mui/x-charts/PieChart';
+import {useTranslation} from "react-i18next";
 
 const PopularExerciseChart = ({refresh}) => {
     const [topCategories, setTopCategories] = useState([]);
+    const {t} = useTranslation('statsPage')
 
     const categoryMapping = {
         "NOGI": "Nogi",
@@ -38,7 +40,7 @@ const PopularExerciseChart = ({refresh}) => {
             mb:4
         }}>
             <Typography variant='h4'>
-                Trenowane partie mięśniowe
+                {t('chart.popularExercises')}
             </Typography>
 
 
@@ -80,7 +82,7 @@ const PopularExerciseChart = ({refresh}) => {
                 </Box>
 
             ) : (
-                <Typography variant="body1">Brak danych do wyświetlenia</Typography>
+                <Typography variant="body1">{t('labels.noData')}</Typography>
             )}
 
         </Box>

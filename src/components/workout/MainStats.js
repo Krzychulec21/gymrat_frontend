@@ -9,25 +9,17 @@ import WorkoutSessions from "./WorkoutSessions";
 import PostDialog from "./PostDialog";
 import TrainedMuscleGroupsChart from "./TrainedMuscleGroupsChart";
 import ExerciseOneRepMaxChart from "./ExerciseOneRepMaxChart";
+import {useTranslation} from "react-i18next";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
-
-const SlideTransition = (props) => {
-    return <Slide {...props} direction="down"/>;
-};
-
-
 const MainStats = () => {
     const [refresh, setRefresh] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [openPostDialog, setOpenPostDialog] = useState(false);
     const [lastWorkoutId, setLastWorkoutId] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
-    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-    const [openSnackbar, setOpenSnackbar] = useState(false);
 
 
     const handleDialogClose = (event, reason) => {
@@ -56,6 +48,8 @@ const MainStats = () => {
         setRefresh(!refresh);
     }
 
+    const {t} = useTranslation('statsPage')
+
 
     return (
         <Box sx={{
@@ -73,7 +67,7 @@ const MainStats = () => {
                 position: 'absolute',
                 top: 10,
                 right: 10
-            }} onClick={handleAddWorkoutButton}>Dodaj trening</Button>
+            }} onClick={handleAddWorkoutButton}>{t('button.addWorkout')}</Button>
             <WorkoutSessionDialog open={openDialog} onClose={handleDialogClose} Transition={Transition}
                                   onWorkoutAdded={handleWorkoutAdded}
                                   isEditMode={isEditMode}

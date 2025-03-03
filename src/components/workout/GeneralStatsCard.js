@@ -2,12 +2,13 @@ import {Box, Typography} from "@mui/material";
 import CustomCard from "./CustomCard";
 import React, {useEffect, useState} from "react";
 import {getDateOfLastWorkout, getNumberOfUserWorkouts, getTotalWeightLiftedByUser} from "../../service/workoutService";
+import {useTranslation} from "react-i18next";
 
 const GeneralStatsCard = ({refresh}) => {
     const [totalWorkouts, setTotalWorkouts] = useState(0);
     const [liftedWeight, setLiftedWeight] = useState(0);
     const [lastWorkoutDate, setLastWorkoutDate] = useState(null);
-
+    const {t} = useTranslation('statsPage')
     const loadTotalWorkouts = async () => {
         const workoutData = await getNumberOfUserWorkouts();
         setTotalWorkouts(workoutData);
@@ -43,7 +44,7 @@ const GeneralStatsCard = ({refresh}) => {
     }, [refresh]);
     return (
         <Box sx={{mt:6, mb:9}}>
-            <Typography sx={{textAlign: 'center'}} variant="h4">Statystyki treningów</Typography>
+            <Typography sx={{textAlign: 'center'}} variant="h4">{t('card.title')}</Typography>
             <Box sx={{
                 mt: 4,
                 display: 'flex',
@@ -53,9 +54,9 @@ const GeneralStatsCard = ({refresh}) => {
                 justifyContent: 'center',
                 flexWrap: 'wrap',
             }}>
-                <CustomCard value={totalWorkouts} title="Łączna liczba treningów"/>
-                <CustomCard value={liftedWeight + " t"} title="Suma podniesionych kilogramów"/>
-                <CustomCard sx={{fontSize: 10}} value={lastWorkoutDate} title="Ostatni trening"/>
+                <CustomCard value={totalWorkouts} title={t('card.totalWorkouts')}/>
+                <CustomCard value={liftedWeight + " t"} title={t('card.totalWeight')}/>
+                <CustomCard sx={{fontSize: 10}} value={lastWorkoutDate} title={t('card.lastWorkout')}/>
             </Box></Box>
     );
 };
