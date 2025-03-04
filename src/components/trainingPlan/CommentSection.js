@@ -1,16 +1,17 @@
-import React, {useEffect, useState} from "react";
-import {Box, Button, TablePagination, TextField, Typography,} from "@mui/material";
-import {addComment, getComments} from "../../service/trainingPlanService";
+import React, { useEffect, useState } from "react";
+import { Box, Button, TablePagination, TextField, Typography } from "@mui/material";
+import { addComment, getComments } from "../../service/trainingPlanService";
 import dayjs from "dayjs";
-import {Field, Form, Formik} from "formik";
+import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
+import { useTranslation } from "react-i18next";
 
-const CommentsSection = ({trainingPlanId}) => {
+const CommentsSection = ({ trainingPlanId }) => {
+    const { t } = useTranslation("commentsSection");
     const [comments, setComments] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
     const [page, setPage] = useState(0);
     const [size] = useState(5);
-    const [content, setContent] = useState("");
 
     useEffect(() => {
         fetchComments();
@@ -32,7 +33,7 @@ const CommentsSection = ({trainingPlanId}) => {
         }
     };
 
-    const handleAddComment = async (values, {resetForm}) => {
+    const handleAddComment = async (values, { resetForm }) => {
         try {
             await addComment(trainingPlanId, values.content);
             resetForm();
@@ -42,33 +43,29 @@ const CommentsSection = ({trainingPlanId}) => {
         }
     };
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
+    const handleChangePage = (event, newPage) => setPage(newPage);
 
     const validationSchema = Yup.object({
         content: Yup.string()
-            .max(500, "Komentarz nie może przekraczać 500 znaków")
-            .required("Komentarz nie może być pusty")
-    })
+            .max(500, t("validation.commentMax"))
+            .required(t("validation.commentRequired")),
+    });
 
     return (
-        <Box sx={{marginTop: "20px"}}>
-            <Box
-                sx={{
-                    borderBottom: "2px solid white",
-                    marginY: "20px",
-                }}
-            />
-            <Typography variant="h6">Komentarze</Typography>
+        <Box sx={{ marginTop: "20px" }}>
+            <Box sx={{ borderBottom: "2px solid white", marginY: "20px" }} />
+            <Typography variant="h6">{t("title")}</Typography>
             {comments.map((comment) => (
-                <Box key={comment.id} sx={{
-                    marginBottom: "10px",
-                    backgroundColor: "#363636",
-                    borderRadius: '8px',
-                    padding: '2px',
-                    maxWidth: {xs: '100%', lg: "100%"}
-                }}>
+                <Box
+                    key={comment.id}
+                    sx={{
+                        marginBottom: "10px",
+                        backgroundColor: "#363636",
+                        borderRadius: "8px",
+                        padding: "2px",
+                        maxWidth: { xs: "100%", lg: "100%" },
+                    }}
+                >
                     <Typography variant="subtitle1">
                         {comment.authorNickname} - {dayjs(comment.dateCreated).format("DD.MM.YYYY HH:mm")}
                     </Typography>
@@ -84,26 +81,26 @@ const CommentsSection = ({trainingPlanId}) => {
                 rowsPerPageOptions={[5]}
             />
             <Formik
-                initialValues={{content: ''}}
+                initialValues={{ content: "" }}
                 validationSchema={validationSchema}
                 onSubmit={handleAddComment}
                 validateOnBlur={false}
             >
-                {({errors, touched, isSubmitting}) => (
+                {({ errors, touched, isSubmitting }) => (
                     <Form>
                         <Field
                             as={TextField}
                             name="content"
-                            label="Dodaj komentarz"
+                            label={t("field.addComment")}
                             fullWidth
                             multiline
                             rows={3}
                             error={touched.content && Boolean(errors.content)}
                             helperText={touched.content && errors.content}
-                            sx={{marginTop: "10px"}}
+                            sx={{ marginTop: "10px" }}
                         />
-                        <Button type="submit" disabled={isSubmitting} sx={{marginTop: "10px"}}>
-                            Dodaj komentarz
+                        <Button type="submit" disabled={isSubmitting} sx={{ marginTop: "10px" }}>
+                            {t("button.submitComment")}
                         </Button>
                     </Form>
                 )}

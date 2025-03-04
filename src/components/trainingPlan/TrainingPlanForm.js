@@ -1,36 +1,44 @@
-import React, {useEffect, useState} from "react";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField} from "@mui/material";
-import {Field, FieldArray, Form, Formik} from "formik";
-import {getAllExercises} from "../../service/exerciseService";
-import {createTrainingPlan, updateTrainingPlan} from "../../service/trainingPlanService";
+import React, { useEffect, useState } from "react";
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    TextField,
+} from "@mui/material";
+import { Field, FieldArray, Form, Formik } from "formik";
+import { getAllExercises } from "../../service/exerciseService";
+import { createTrainingPlan, updateTrainingPlan } from "../../service/trainingPlanService";
 import Autocomplete from "@mui/material/Autocomplete";
-import {getExerciseInfo} from "../../service/workoutService";
+import { getExerciseInfo } from "../../service/workoutService";
 import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import AboutExerciseDialog from "../workout/AboutExerciseDialog";
-import {useSnackbar} from "../../context/SnackbarContext";
+import { useSnackbar } from "../../context/SnackbarContext";
+import { useTranslation } from "react-i18next";
 
-
-const TrainingPlanForm = ({open, onClose, initialValues, isEditMode, validationSchema, onUpdate}) => {
-    const {showSnackbar} = useSnackbar();
+const TrainingPlanForm = ({ open, onClose, initialValues, isEditMode, validationSchema, onUpdate }) => {
+    const { t } = useTranslation("trainingPlansPage");
+    const { showSnackbar } = useSnackbar();
     const [exerciseOptions, setExerciseOptions] = useState([]);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [exerciseInfo, setExerciseInfo] = useState(null);
 
     const categoryMapping = {
-        "NOGI": "Nogi",
-        "BARKI": "Barki",
-        "PLECY": "Plecy",
-        "BICEPS": "Biceps",
-        "TRICEPS": "Triceps",
-        "KLATKA_PIERSIOWA": "Klatka piersiowa",
-        "BRZUCH": "Brzuch"
+        NOGI: "Nogi",
+        BARKI: "Barki",
+        PLECY: "Plecy",
+        BICEPS: "Biceps",
+        TRICEPS: "Triceps",
+        KLATKA_PIERSIOWA: "Klatka piersiowa",
+        BRZUCH: "Brzuch",
     };
 
     useEffect(() => {
         fetchExercises();
     }, []);
-
 
     const fetchExercises = async () => {
         try {
@@ -47,10 +55,9 @@ const TrainingPlanForm = ({open, onClose, initialValues, isEditMode, validationS
             setExerciseInfo(data);
             setDialogOpen(true);
         } catch (error) {
-            console.error("Błąd podczas pobierania informacji o ćwiczeniu:", error);
+            console.error("Error fetching exercise info:", error);
         }
     };
-
 
     const defaultValues = initialValues
         ? {
@@ -64,44 +71,45 @@ const TrainingPlanForm = ({open, onClose, initialValues, isEditMode, validationS
         : {
             name: "",
             description: "",
-            exercises: [{exerciseId: "", customInstructions: ""}],
+            exercises: [{ exerciseId: "", customInstructions: "" }],
         };
 
     return (
         <>
             <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-                <DialogTitle>{isEditMode ? "Edytuj plan treningowy" : "Nowy plan treningowy"}</DialogTitle>
+                <DialogTitle>
+                    {isEditMode ? t("trainingPlanForm.dialogTitle.edit") : t("trainingPlanForm.dialogTitle.new")}
+                </DialogTitle>
                 <DialogContent>
                     <Formik
                         initialValues={defaultValues}
                         validationSchema={validationSchema}
-                        onSubmit={async (values, {setSubmitting}) => {
+                        onSubmit={async (values, { setSubmitting }) => {
                             try {
                                 if (isEditMode) {
                                     await updateTrainingPlan(initialValues.id, values);
-                                    showSnackbar("Plan treningowy został pomyślnie zaktualizowany!", "success");
+                                    showSnackbar(t("snackbarMessages.updateSuccess"), "success");
                                 } else {
                                     await createTrainingPlan(values);
                                     onUpdate();
-                                    showSnackbar("Plan treningowy został pomyślnie utworzony!", "success");
+                                    showSnackbar(t("snackbarMessages.createSuccess"), "success");
                                 }
-
                                 onClose();
                             } catch (error) {
-                                showSnackbar("Wystąpił błąd podczas zapisywania planu!", "error");
+                                showSnackbar(t("snackbarMessages.saveError"), "error");
                                 console.error("Error saving training plan:", error);
                             } finally {
                                 setSubmitting(false);
                             }
                         }}
                     >
-                        {({values, isSubmitting, setFieldValue, errors, touched}) => (
+                        {({ values, isSubmitting, setFieldValue, errors, touched }) => (
                             <Form>
                                 <Field name="name">
-                                    {({field}) => (
+                                    {({ field }) => (
                                         <TextField
                                             {...field}
-                                            label="Nazwa"
+                                            label={t("trainingPlanForm.fields.name")}
                                             fullWidth
                                             margin="normal"
                                             error={touched.name && Boolean(errors.name)}
@@ -110,10 +118,10 @@ const TrainingPlanForm = ({open, onClose, initialValues, isEditMode, validationS
                                     )}
                                 </Field>
                                 <Field name="description">
-                                    {({field}) => (
+                                    {({ field }) => (
                                         <TextField
                                             {...field}
-                                            label="Opis"
+                                            label={t("trainingPlanForm.fields.description")}
                                             fullWidth
                                             margin="normal"
                                             multiline
@@ -124,12 +132,12 @@ const TrainingPlanForm = ({open, onClose, initialValues, isEditMode, validationS
                                     )}
                                 </Field>
                                 <FieldArray name="exercises">
-                                    {({push, remove}) => (
+                                    {({ push, remove }) => (
                                         <>
                                             {values.exercises.map((exercise, index) => (
                                                 <div key={index}>
                                                     <Field name={`exercises[${index}].exerciseId`}>
-                                                        {({field, form}) => (
+                                                        {({ field, form }) => (
                                                             <Autocomplete
                                                                 options={exerciseOptions}
                                                                 getOptionLabel={(option) => option.name}
@@ -141,25 +149,29 @@ const TrainingPlanForm = ({open, onClose, initialValues, isEditMode, validationS
                                                                     setFieldValue(field.name, value ? value.id : "")
                                                                 }
                                                                 noOptionsText={
-                                                                    <span
-                                                                        style={{color: 'white'}}>Brak ćwiczenia</span>}
+                                                                    <span style={{ color: "white" }}>
+                                    {t("autocomplete.noExercise")}
+                                  </span>
+                                                                }
                                                                 renderOption={(props, option) => (
-                                                                    <li key={option.id} {...props}
+                                                                    <li
+                                                                        key={option.id}
+                                                                        {...props}
                                                                         style={{
-                                                                            display: 'flex',
-                                                                            justifyContent: 'space-between',
-                                                                            alignItems: 'center'
-                                                                        }}>
+                                                                            display: "flex",
+                                                                            justifyContent: "space-between",
+                                                                            alignItems: "center",
+                                                                        }}
+                                                                    >
                                                                         <span>{option.name}</span>
-                                                                        <Tooltip title="Informacje o ćwiczeniu"
-                                                                                 placement="top">
+                                                                        <Tooltip title={t("trainingPlanDetails.tooltips.exerciseInfo")} placement="top">
                                                                             <IconButton
                                                                                 onClick={(e) => {
                                                                                     e.stopPropagation();
                                                                                     handleOpenDescription(option.id);
                                                                                 }}
                                                                             >
-                                                                                <HelpOutlineIcon/>
+                                                                                <HelpOutlineIcon />
                                                                             </IconButton>
                                                                         </Tooltip>
                                                                     </li>
@@ -167,20 +179,26 @@ const TrainingPlanForm = ({open, onClose, initialValues, isEditMode, validationS
                                                                 renderInput={(params) => (
                                                                     <TextField
                                                                         {...params}
-                                                                        label="Wybierz ćwiczenie"
+                                                                        label={t("trainingPlanForm.fields.selectExercise")}
                                                                         margin="normal"
-                                                                        error={form.touched.exercises?.[index]?.exerciseId && Boolean(form.errors.exercises?.[index]?.exerciseId)}
-                                                                        helperText={form.touched.exercises?.[index]?.exerciseId && form.errors.exercises?.[index]?.exerciseId}
+                                                                        error={
+                                                                            form.touched.exercises?.[index]?.exerciseId &&
+                                                                            Boolean(form.errors.exercises?.[index]?.exerciseId)
+                                                                        }
+                                                                        helperText={
+                                                                            form.touched.exercises?.[index]?.exerciseId &&
+                                                                            form.errors.exercises?.[index]?.exerciseId
+                                                                        }
                                                                     />
                                                                 )}
                                                             />
                                                         )}
                                                     </Field>
                                                     <Field name={`exercises[${index}].customInstructions`}>
-                                                        {({field, meta}) => (
+                                                        {({ field, meta }) => (
                                                             <TextField
                                                                 {...field}
-                                                                label="Instrukcje"
+                                                                label={t("trainingPlanForm.fields.instructions")}
                                                                 fullWidth
                                                                 margin="normal"
                                                                 error={meta.touched && Boolean(meta.error)}
@@ -188,38 +206,28 @@ const TrainingPlanForm = ({open, onClose, initialValues, isEditMode, validationS
                                                             />
                                                         )}
                                                     </Field>
-                                                    <Button onClick={() => remove(index)}
-                                                            disabled={values.exercises.length === 1}>
-                                                        Usuń ćwiczenie
+                                                    <Button onClick={() => remove(index)} disabled={values.exercises.length === 1}>
+                                                        {t("trainingPlanForm.buttons.deleteExercise")}
                                                     </Button>
                                                 </div>
                                             ))}
-                                            <Button sx={{
-                                                mt: 1
-                                            }}
-                                                    onClick={() => push({exerciseId: "", customInstructions: ""})}>
-                                                Dodaj ćwiczenie
+                                            <Button sx={{ mt: 1 }} onClick={() => push({ exerciseId: "", customInstructions: "" })}>
+                                                {t("trainingPlanForm.buttons.addExercise")}
                                             </Button>
                                         </>
                                     )}
                                 </FieldArray>
                                 <DialogActions>
-                                    <Button onClick={() => {
-                                        onClose();
-                                    }}>Anuluj</Button>
+                                    <Button onClick={onClose}>{t("trainingPlanForm.buttons.cancel")}</Button>
                                     <Button type="submit" variant="contained" disabled={isSubmitting}>
-                                        {isSubmitting ? "Zapisywanie..." : "Zapisz"}
+                                        {isSubmitting ? t("trainingPlanForm.buttons.saving") : t("trainingPlanForm.buttons.save")}
                                     </Button>
                                 </DialogActions>
                             </Form>
                         )}
                     </Formik>
                 </DialogContent>
-                <AboutExerciseDialog
-                    open={dialogOpen}
-                    onClose={() => setDialogOpen(false)}
-                    exerciseInfo={exerciseInfo}
-                />
+                <AboutExerciseDialog open={dialogOpen} onClose={() => setDialogOpen(false)} exerciseInfo={exerciseInfo} />
             </Dialog>
         </>
     );

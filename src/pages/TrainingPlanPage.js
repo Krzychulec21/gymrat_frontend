@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
     Box,
     Button,
@@ -20,21 +20,22 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import {getAllTrainingPlans, toggleFavorite} from "../service/trainingPlanService";
-import {useNavigate} from "react-router-dom";
+import { getAllTrainingPlans, toggleFavorite } from "../service/trainingPlanService";
+import { useNavigate } from "react-router-dom";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import ClearIcon from "@mui/icons-material/Clear";
-import FitnessCenterOutlinedIcon from '@mui/icons-material/FitnessCenterOutlined';
+import FitnessCenterOutlinedIcon from "@mui/icons-material/FitnessCenterOutlined";
 import TrainingPlanForm from "../components/trainingPlan/TrainingPlanForm";
 import validationSchema from "../components/trainingPlan/TrainingPlanValidationSchema";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import Tooltip from "@mui/material/Tooltip";
-import {useSnackbar} from "../context/SnackbarContext";
-
+import { useSnackbar } from "../context/SnackbarContext";
+import { useTranslation } from "react-i18next";
 
 const TrainingPlansPage = () => {
-    const {showSnackbar} = useSnackbar();
+    const { t } = useTranslation("trainingPlansPage");
+    const { showSnackbar } = useSnackbar();
     const [trainingPlans, setTrainingPlans] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
     const [page, setPage] = useState(0);
@@ -47,36 +48,28 @@ const TrainingPlansPage = () => {
         authorNickname: "",
     });
     const [authorNicknameInput, setAuthorNicknameInput] = useState("");
-    const categoriesList = [
-        "NOGI", "BARKI", "BICEPS", "TRICEPS", "KLATKA_PIERSIOWA", "BRZUCH"
-    ];
+    const categoriesList = ["NOGI", "BARKI", "BICEPS", "TRICEPS", "KLATKA_PIERSIOWA", "BRZUCH"];
     const difficultyLevels = [1, 2, 3, 4, 5];
     const [showFilters, setShowFilters] = useState(false);
     const navigate = useNavigate();
     const [openForm, setOpenForm] = useState(false);
 
     const categoryMapping = {
-        "NOGI": "Nogi",
-        "BARKI": "Barki",
-        "PLECY": "Plecy",
-        "BICEPS": "Biceps",
-        "TRICEPS": "Triceps",
-        "KLATKA_PIERSIOWA": "Klatka piersiowa",
-        "BRZUCH": "Brzuch"
+        NOGI: "Nogi",
+        BARKI: "Barki",
+        PLECY: "Plecy",
+        BICEPS: "Biceps",
+        TRICEPS: "Triceps",
+        KLATKA_PIERSIOWA: "Klatka piersiowa",
+        BRZUCH: "Brzuch",
     };
 
-    const translateCategory = (category) => {
-        return categoryMapping[category] || category;
-    };
-
-
-    const translateCategories = (categories) => {
-        return categories.map(category => translateCategory(category));
-    };
+    const translateCategory = (category) => categoryMapping[category] || category;
+    const translateCategories = (categories) => categories.map(translateCategory);
 
     const onUpdate = () => {
         fetchTrainingPlans();
-    }
+    };
 
     useEffect(() => {
         fetchTrainingPlans();
@@ -92,7 +85,7 @@ const TrainingPlansPage = () => {
                 categories: filters.categories,
                 difficultyLevels: filters.difficultyLevels,
                 authorNickname: filters.authorNickname,
-                onlyFavorites: filters.onlyFavorites
+                onlyFavorites: filters.onlyFavorites,
             };
             const data = await getAllTrainingPlans(params);
             setTrainingPlans(data.content);
@@ -108,151 +101,130 @@ const TrainingPlansPage = () => {
         setOrderBy(property);
     };
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
+    const handleChangePage = (event, newPage) => setPage(newPage);
     const handleFilterChange = (event) => {
-        const {name, value} = event.target;
-        setFilters((prev) => ({...prev, [name]: value}));
+        const { name, value } = event.target;
+        setFilters((prev) => ({ ...prev, [name]: value }));
     };
-
-    const handleAuthorNicknameChange = (event) => {
-        setAuthorNicknameInput(event.target.value);
-    };
-
-    const handleAuthorNicknameBlur = () => {
-        setFilters((prev) => ({...prev, authorNickname: authorNicknameInput}));
-    };
-
+    const handleAuthorNicknameChange = (event) => setAuthorNicknameInput(event.target.value);
+    const handleAuthorNicknameBlur = () =>
+        setFilters((prev) => ({ ...prev, authorNickname: authorNicknameInput }));
     const handleClearFilters = () => {
-        setFilters({
-            categories: [],
-            difficultyLevels: [],
-            authorNickname: "",
-        });
+        setFilters({ categories: [], difficultyLevels: [], authorNickname: "" });
         setAuthorNicknameInput("");
     };
-
-    const handleRowClick = (id) => {
-        navigate(`/plans/${id}`);
-    };
-
-
-    const handleOpenForm = () => {
-        setOpenForm(true);
-    };
-
-    const handleCloseForm = () => {
-        setOpenForm(false);
-    };
+    const handleRowClick = (id) => navigate(`/plans/${id}`);
+    const handleOpenForm = () => setOpenForm(true);
+    const handleCloseForm = () => setOpenForm(false);
 
     const handleToggleFavorite = async (id) => {
         try {
             await toggleFavorite(id);
             fetchTrainingPlans();
-            showSnackbar("Plan treningowy został dodany do polubionych!", "success");
-
+            showSnackbar(t("snackbarMessages.favoriteAdded"), "success");
         } catch (error) {
             console.error(error);
         }
-
-    }
-
+    };
 
     return (
-        <Box sx={{
-            padding: "20px",
-            backgroundColor: "#2C2C2C",
-            borderRadius: "8px",
-            color: "white",
-            width: '90%',
-            margin: 'auto'
-        }}>
-            <Typography sx={{textAlign: 'center'}} variant="h4">Plany treningowe społeczności</Typography>
-            <Box sx={{position: 'relative', display: 'flex', justifyContent: 'space-between', mt: 2}}>
+        <Box
+            sx={{
+                padding: "20px",
+                backgroundColor: "#2C2C2C",
+                borderRadius: "8px",
+                color: "white",
+                width: "90%",
+                margin: "auto",
+            }}
+        >
+            <Typography sx={{ textAlign: "center" }} variant="h4">
+                {t("mainPage.title")}
+            </Typography>
+            <Box sx={{ position: "relative", display: "flex", justifyContent: "space-between", mt: 2 }}>
                 <Button
-                    startIcon={<FilterListIcon/>}
+                    startIcon={<FilterListIcon />}
                     onClick={() => setShowFilters(!showFilters)}
-                    sx={{marginBottom: '10px'}}
+                    sx={{ marginBottom: "10px" }}
                 >
-                    {showFilters ? "Ukryj filtry" : "Pokaż filtry"}
+                    {showFilters ? t("mainPage.filter.hide") : t("mainPage.filter.show")}
                 </Button>
                 <Button
                     onClick={handleOpenForm}
                     sx={{
-                        position: 'absolute',
+                        position: "absolute",
                         top: 0,
                         right: 0,
                     }}
                 >
-                    Dodaj plan
+                    {t("mainPage.addPlanButton")}
                 </Button>
             </Box>
 
             {showFilters && (
-                <Box sx={{display: 'flex', gap: 1, flexWrap: 'wrap'}}>
+                <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
                     <FormControl>
-                        <InputLabel>Kategorie</InputLabel>
+                        <InputLabel>{t("mainPage.filters.categories")}</InputLabel>
                         <Select
                             color="blue"
                             multiple
                             value={filters.categories}
                             onChange={handleFilterChange}
                             name="categories"
-                            label="Kategorie"
+                            label={t("mainPage.filters.categories")}
                             renderValue={(selected) => translateCategories(selected).join(", ")}
                         >
                             {categoriesList.map((category) => (
                                 <MenuItem key={category} value={category}>
-                                    <Checkbox checked={filters.categories.indexOf(category) > -1}/>
+                                    <Checkbox checked={filters.categories.indexOf(category) > -1} />
                                     {translateCategory(category)}
                                 </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
                     <FormControl>
-                        <InputLabel style={{color: "white"}}>Poziom trudności</InputLabel>
+                        <InputLabel style={{ color: "white" }}>{t("mainPage.filters.difficulty")}</InputLabel>
                         <Select
                             multiple
                             value={filters.difficultyLevels}
                             onChange={handleFilterChange}
                             name="difficultyLevels"
-                            label="Poziom trudności"
+                            label={t("mainPage.filters.difficulty")}
                             renderValue={(selected) => selected.join(", ")}
                         >
                             {difficultyLevels.map((level) => (
                                 <MenuItem key={level} value={level}>
-                                    <Checkbox checked={filters.difficultyLevels.indexOf(level) > -1}/>
+                                    <Checkbox checked={filters.difficultyLevels.indexOf(level) > -1} />
                                     {level}
                                 </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
                     <TextField
-                        label="Użytkownik"
+                        label={t("mainPage.filters.user")}
                         name="authorNickname"
                         value={authorNicknameInput}
                         onChange={handleAuthorNicknameChange}
                         onBlur={handleAuthorNicknameBlur}
-                        InputLabelProps={{style: {color: "white"}}}
-                        InputProps={{style: {color: "white"}}}
+                        InputLabelProps={{ style: { color: "white" } }}
+                        InputProps={{ style: { color: "white" } }}
                     />
                     <FormControlLabel
                         control={
                             <Checkbox
                                 checked={filters.onlyFavorites || false}
-                                onChange={(event) => setFilters(prev => ({
-                                    ...prev,
-                                    onlyFavorites: event.target.checked
-                                }))}
+                                onChange={(event) =>
+                                    setFilters((prev) => ({ ...prev, onlyFavorites: event.target.checked }))
+                                }
                             />
                         }
-                        label="Tylko ulubione"
+                        label={t("mainPage.filters.onlyFavorites")}
                     />
-                    <Tooltip title="Wyczyść filtry" placement="top"><IconButton onClick={handleClearFilters}>
-                        <ClearIcon/>
-                    </IconButton></Tooltip>
+                    <Tooltip title={t("mainPage.filters.clearFilters")} placement="top">
+                        <IconButton onClick={handleClearFilters}>
+                            <ClearIcon />
+                        </IconButton>
+                    </Tooltip>
                 </Box>
             )}
             <TableContainer>
@@ -265,18 +237,18 @@ const TrainingPlansPage = () => {
                                     direction={orderBy === "name" ? order : "asc"}
                                     onClick={() => handleRequestSort("name")}
                                 >
-                                    Nazwa
+                                    {t("mainPage.table.name")}
                                 </TableSortLabel>
                             </TableCell>
-                            <TableCell>Autor</TableCell>
-                            <TableCell>Kategorie</TableCell>
+                            <TableCell>{t("mainPage.table.author")}</TableCell>
+                            <TableCell>{t("mainPage.table.categories")}</TableCell>
                             <TableCell sortDirection={orderBy === "difficultyLevel" ? order : false}>
                                 <TableSortLabel
                                     active={orderBy === "difficultyLevel"}
                                     direction={orderBy === "difficultyLevel" ? order : "asc"}
                                     onClick={() => handleRequestSort("difficultyLevel")}
                                 >
-                                    Trudność
+                                    {t("mainPage.table.difficulty")}
                                 </TableSortLabel>
                             </TableCell>
                             <TableCell sortDirection={orderBy === "likeCount" ? order : false}>
@@ -285,24 +257,26 @@ const TrainingPlansPage = () => {
                                     direction={orderBy === "likeCount" ? order : "asc"}
                                     onClick={() => handleRequestSort("likeCount")}
                                 >
-                                    Polubienia
+                                    {t("mainPage.table.likes")}
                                 </TableSortLabel>
                             </TableCell>
-                            <TableCell>
-                                Ulubione
-                            </TableCell>
+                            <TableCell>{t("mainPage.table.favorites")}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {trainingPlans.map((plan) => (
-                            <TableRow key={plan.id} hover onClick={() => handleRowClick(plan.id)}
-                                      style={{cursor: "pointer"}}>
+                            <TableRow
+                                key={plan.id}
+                                hover
+                                onClick={() => handleRowClick(plan.id)}
+                                style={{ cursor: "pointer" }}
+                            >
                                 <TableCell>{plan.name}</TableCell>
                                 <TableCell>{plan.authorNickname}</TableCell>
                                 <TableCell>{translateCategories(plan.categories).join(", ")}</TableCell>
                                 <TableCell>
                                     {[...Array(plan.difficultyLevel)].map((_, index) => (
-                                        <FitnessCenterOutlinedIcon fontSize="small" key={index}/>
+                                        <FitnessCenterOutlinedIcon fontSize="small" key={index} />
                                     ))}
                                 </TableCell>
                                 <TableCell>{plan.likeCount}</TableCell>
@@ -314,16 +288,17 @@ const TrainingPlansPage = () => {
                                         }}
                                     >
                                         {plan.isFavorite ? (
-                                            <StarIcon style={{color: "gold"}}/>
+                                            <StarIcon style={{ color: "gold" }} />
                                         ) : (
-                                            <StarBorderIcon style={{color: "gray"}}/>
+                                            <StarBorderIcon style={{ color: "gray" }} />
                                         )}
                                     </IconButton>
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
-                </Table></TableContainer>
+                </Table>
+            </TableContainer>
             <TablePagination
                 component="div"
                 count={totalElements}
@@ -340,7 +315,6 @@ const TrainingPlansPage = () => {
                 validationSchema={validationSchema}
                 onUpdate={onUpdate}
                 showSnackbar={showSnackbar}
-
             />
         </Box>
     );

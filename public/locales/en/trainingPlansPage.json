@@ -1,0 +1,97 @@
+{
+  "mainPage": {
+    "title": "Community Training Plans",
+    "filter": {
+      "show": "Show Filters",
+      "hide": "Hide Filters"
+    },
+    "addPlanButton": "Add Plan",
+    "filters": {
+      "categories": "Categories",
+      "difficulty": "Difficulty Level",
+      "user": "User",
+      "onlyFavorites": "Only Favorites",
+      "clearFilters": "Clear Filters"
+    },
+    "table": {
+      "name": "Name",
+      "author": "Author",
+      "categories": "Categories",
+      "difficulty": "Difficulty",
+      "likes": "Likes",
+      "favorites": "Favorites"
+    }
+  },
+  "trainingPlanForm": {
+    "dialogTitle": {
+      "edit": "Edit Training Plan",
+      "new": "New Training Plan"
+    },
+    "fields": {
+      "name": "Name",
+      "description": "Description",
+      "selectExercise": "Select Exercise",
+      "instructions": "Instructions"
+    },
+    "buttons": {
+      "deleteExercise": "Remove Exercise",
+      "addExercise": "Add Exercise",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving..."
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "descriptionMax": "Description cannot exceed 500 characters",
+      "selectExercise": "Select an exercise",
+      "instructionsMax": "Exercise instruction cannot exceed 500 characters",
+      "minExercise": "Add at least one exercise"
+    }
+  },
+  "trainingPlanDetails": {
+    "loading": "Loading...",
+    "labels": {
+      "author": "Author",
+      "difficulty": "Difficulty Level",
+      "categories": "Categories",
+      "description": "Description",
+      "exercises": "Exercises"
+    },
+    "tooltips": {
+      "exerciseInfo": "Exercise Information"
+    },
+    "buttons": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "deleteDialog": {
+      "message": "Are you sure you want to delete this training plan?",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    }
+  },
+  "commentsSection": {
+    "title": "Comments",
+    "field": {
+      "addComment": "Add Comment"
+    },
+    "button": {
+      "submitComment": "Add Comment"
+    },
+    "validation": {
+      "commentMax": "Comment cannot exceed 500 characters",
+      "commentRequired": "Comment cannot be empty"
+    }
+  },
+  "snackbarMessages": {
+    "favoriteAdded": "Training plan added to favorites!",
+    "updateSuccess": "Training plan updated successfully!",
+    "createSuccess": "Training plan created successfully!",
+    "saveError": "Error occurred while saving the training plan!",
+    "deletedSuccess": "Training plan deleted successfully",
+    "deleteError": "Error occurred while deleting"
+  },
+  "autocomplete": {
+    "noExercise": "No exercise"
+  }
+}

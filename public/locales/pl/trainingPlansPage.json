@@ -1,0 +1,99 @@
+{
+  "mainPage": {
+    "title": "Plany treningowe społeczności",
+    "filter": {
+      "show": "Pokaż filtry",
+      "hide": "Ukryj filtry"
+    },
+    "addPlanButton": "Dodaj plan",
+    "filters": {
+      "categories": "Kategorie",
+      "difficulty": "Poziom trudności",
+      "user": "Użytkownik",
+      "onlyFavorites": "Tylko ulubione",
+      "clearFilters": "Wyczyść filtry"
+    },
+    "table": {
+      "name": "Nazwa",
+      "author": "Autor",
+      "categories": "Kategorie",
+      "difficulty": "Trudność",
+      "likes": "Polubienia",
+      "favorites": "Ulubione"
+    }
+  },
+  "trainingPlanForm": {
+    "dialogTitle": {
+      "edit": "Edytuj plan treningowy",
+      "new": "Nowy plan treningowy"
+    },
+    "fields": {
+      "name": "Nazwa",
+      "description": "Opis",
+      "selectExercise": "Wybierz ćwiczenie",
+      "instructions": "Instrukcje"
+    },
+    "buttons": {
+      "deleteExercise": "Usuń ćwiczenie",
+      "addExercise": "Dodaj ćwiczenie",
+      "cancel": "Anuluj",
+      "save": "Zapisz",
+      "saving": "Zapisywanie..."
+    },
+    "validation": {
+      "nameRequired": "Nazwa jest wymagana",
+      "descriptionMax": "Opis nie może przekraczać 500 znaków",
+      "selectExercise": "Wybierz ćwiczenie",
+      "instructionsMax": "Instrukcja do ćwiczenia nie może przekraczać 500 znaków",
+      "minExercise": "Dodaj przynajmniej jedno ćwiczenie"
+    }
+  },
+  "trainingPlanDetails": {
+    "loading": "Ładowanie...",
+    "labels": {
+      "author": "Autor",
+      "difficulty": "Poziom trudności",
+      "categories": "Kategorie",
+      "description": "Opis",
+      "exercises": "Ćwiczenia"
+    },
+    "tooltips": {
+      "exerciseInfo": "Informacje o ćwiczeniu"
+    },
+    "buttons": {
+      "edit": "Edytuj",
+      "delete": "Usuń"
+    },
+    "deleteDialog": {
+      "message": "Czy na pewno chcesz usunąć ten plan treningowy?",
+      "cancel": "Anuluj",
+      "delete": "Usuń"
+    },
+    "snackbar": {
+      "deletedSuccess": "Pomyślnie usunięto plan treningowy",
+      "deleteError": "Wystąpił błąd podczas usuwania"
+    }
+  },
+  "commentsSection": {
+    "title": "Komentarze",
+    "field": {
+      "addComment": "Dodaj komentarz"
+    },
+    "button": {
+      "submitComment": "Dodaj komentarz"
+    },
+    "validation": {
+      "commentMax": "Komentarz nie może przekraczać 500 znaków",
+      "commentRequired": "Komentarz nie może być pusty"
+    }
+  },
+  "snackbarMessages": {
+    "favoriteAdded": "Plan treningowy został dodany do polubionych!",
+    "updateSuccess": "Plan treningowy został pomyślnie zaktualizowany!",
+    "createSuccess": "Plan treningowy został pomyślnie utworzony!",
+    "saveError": "Wystąpił błąd podczas zapisywania planu!"
+  },
+  "autocomplete": {
+    "noExercise": "Brak ćwiczenia"
+  }
+}
