@@ -6,11 +6,13 @@ import workoutSessionValidationSchema from "./WorkoutSessionValidationSchema";
 import ExerciseFieldForm from "./ExerciseFieldForm";
 import dayjs from "dayjs";
 import {useSnackbar} from "../../context/SnackbarContext";
+import {useTranslation} from "react-i18next";
 
 const WorkoutSessionDialog = ({open, onClose, initialValues, isEditMode, onWorkoutAdded}) => {
     const {showSnackbar} = useSnackbar();
     const [exerciseOptions, setExerciseOptions] = useState([]);
     const today = dayjs().format('YYYY-MM-DD');
+    const {t} = useTranslation('statsPage');
 
     useEffect(() => {
         const fetchExercises = async () => {
@@ -67,7 +69,7 @@ const WorkoutSessionDialog = ({open, onClose, initialValues, isEditMode, onWorko
                 {({values, isSubmitting}) => (
                     <Form>
                         <DialogContent>
-                            <DialogTitle>{isEditMode ? 'Edytuj sesję treningową' : 'Nowa sesja treningowa'}</DialogTitle>
+                            <DialogTitle>{isEditMode ? t('addWorkoutDialog.') : 'Nowa sesja treningowa'}</DialogTitle>
                             <Field
                                 name="date"
                                 as={TextField}

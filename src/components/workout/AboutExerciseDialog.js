@@ -3,9 +3,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import React from "react";
 import FitnessCenterOutlinedIcon from "@mui/icons-material/FitnessCenterOutlined";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+import { useTranslation } from "react-i18next";
 
 const AboutExerciseDialog = ({open, onClose, exerciseInfo}) => {
-
+    const {t} = useTranslation("common");
 
     return (
         <Dialog
@@ -31,7 +32,7 @@ const AboutExerciseDialog = ({open, onClose, exerciseInfo}) => {
             <DialogContent>
                 {exerciseInfo && exerciseInfo.difficultyLevel && (
                     <Typography variant="subtitle1" gutterBottom display="inline-flex" alignItems="center">
-                        Poziom trudności:
+                        {t("exerciseInfo.difficultyLevel")}
                         <Box display="inline-flex" alignItems="center" sx={{marginLeft: "8px"}}>
                             {[...Array(5)].map((_, index) => (
                                 <Box key={index} sx={{display: "flex", alignItems: "center"}}>

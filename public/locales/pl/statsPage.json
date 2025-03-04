@@ -34,6 +34,18 @@
     "exerciseInfo": "Informacje o ćwiczeniu",
     "days": "dni",
     "day": "dzień"
-
+  },
+  "addWorkoutDialog":{
+    "addTitle": "Dodaj trening",
+    "editTitle" : "Edytuj trening",
+    "date": "Data",
+    "note": "Notatka",
+    "reps": "Powtórzenia",
+    "weight": "Ciężar",
+    "chooseExercise": "Wybierz ćwiczenie",
+    "addExercise": "Dodaj ćwiczenie",
+    "removeExercise": "Usuń ćwiczenie",
+    "snackbarAddSuccess": "Trening został pomyślnie dodany",
+    "snackbarEditSuccess" : "Trening został pomyślnie zaktualizowany",
   }
 }

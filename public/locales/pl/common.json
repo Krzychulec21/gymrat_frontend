@@ -2,5 +2,8 @@
   "button": {
     "cancelButton": "Anuluj",
     "confirmButton": "Potwierdź"
+  },
+  "exerciseInfo": {
+    "difficultyLevel": "Poziom trudności"
   }
 }

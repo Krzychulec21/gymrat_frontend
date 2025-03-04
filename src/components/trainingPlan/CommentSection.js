@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 
 const CommentsSection = ({ trainingPlanId }) => {
-    const { t } = useTranslation("commentsSection");
+    const { t } = useTranslation("trainingPlansPage");
     const [comments, setComments] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
     const [page, setPage] = useState(0);
@@ -47,14 +47,14 @@ const CommentsSection = ({ trainingPlanId }) => {
 
     const validationSchema = Yup.object({
         content: Yup.string()
-            .max(500, t("validation.commentMax"))
-            .required(t("validation.commentRequired")),
+            .max(500, t("commentsSection.validation.commentMax"))
+            .required(t("commentsSection.validation.commentRequired")),
     });
 
     return (
         <Box sx={{ marginTop: "20px" }}>
             <Box sx={{ borderBottom: "2px solid white", marginY: "20px" }} />
-            <Typography variant="h6">{t("title")}</Typography>
+            <Typography variant="h6">{t("commentsSection.title")}</Typography>
             {comments.map((comment) => (
                 <Box
                     key={comment.id}
@@ -91,7 +91,7 @@ const CommentsSection = ({ trainingPlanId }) => {
                         <Field
                             as={TextField}
                             name="content"
-                            label={t("field.addComment")}
+                            label={t("commentsSection.field.addComment")}
                             fullWidth
                             multiline
                             rows={3}
@@ -100,7 +100,7 @@ const CommentsSection = ({ trainingPlanId }) => {
                             sx={{ marginTop: "10px" }}
                         />
                         <Button type="submit" disabled={isSubmitting} sx={{ marginTop: "10px" }}>
-                            {t("button.submitComment")}
+                            {t("commentsSection.button.submitComment")}
                         </Button>
                     </Form>
                 )}

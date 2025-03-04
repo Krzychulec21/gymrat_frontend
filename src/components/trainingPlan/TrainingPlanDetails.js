@@ -30,7 +30,7 @@ import { useSnackbar } from "../../context/SnackbarContext";
 import { useTranslation } from "react-i18next";
 
 const TrainingPlanDetails = () => {
-    const { t } = useTranslation("trainingPlanDetails");
+    const { t } = useTranslation("trainingPlansPage");
     const { showSnackbar } = useSnackbar();
     const { id } = useParams();
     const [trainingPlan, setTrainingPlan] = useState(null);
@@ -146,13 +146,13 @@ const TrainingPlanDetails = () => {
             </Box>
             <Box sx={{ mb: 5 }}>
                 <Typography variant="subtitle1" gutterBottom>
-                    {t("labels.author")}:{" "}
+                    {t("trainingPlanDetails.labels.author")}:{" "}
                     <Link component="button" onClick={() => handleUserClick(trainingPlan.authorId)} underline="hover" color="white">
                         {trainingPlan.authorNickname}
                     </Link>
                 </Typography>
                 <Typography variant="h6" gutterBottom display="inline-flex" alignItems="center">
-                    {t("labels.difficulty")}:
+                    {t("trainingPlanDetails.labels.difficulty")}:
                     <Box display="inline-flex" alignItems="center" sx={{ marginLeft: "8px" }}>
                         {[...Array(5)].map((_, index) => (
                             <Box key={index} sx={{ display: "flex", alignItems: "center" }}>
@@ -166,13 +166,13 @@ const TrainingPlanDetails = () => {
                     </Box>
                 </Typography>
                 <Typography variant="h6" gutterBottom>
-                    {t("labels.categories")}: {translateCategories(trainingPlan.categories).join(", ")}
+                    {t("trainingPlanDetails.labels.categories")}: {translateCategories(trainingPlan.categories).join(", ")}
                 </Typography>
             </Box>
 
             <Box sx={{ mb: 4, maxWidth: { xs: "95%", lg: "80%" } }}>
                 <Typography variant="h5" sx={{ mb: 1 }}>
-                    {t("labels.description")}:
+                    {t("trainingPlanDetails.labels.description")}:
                 </Typography>
                 <Typography variant="h6" gutterBottom sx={{ wordBreak: "break-word" }}>
                     {trainingPlan.description}
@@ -181,7 +181,7 @@ const TrainingPlanDetails = () => {
 
             <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <Typography variant="h6" gutterBottom>
-                    {t("labels.exercises")}:
+                    {t("trainingPlanDetails.labels.exercises")}:
                 </Typography>
                 {trainingPlan.exercises.map((exercise, index) => (
                     <Box
@@ -196,7 +196,7 @@ const TrainingPlanDetails = () => {
                     >
                         <Stack direction="row" alignItems="center" spacing={1}>
                             <Typography variant="h6">{exercise.exerciseName}</Typography>
-                            <Tooltip title={t("tooltips.exerciseInfo")} placement="top">
+                            <Tooltip title={t("trainingPlanDetails.tooltips.exerciseInfo")} placement="top">
                                 <IconButton
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -214,10 +214,10 @@ const TrainingPlanDetails = () => {
             {isAuthor && (
                 <Box sx={{ marginTop: "20px" }}>
                     <Button startIcon={<EditIcon />} onClick={handleEdit} sx={{ marginRight: "10px" }}>
-                        {t("buttons.edit")}
+                        {t("trainingPlanDetails.buttons.edit")}
                     </Button>
                     <Button startIcon={<DeleteIcon />} onClick={() => setOpenDeleteDialog(true)} color="secondary">
-                        {t("buttons.delete")}
+                        {t("trainingPlanDetails.buttons.delete")}
                     </Button>
                 </Box>
             )}

@@ -34,5 +34,16 @@
     "exerciseInfo": "Exercise Information",
     "days": "days",
     "day": "day"
+  },
+  "addWorkoutDialog":{
+    "addTitle": "Add Workout",
+    "editTitle" : "Edit Workout",
+    "date": "Date",
+    "note": "Note",
+    "reps": "Repetitions",
+    "weight": "Weight",
+    "chooseExercise": "Choose an Exercise",
+    "addExercise": "Add Exercise",
+    "removeExercise": "Remove Exercise"
   }
 }
